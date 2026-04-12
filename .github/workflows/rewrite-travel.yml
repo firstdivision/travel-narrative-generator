@@ -21,7 +21,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Resolve changed day file
+      - name: Resolve changed day files
         id: changed_day
         run: |
           DAY_FILES=$(git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" -- "public/travel/days/*.md")
@@ -33,16 +33,16 @@ jobs:
             exit 0
           fi
 
-          if [ "$COUNT" -gt 1 ]; then
-            echo "Expected exactly one changed day chapter per push, found $COUNT:"
-            printf "%s\n" "$DAY_FILES"
-            exit 1
-          fi
+          FILTERED_DAY_FILES=$(printf "%s\n" "$DAY_FILES" | sed '/^$/d')
 
-          SOURCE_DAY_FILE=$(printf "%s\n" "$DAY_FILES" | sed '/^$/d')
-          echo "source_day_file=$SOURCE_DAY_FILE" >> "$GITHUB_OUTPUT"
+          {
+            echo "source_day_files<<EOF"
+            printf "%s\n" "$FILTERED_DAY_FILES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
           echo "should_run=true" >> "$GITHUB_OUTPUT"
-          echo "Processing $SOURCE_DAY_FILE"
+          echo "Processing $COUNT changed day chapter(s):"
+          printf "%s\n" "$FILTERED_DAY_FILES"
 
       - name: Set up Node
         if: steps.changed_day.outputs.should_run == 'true'
@@ -58,22 +58,25 @@ jobs:
         if: steps.changed_day.outputs.should_run == 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          SOURCE_DAY_FILE: ${{ steps.changed_day.outputs.source_day_file }}
+          SOURCE_DAY_FILES: ${{ steps.changed_day.outputs.source_day_files }}
         run: node .github/scripts/rewrite-travel.mjs
 
       - name: Commit updated narrative
         if: steps.changed_day.outputs.should_run == 'true'
         run: |
           TARGET_BRANCH="gpt-rewrite"
-          SOURCE_DAY_FILE="${{ steps.changed_day.outputs.source_day_file }}"
-          CHAPTER_FILE=$(basename "$SOURCE_DAY_FILE")
-          NARRATIVE_FILE="public/travel/narrative/$CHAPTER_FILE"
+          SOURCE_DAY_FILES="${{ steps.changed_day.outputs.source_day_files }}"
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           mkdir -p /tmp/travel-narrative
-          cp "$NARRATIVE_FILE" "/tmp/travel-narrative/$CHAPTER_FILE"
+          while IFS= read -r SOURCE_DAY_FILE; do
+            [ -z "$SOURCE_DAY_FILE" ] && continue
+            CHAPTER_FILE=$(basename "$SOURCE_DAY_FILE")
+            NARRATIVE_FILE="public/travel/narrative/$CHAPTER_FILE"
+            cp "$NARRATIVE_FILE" "/tmp/travel-narrative/$CHAPTER_FILE"
+          done <<< "$SOURCE_DAY_FILES"
           cp public/travel/narrative/manifest.json /tmp/travel-narrative/manifest.json
 
           if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" > /dev/null; then
@@ -84,15 +87,33 @@ jobs:
           fi
 
           mkdir -p public/travel/narrative
-          cp "/tmp/travel-narrative/$CHAPTER_FILE" "$NARRATIVE_FILE"
+          while IFS= read -r SOURCE_DAY_FILE; do
+            [ -z "$SOURCE_DAY_FILE" ] && continue
+            CHAPTER_FILE=$(basename "$SOURCE_DAY_FILE")
+            NARRATIVE_FILE="public/travel/narrative/$CHAPTER_FILE"
+            cp "/tmp/travel-narrative/$CHAPTER_FILE" "$NARRATIVE_FILE"
+          done <<< "$SOURCE_DAY_FILES"
           cp /tmp/travel-narrative/manifest.json public/travel/narrative/manifest.json
 
-          git add "$NARRATIVE_FILE" public/travel/narrative/manifest.json
+          while IFS= read -r SOURCE_DAY_FILE; do
+            [ -z "$SOURCE_DAY_FILE" ] && continue
+            CHAPTER_FILE=$(basename "$SOURCE_DAY_FILE")
+            NARRATIVE_FILE="public/travel/narrative/$CHAPTER_FILE"
+            git add "$NARRATIVE_FILE"
+          done <<< "$SOURCE_DAY_FILES"
+          git add public/travel/narrative/manifest.json
+
+          COUNT=$(printf "%s\n" "$SOURCE_DAY_FILES" | sed '/^$/d' | wc -l | tr -d ' ')
 
           if git diff --cached --quiet; then
             echo "No narrative changes to commit"
             exit 0
           fi
 
-          git commit -m "Update travel narrative for $CHAPTER_FILE"
+          if [ "$COUNT" -eq 1 ]; then
+            CHAPTER_FILE=$(printf "%s\n" "$SOURCE_DAY_FILES" | sed '/^$/d' | xargs -n1 basename)
+            git commit -m "Update travel narrative for $CHAPTER_FILE"
+          else
+            git commit -m "Update travel narratives for $COUNT day chapters"
+          fi
           git push --set-upstream origin "$TARGET_BRANCH"

@@ -7,33 +7,45 @@ const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const daysDir = "public/travel/days";
 const narrativeDir = "public/travel/narrative";
 const stylePath = "public/travel/style.md";
-const sourceDayFile = process.env.SOURCE_DAY_FILE || process.argv[2];
+const sourceDayFilesFromEnv = (process.env.SOURCE_DAY_FILES || "")
+  .split("\n")
+  .map((filePath) => filePath.trim())
+  .filter(Boolean);
 
-if (!sourceDayFile) {
+const sourceDayFilesFromArgv = process.argv.slice(2).filter(Boolean);
+const sourceDayFiles =
+  sourceDayFilesFromEnv.length > 0
+    ? sourceDayFilesFromEnv
+    : sourceDayFilesFromArgv;
+
+if (sourceDayFiles.length === 0) {
   throw new Error(
-    "Missing source day file. Provide SOURCE_DAY_FILE or pass the file path as argv[2].",
+    "Missing source day file(s). Provide SOURCE_DAY_FILES or pass file paths as argv[2+].",
   );
 }
 
-if (!sourceDayFile.startsWith(`${daysDir}/`) || !sourceDayFile.endsWith(".md")) {
-  throw new Error(
-    `Invalid source file '${sourceDayFile}'. Expected '${daysDir}/YYYY-MM-DD.md'.`,
-  );
+for (const sourceDayFile of sourceDayFiles) {
+  if (!sourceDayFile.startsWith(`${daysDir}/`) || !sourceDayFile.endsWith(".md")) {
+    throw new Error(
+      `Invalid source file '${sourceDayFile}'. Expected '${daysDir}/YYYY-MM-DD.md'.`,
+    );
+  }
+
+  if (!fs.existsSync(sourceDayFile)) {
+    throw new Error(`Source notes file not found: ${sourceDayFile}`);
+  }
 }
 
-if (!fs.existsSync(sourceDayFile)) {
-  throw new Error(`Source notes file not found: ${sourceDayFile}`);
-}
-
-const chapterFileName = path.basename(sourceDayFile);
-const outputPath = path.join(narrativeDir, chapterFileName);
-
-const notes = fs.readFileSync(sourceDayFile, "utf8");
 const style = fs.existsSync(stylePath)
   ? fs.readFileSync(stylePath, "utf8")
   : "";
 
-const prompt = `
+for (const sourceDayFile of sourceDayFiles) {
+  const chapterFileName = path.basename(sourceDayFile);
+  const outputPath = path.join(narrativeDir, chapterFileName);
+  const notes = fs.readFileSync(sourceDayFile, "utf8");
+
+  const prompt = `
 You are rewriting raw travel notes into a polished first-person travel narrative.
 
 Requirements:
@@ -54,18 +66,19 @@ Source notes:
 ${notes}
 `;
 
-const response = await client.responses.create({
-  model: "gpt-5.4",
-  input: prompt
-});
+  const response = await client.responses.create({
+    model: "gpt-5.4",
+    input: prompt,
+  });
 
-const text =
-  response.output_text ||
-  "No narrative was returned by the model.";
+  const text =
+    response.output_text ||
+    "No narrative was returned by the model.";
 
-fs.mkdirSync(narrativeDir, { recursive: true });
-fs.writeFileSync(outputPath, text);
-console.log(`Updated ${outputPath}`);
+  fs.mkdirSync(narrativeDir, { recursive: true });
+  fs.writeFileSync(outputPath, text);
+  console.log(`Updated ${outputPath}`);
+}
 
 const narrativeFiles = fs
   .readdirSync(narrativeDir)
