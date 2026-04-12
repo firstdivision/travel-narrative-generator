@@ -3,9 +3,13 @@ import OpenAI from "openai";
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const notes = fs.readFileSync("travel/notes.md", "utf8");
-const style = fs.existsSync("travel/style.md")
-  ? fs.readFileSync("travel/style.md", "utf8")
+const notesPath = "public/travel/notes.md";
+const stylePath = "public/travel/style.md";
+const outputPath = "public/travel/narrative.md";
+
+const notes = fs.readFileSync(notesPath, "utf8");
+const style = fs.existsSync(stylePath)
+  ? fs.readFileSync(stylePath, "utf8")
   : "";
 
 const prompt = `
@@ -16,6 +20,9 @@ Requirements:
 - Keep the narrator's observations, mood, and chronology.
 - Write vividly, but do not invent events.
 - Keep proper nouns and logistics accurate.
+- Preserve markdown headings from source notes.
+- Keep heading levels intact (for example, # remains # and ## remains ##).
+- Keep headings in the same order they appear in the source.
 - Output only markdown for the final narrative.
 
 Style guide:
@@ -34,5 +41,5 @@ const text =
   response.output_text ||
   "No narrative was returned by the model.";
 
-fs.writeFileSync("travel/narrative.md", text);
-console.log("Updated travel/narrative.md");
+fs.writeFileSync(outputPath, text);
+console.log(`Updated ${outputPath}`);

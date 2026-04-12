@@ -1,0 +1,149 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Work+Sans:wght@400;500;700&display=swap");
+
+:root {
+  --bg-top: #fff7ea;
+  --bg-bottom: #f1f8ff;
+  --ink: #1f2f33;
+  --muted: #5f7075;
+  --accent: #d85f3f;
+  --paper: rgba(255, 255, 255, 0.82);
+  --paper-border: rgba(31, 47, 51, 0.1);
+  --shadow: 0 24px 60px rgba(32, 42, 56, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Work Sans", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 15%, rgba(236, 178, 91, 0.22), transparent 45%),
+    radial-gradient(circle at 80% 10%, rgba(72, 153, 213, 0.19), transparent 35%),
+    linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+}
+
+.page-shell {
+  width: min(900px, calc(100% - 2rem));
+  margin: 3rem auto;
+  display: grid;
+  gap: 1.5rem;
+  animation: rise 520ms ease-out;
+}
+
+.journal-header {
+  text-align: center;
+}
+
+.kicker {
+  margin: 0;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0.5rem 0;
+  font-family: "Fraunces", serif;
+  font-size: clamp(2.1rem, 4.2vw, 3.6rem);
+  line-height: 1.08;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--muted);
+}
+
+.journal-card {
+  background: var(--paper);
+  border: 1px solid var(--paper-border);
+  border-radius: 1.2rem;
+  padding: clamp(1.1rem, 2vw, 2rem);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px);
+}
+
+.status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.status.error {
+  color: #9f2f23;
+  font-weight: 700;
+}
+
+.error-detail {
+  color: #9f2f23;
+  margin-top: 0.5rem;
+}
+
+.journal-content {
+  font-size: clamp(1rem, 1.06vw, 1.12rem);
+  line-height: 1.75;
+  color: var(--ink);
+}
+
+.journal-content > :first-child {
+  margin-top: 0;
+}
+
+.journal-content p {
+  margin: 0 0 1.2rem;
+}
+
+.journal-content h1,
+.journal-content h2,
+.journal-content h3 {
+  font-family: "Fraunces", serif;
+  line-height: 1.2;
+  margin: 1.6rem 0 0.7rem;
+}
+
+.journal-content h1 {
+  font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+}
+
+.journal-content h2 {
+  font-size: clamp(1.35rem, 2.1vw, 1.8rem);
+}
+
+.journal-content blockquote {
+  margin: 1.25rem 0;
+  padding: 0.2rem 0 0.2rem 1rem;
+  border-left: 3px solid rgba(216, 95, 63, 0.55);
+  color: #30474e;
+}
+
+@media (max-width: 700px) {
+  .page-shell {
+    margin: 1.1rem auto 2rem;
+  }
+
+  .journal-card {
+    border-radius: 0.95rem;
+    padding: 1rem;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
