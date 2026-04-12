@@ -207,6 +207,34 @@ h1 {
   overflow: hidden;
 }
 
+.chapter-shell {
+  display: grid;
+  gap: 2rem;
+}
+
+.chapter-header {
+  width: min(100%, 740px);
+  margin: 0 auto;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(31, 92, 79, 0.14);
+}
+
+.chapter-kicker {
+  margin: 0 0 0.5rem;
+  font: 700 0.78rem/1.2 "Instrument Sans", "Segoe UI", sans-serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.chapter-title {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.2rem, 3vw, 3rem);
+  line-height: 0.98;
+  color: #1a2c27;
+}
+
 .journal-card::before {
   content: "";
   position: absolute;
@@ -241,6 +269,11 @@ h1 {
 }
 
 .journal-content > :first-child {
+  margin-top: 0;
+}
+
+.journal-content h2:first-child,
+.journal-content h3:first-child {
   margin-top: 0;
 }
 
@@ -300,6 +333,62 @@ h1 {
   background: linear-gradient(90deg, rgba(31, 92, 79, 0), rgba(31, 92, 79, 0.18), rgba(31, 92, 79, 0));
 }
 
+.chapter-nav {
+  width: min(100%, 740px);
+  margin: 0 auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(31, 92, 79, 0.14);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.chapter-link,
+.chapter-link-spacer {
+  min-height: 3.5rem;
+}
+
+.chapter-link {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0.95rem 1.1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(31, 92, 79, 0.15);
+  background: rgba(255, 252, 246, 0.82);
+  box-shadow: var(--shadow-md);
+  font: 600 0.95rem/1.4 "Instrument Sans", "Segoe UI", sans-serif;
+  color: var(--jade);
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.chapter-link:hover,
+.chapter-link:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(31, 92, 79, 0.3);
+  background: rgba(245, 239, 230, 0.98);
+}
+
+.chapter-link:focus-visible {
+  outline: 2px solid rgba(31, 92, 79, 0.2);
+  outline-offset: 3px;
+}
+
+.chapter-link-next {
+  justify-self: end;
+  text-align: right;
+  justify-content: flex-end;
+}
+
+.chapter-link-previous {
+  justify-self: start;
+}
+
 @media (max-width: 700px) {
   .page-shell {
     padding-bottom: 2rem;
@@ -325,6 +414,25 @@ h1 {
 
   .journal-card::before {
     inset: 0.65rem;
+  }
+
+  .chapter-shell {
+    gap: 1.5rem;
+  }
+
+  .chapter-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter-link-next,
+  .chapter-link-previous {
+    justify-self: stretch;
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .chapter-link-spacer {
+    display: none;
   }
 }
 
