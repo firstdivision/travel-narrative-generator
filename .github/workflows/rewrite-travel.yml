@@ -1,4 +1,5 @@
 name: Rewrite travel narrative
+run-name: Rewrite narrative from notes update
 
 on:
   push:
@@ -11,6 +12,7 @@ permissions:
 
 jobs:
   rewrite:
+    name: Generate and commit rewritten narrative
     runs-on: ubuntu-latest
 
     steps:
