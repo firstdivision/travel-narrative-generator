@@ -26,15 +26,15 @@ function renderPoemBlock(text) {
   `;
 }
 
-const renderer = {
-  code(token) {
-    if (token.lang === "poem") {
-      return renderPoemBlock(token.text);
-    }
+const renderer = new marked.Renderer();
 
-    const languageClass = token.lang ? ` class="language-${escapeHtml(token.lang)}"` : "";
-    return `<pre><code${languageClass}>${escapeHtml(token.text)}</code></pre>`;
-  },
+renderer.code = (token) => {
+  if (token.lang === "poem") {
+    return renderPoemBlock(token.text);
+  }
+
+  const languageClass = token.lang ? ` class="language-${escapeHtml(token.lang)}"` : "";
+  return `<pre><code${languageClass}>${escapeHtml(token.text)}</code></pre>`;
 };
 
 marked.setOptions({
@@ -61,6 +61,57 @@ function escapeHtml(text) {
     .replaceAll("'", "&#39;");
 }
 
+function normalizeLeadingPoemToken(tokens) {
+  const [firstToken, ...remainingTokens] = tokens;
+
+  if (!firstToken || firstToken.type !== "paragraph" || !Array.isArray(firstToken.tokens)) {
+    return tokens;
+  }
+
+  if (firstToken.tokens.length !== 7) {
+    return tokens;
+  }
+
+  const poemLines = [];
+
+  for (const [index, token] of firstToken.tokens.entries()) {
+    const expectsText = index % 2 === 0;
+
+    if (expectsText) {
+      if (token.type !== "text") {
+        return tokens;
+      }
+
+      const line = token.text.trim();
+
+      if (!line) {
+        return tokens;
+      }
+
+      poemLines.push(line);
+      continue;
+    }
+
+    if (token.type !== "br") {
+      return tokens;
+    }
+  }
+
+  if (poemLines.length !== 4) {
+    return tokens;
+  }
+
+  return [
+    {
+      type: "code",
+      raw: firstToken.raw,
+      lang: "poem",
+      text: poemLines.join("\n"),
+    },
+    ...remainingTokens,
+  ];
+}
+
 function extractChapterFromMarkdown(markdown, fallbackTitle) {
   const tokens = marked.lexer(markdown);
   let documentTitle = null;
@@ -84,7 +135,7 @@ function extractChapterFromMarkdown(markdown, fallbackTitle) {
   return {
     documentTitle,
     chapterTitle: chapterTitle || fallbackTitle,
-    contentTokens,
+    contentTokens: normalizeLeadingPoemToken(contentTokens),
   };
 }
 

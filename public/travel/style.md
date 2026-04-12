@@ -25,12 +25,13 @@ Avoid sounding like a travel blogger, influencer, or guidebook.
 * Avoid rigid structure—let the narrative feel like it unfolds naturally
 * Chronological flow is preferred, but allow brief reflective tangents
 * Maintain the tense.  This is a travel journal, so past-tense preferred.
-* The first block in the file must be a four-line poem that humorously describes the entire entry.
-* Emit it as a fenced code block with the info string `poem`.
-* Put it before any headings or body paragraphs.
+* Add a four-line poem that humorously describes the entire entry.
+* Preferred placement: immediately after the first heading in the file. If there is no higher-level title above the date heading, place the poem at the very top and then continue with the date heading.
+* Preferred format: emit it as a fenced code block with the info string `poem`.
 * The fenced poem must contain exactly four non-empty lines.
 * Each line should be plain text only. Do not use markdown formatting, labels, bullets, numbering, or commentary inside the poem block.
-* After the closing fence, continue with the normal chapter headings and narrative. For example:
+* After the closing fence, continue with the normal chapter headings and narrative.
+* Use this exact shape whenever possible:
 
 ```poem
 I am a poem, but just an example
