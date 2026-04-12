@@ -102,6 +102,7 @@ body::after {
   border-radius: 1.75rem;
   overflow: hidden;
   position: relative;
+  isolation: isolate;
 }
 
 .hero-panel::before,
@@ -109,6 +110,13 @@ body::after {
   content: "";
   position: absolute;
   pointer-events: none;
+  z-index: 0;
+}
+
+.hero-copy,
+.hero-actions {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-panel::before {
