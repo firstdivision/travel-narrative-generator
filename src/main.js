@@ -189,6 +189,30 @@ async function renderJournal() {
   app.innerHTML = `
     <main class="page-shell">
       <section class="hero-panel" aria-label="Travel journal overview">
+        <div class="hero-script-cloud" aria-hidden="true">
+          <span class="hero-script hero-script-jp hero-script-1">旅の記録 ・ 道 ・ 風景</span>
+          <span class="hero-script hero-script-th hero-script-2">สวัสดี · การเดินทาง · บันทึก</span>
+          <span class="hero-script hero-script-ms hero-script-3">Selamat Jalan · Catatan · Kenangan</span>
+          <span class="hero-script hero-script-jp hero-script-4">列車の窓 ・ 雨 ・ 夜明け</span>
+          <span class="hero-script hero-script-th hero-script-5">ตลาด · กลิ่นชา · เสียงรถไฟ</span>
+          <span class="hero-script hero-script-ms hero-script-6">Rasa Jalanan · Hujan Tropika</span>
+          <span class="hero-script hero-script-jp hero-script-7">古い地図 ・ 寄り道 ・ 記憶</span>
+          <span class="hero-script hero-script-th hero-script-8">แม่น้ำ · ถนน · เรื่องเล่า</span>
+          <span class="hero-script hero-script-ms hero-script-9">Laluan Lama · Cerita Baru</span>
+          <span class="hero-script hero-script-jp hero-script-10">朝の駅 ・ 旅人 ・ 光</span>
+          <span class="hero-script hero-script-th hero-script-11">รอยยิ้ม · เส้นทาง · เวลา</span>
+          <span class="hero-script hero-script-ms hero-script-12">Selamat Datang · Jejak</span>
+          <span class="hero-script hero-script-jp hero-script-13">港町 ・ 提灯 ・ 夜風</span>
+          <span class="hero-script hero-script-th hero-script-14">อาหารริมทาง · สีสัน · เมืองเก่า</span>
+          <span class="hero-script hero-script-ms hero-script-15">Pasar Malam · Bau Rempah</span>
+          <span class="hero-script hero-script-jp hero-script-16">静かな寺 ・ 石畳 ・ 影</span>
+          <span class="hero-script hero-script-th hero-script-17">ทะเล · ฝน · ความทรงจำ</span>
+          <span class="hero-script hero-script-ms hero-script-18">Nadi Kota · Langkah Kaki</span>
+          <span class="hero-script hero-script-jp hero-script-19">旅の途中 ・ 小さな奇跡</span>
+          <span class="hero-script hero-script-th hero-script-20">รถสองแถว · ทางโค้ง · แสงเย็น</span>
+          <span class="hero-script hero-script-ms hero-script-21">Cerita Jalan · Arah Selatan</span>
+          <span class="hero-script hero-script-jp hero-script-22">山の霧 ・ 朝市 ・ 手紙</span>
+        </div>
         <div class="hero-copy">
           <p class="kicker">
             <a class="hero-home-link" href="#" aria-label="Return to home page">

@@ -105,18 +105,231 @@ body::after {
   isolation: isolate;
 }
 
-.hero-panel::before,
-.hero-panel::after {
+.hero-panel::before {
   content: "";
   position: absolute;
   pointer-events: none;
   z-index: 0;
 }
 
-.hero-copy,
+.hero-copy {
+  position: relative;
+  z-index: 1;
+  padding: 0.65rem 0.15rem;
+}
+
 .hero-actions {
   position: relative;
   z-index: 1;
+}
+
+.hero-copy::before,
+.hero-copy::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: calc(100% + min(320px, 28vw));
+  max-width: none;
+  height: 28px;
+  pointer-events: none;
+  opacity: 0.72;
+  background:
+    linear-gradient(180deg, transparent, rgba(192, 138, 42, 0.12)),
+    radial-gradient(circle at 18px 0, transparent 15px, rgba(249, 231, 189, 0.18) 16px, rgba(249, 231, 189, 0.18) 18px, transparent 19px) 0 0 / 36px 24px repeat-x;
+}
+
+.hero-copy::before {
+  top: 0;
+  transform: translateY(-0.95rem) scaleY(-1);
+  transform-origin: top;
+}
+
+.hero-copy::after {
+  bottom: 0;
+  transform: translateY(0.95rem);
+}
+
+.hero-script-cloud {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-script {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.16;
+  color: rgba(248, 240, 222, 0.7);
+  text-shadow: 0 2px 12px rgba(10, 12, 20, 0.35);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.hero-script-jp {
+  font: 600 clamp(1rem, 1.35vw, 1.45rem) / 1.1 "Noto Serif JP", "Times New Roman", serif;
+  letter-spacing: 0.08em;
+}
+
+.hero-script-th {
+  font: 600 clamp(0.92rem, 1.1vw, 1.2rem) / 1.2 "Noto Sans Thai", "Segoe UI", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.hero-script-ms {
+  font: 600 clamp(0.78rem, 0.95vw, 1rem) / 1.2 "Noto Sans Thai", "Segoe UI", sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero-script-1 {
+  top: 0.7rem;
+  left: 1rem;
+  transform: rotate(-9deg);
+}
+
+.hero-script-2 {
+  top: 0.9rem;
+  left: 34%;
+  transform: rotate(7deg);
+}
+
+.hero-script-3 {
+  top: 1.2rem;
+  right: 1.3rem;
+  transform: rotate(-12deg);
+  opacity: 0.12;
+}
+
+.hero-script-4 {
+  top: 2.9rem;
+  left: 9%;
+  transform: rotate(14deg);
+}
+
+.hero-script-5 {
+  top: 3.2rem;
+  left: 42%;
+  transform: rotate(-6deg);
+  opacity: 0.14;
+}
+
+.hero-script-6 {
+  top: 3.4rem;
+  right: 14%;
+  transform: rotate(10deg);
+  opacity: 0.12;
+}
+
+.hero-script-7 {
+  bottom: 4.3rem;
+  left: 2.2rem;
+  transform: rotate(-18deg);
+}
+
+.hero-script-8 {
+  bottom: 3.9rem;
+  left: 33%;
+  transform: rotate(13deg);
+  opacity: 0.14;
+}
+
+.hero-script-9 {
+  bottom: 4.1rem;
+  right: 15%;
+  transform: rotate(-8deg);
+  opacity: 0.13;
+}
+
+.hero-script-10 {
+  bottom: 1.4rem;
+  left: 1.1rem;
+  transform: rotate(6deg);
+}
+
+.hero-script-11 {
+  bottom: 1.15rem;
+  left: 38%;
+  transform: rotate(-11deg);
+  opacity: 0.15;
+}
+
+.hero-script-12 {
+  bottom: 1.25rem;
+  right: 1.2rem;
+  transform: rotate(17deg);
+  opacity: 0.12;
+}
+
+.hero-script-13 {
+  top: 0.65rem;
+  left: 19%;
+  transform: rotate(-15deg);
+  opacity: 0.13;
+}
+
+.hero-script-14 {
+  top: 1.8rem;
+  right: 27%;
+  transform: rotate(11deg);
+  opacity: 0.14;
+}
+
+.hero-script-15 {
+  top: 4.7rem;
+  right: 2.2rem;
+  transform: rotate(-4deg);
+  opacity: 0.11;
+}
+
+.hero-script-16 {
+  top: 5.1rem;
+  left: 16%;
+  transform: rotate(8deg);
+  opacity: 0.14;
+}
+
+.hero-script-17 {
+  top: 5.5rem;
+  left: 47%;
+  transform: rotate(-13deg);
+  opacity: 0.13;
+}
+
+.hero-script-18 {
+  bottom: 6.3rem;
+  right: 3.7rem;
+  transform: rotate(16deg);
+  opacity: 0.11;
+}
+
+.hero-script-19 {
+  bottom: 5.9rem;
+  left: 22%;
+  transform: rotate(-7deg);
+  opacity: 0.14;
+}
+
+.hero-script-20 {
+  bottom: 2.8rem;
+  left: 53%;
+  transform: rotate(9deg);
+  opacity: 0.13;
+}
+
+.hero-script-21 {
+  bottom: 0.95rem;
+  right: 24%;
+  transform: rotate(-19deg);
+  opacity: 0.12;
+}
+
+.hero-script-22 {
+  bottom: 2.3rem;
+  left: 14%;
+  transform: rotate(15deg);
+  opacity: 0.13;
 }
 
 .hero-panel::before {
@@ -127,14 +340,6 @@ body::after {
     radial-gradient(circle at center, transparent 38%, rgba(232, 212, 171, 0.18) 39%, rgba(232, 212, 171, 0.18) 42%, transparent 43%),
     radial-gradient(circle at center, transparent 57%, rgba(232, 212, 171, 0.12) 58%, rgba(232, 212, 171, 0.12) 60%, transparent 61%);
   border-radius: 50%;
-}
-
-.hero-panel::after {
-  inset: auto 0 0 0;
-  height: 64px;
-  background:
-    linear-gradient(180deg, transparent, rgba(192, 138, 42, 0.12)),
-    radial-gradient(circle at 18px 0, transparent 15px, rgba(249, 231, 189, 0.18) 16px, rgba(249, 231, 189, 0.18) 18px, transparent 19px) 0 0 / 36px 24px repeat-x;
 }
 
 .kicker {
@@ -472,6 +677,40 @@ h1 {
 
   .hero-panel {
     border-radius: 1.25rem;
+  }
+
+  .hero-copy::before,
+  .hero-copy::after {
+    width: 100%;
+    height: 24px;
+    background:
+      linear-gradient(180deg, transparent, rgba(192, 138, 42, 0.1)),
+      radial-gradient(circle at 14px 0, transparent 11px, rgba(249, 231, 189, 0.16) 12px, rgba(249, 231, 189, 0.16) 14px, transparent 15px) 0 0 / 28px 18px repeat-x;
+  }
+
+  .hero-copy::before {
+    transform: translateY(-0.75rem) scaleY(-1);
+  }
+
+  .hero-copy::after {
+    transform: translateY(0.75rem);
+  }
+
+  .hero-script {
+    white-space: normal;
+    max-width: 56%;
+    line-height: 1.1;
+  }
+
+  .hero-script-3,
+  .hero-script-6,
+  .hero-script-9,
+  .hero-script-12,
+  .hero-script-15,
+  .hero-script-18,
+  .hero-script-21,
+  .hero-script-22 {
+    display: none;
   }
 
   .hero-actions {
