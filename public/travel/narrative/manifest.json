@@ -1,9 +1,13 @@
 {
-  "generatedAt": "2026-04-12T00:00:00.000Z",
+  "generatedAt": "2026-04-12T04:22:55.823Z",
   "chapters": [
     {
-      "date": "2026-04-12",
-      "file": "/travel/narrative/2026-04-12.md"
+      "date": "2026-04-04",
+      "file": "/travel/narrative/2026-04-04.md"
+    },
+    {
+      "date": "2026-04-05",
+      "file": "/travel/narrative/2026-04-05.md"
     }
   ]
 }
