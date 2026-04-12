@@ -16,9 +16,6 @@ Avoid sounding like a travel blogger, influencer, or guidebook.
 
 ## Structure & Flow
 
-* Include and introduction under a "##" heading
-    * This contains a few paragraphs of intro text that summarizes the whole journal text into a an intro.
-    * This would be the part of the TV show that hooks the audience for what is to come.
 * Include the headers from the notes like the title and dates
   * e.g.: # The Great Asia Adventure - Main Title
   * "## Thursday, April 4" Sub heading, date.

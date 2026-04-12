@@ -5,6 +5,13 @@ run-name: Build and deploy site
   push:
     branches:
       - main
+    paths-ignore:
+      - public/travel/days/*.md
+  workflow_run:
+    workflows:
+      - Rewrite travel narrative
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -19,6 +26,7 @@ concurrency:
 jobs:
   build:
     name: Build static site
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
 
     steps:
