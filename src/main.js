@@ -4,9 +4,43 @@ import DOMPurify from "dompurify";
 
 const app = document.querySelector("#app");
 
+function renderPoemBlock(text) {
+  const lines = text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .slice(0, 4);
+
+  if (!lines.length) {
+    return "";
+  }
+
+  const poemLines = lines
+    .map((line) => `<p class="chapter-poem-line">${escapeHtml(line)}</p>`)
+    .join("");
+
+  return `
+    <section class="chapter-poem" aria-label="Chapter poem">
+      ${poemLines}
+    </section>
+  `;
+}
+
+const renderer = {
+  code(token) {
+    if (token.lang === "poem") {
+      return renderPoemBlock(token.text);
+    }
+
+    const languageClass = token.lang ? ` class="language-${escapeHtml(token.lang)}"` : "";
+    return `<pre><code${languageClass}>${escapeHtml(token.text)}</code></pre>`;
+  },
+};
+
 marked.setOptions({
   gfm: true,
   breaks: true,
+  renderer,
 });
 
 function slugifyHeading(text) {

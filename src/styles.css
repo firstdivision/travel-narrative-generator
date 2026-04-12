@@ -552,6 +552,52 @@ h1 {
   margin: 0 0 1.25rem;
 }
 
+.chapter-poem {
+  width: min(100%, 32rem);
+  margin: 0 auto 2.2rem;
+  padding: 1.35rem 1.6rem;
+  border: 1px solid rgba(20, 84, 71, 0.2);
+  border-radius: 1.35rem;
+  background:
+    linear-gradient(180deg, rgba(255, 249, 240, 0.96), rgba(248, 239, 222, 0.9)),
+    linear-gradient(135deg, rgba(192, 138, 42, 0.08), rgba(34, 58, 120, 0.05));
+  box-shadow: 0 14px 30px rgba(41, 20, 9, 0.08);
+  text-align: center;
+  position: relative;
+}
+
+.chapter-poem::before,
+.chapter-poem::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: clamp(5rem, 18vw, 7.5rem);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(20, 84, 71, 0), rgba(20, 84, 71, 0.45), rgba(20, 84, 71, 0));
+  transform: translateX(-50%);
+}
+
+.chapter-poem::before {
+  top: 0.65rem;
+}
+
+.chapter-poem::after {
+  bottom: 0.65rem;
+}
+
+.chapter-poem-line {
+  margin: 0.28rem 0;
+  font-family: "Noto Serif JP", "Times New Roman", serif;
+  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  font-style: italic;
+  line-height: 1.7;
+  color: #31413c;
+}
+
+.chapter-poem-line:last-child {
+  margin-bottom: 0;
+}
+
 .journal-content h1,
 .journal-content h2,
 .journal-content h3 {
