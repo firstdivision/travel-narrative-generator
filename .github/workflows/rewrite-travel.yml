@@ -5,8 +5,6 @@ on:
     branches: [main]
     paths:
       - "public/travel/notes.md"
-      - "public/travel/style.md"
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -34,8 +32,28 @@ jobs:
 
       - name: Commit updated narrative
         run: |
+          TARGET_BRANCH="gpt-rewrite"
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          cp public/travel/narrative.md /tmp/narrative.md
+
+          if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" > /dev/null; then
+            git fetch origin "$TARGET_BRANCH:$TARGET_BRANCH"
+            git switch "$TARGET_BRANCH"
+          else
+            git switch -c "$TARGET_BRANCH"
+          fi
+
+          cp /tmp/narrative.md public/travel/narrative.md
+
           git add public/travel/narrative.md
-          git diff --cached --quiet || git commit -m "Update travel narrative"
-          git push
+
+          if git diff --cached --quiet; then
+            echo "No narrative changes to commit"
+            exit 0
+          fi
+
+          git commit -m "Update travel narrative"
+          git push --set-upstream origin "$TARGET_BRANCH"
