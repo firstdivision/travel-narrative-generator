@@ -31,6 +31,7 @@ Avoid sounding like a travel blogger, influencer, or guidebook.
 * The fenced poem must contain exactly four non-empty lines.
 * Each line should be plain text only. Do not use markdown formatting, labels, bullets, numbering, or commentary inside the poem block.
 * After the closing fence, continue with the normal chapter headings and narrative.
+* Be creative with the rhyming scheme.
 * Use this exact shape whenever possible:
 
 ```poem

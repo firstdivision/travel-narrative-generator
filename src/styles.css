@@ -553,9 +553,9 @@ h1 {
 }
 
 .chapter-poem {
-  width: min(100%, 32rem);
+  width: min(100%, 38rem);
   margin: 0 auto 2.2rem;
-  padding: 1.35rem 1.6rem;
+  padding: 0.95rem 1.2rem;
   border: 1px solid rgba(20, 84, 71, 0.2);
   border-radius: 1.35rem;
   background:
@@ -586,11 +586,11 @@ h1 {
 }
 
 .chapter-poem-line {
-  margin: 0.28rem 0;
+  margin: 0.2rem 0;
   font-family: "Noto Serif JP", "Times New Roman", serif;
-  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  font-size: clamp(0.8rem, 0.82vw, 0.9rem);
   font-style: italic;
-  line-height: 1.7;
+  line-height: 1.4;
   color: #31413c;
 }
 
