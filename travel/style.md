@@ -16,9 +16,14 @@ Avoid sounding like a travel blogger, influencer, or guidebook.
 
 ## Structure & Flow
 
+* Include and introduction under a "##" heading
+    * This contains a few paragraphs of intro text that summarizes the whole journal text into a an intro.
+    * This would be the part of the TV show that hooks the audience for what is to come.
+* Include the headers from the notes like the title and dates
+  * e.g.: # The Great Asia Adventure - Main Title
+  * "## Thursday, April 4" Sub heading, date.
 * Write in flowing paragraphs, not bullet points
 * Vary paragraph length:
-
   * Mix longer descriptive passages with occasional one-line paragraphs for emphasis
 * Avoid rigid structure—let the narrative feel like it unfolds naturally
 * Chronological flow is preferred, but allow brief reflective tangents
@@ -56,7 +61,7 @@ Avoid:
 
 ## Language Rules
 
-* Avoid em dashes (—). Use commas or periods instead.
+* Avoid em dashes (—). Use commas or periods instead. IMPORTANT!
 * Avoid overly dramatic phrasing
 * Avoid clichés and travel writing tropes
 * Keep language clean and direct
@@ -90,4 +95,4 @@ Avoid:
 
 ## North Star
 
-This should read like a personal travel journal written at night after a long day—clear-headed, a little tired, honest, and paying attention.
+This should read like a personal travel journal written at night after a long day. Clear-headed, a little tired, honest, and paying attention.

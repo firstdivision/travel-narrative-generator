@@ -1,15 +1,31 @@
 # The Great Asia Adventure
 
+[top-level, overall intro goes here]
+
 ## Thursday, April 4
 
 2:30 am Joe picks me up for an airport drop-off.
 
-Was too early, but you never know
+Was too early, but you never know these days.  There had been a lot of news stores about TSA lines to the moon and back thanks to the ongoing "Unprecedented" government shutdown.  Funny how they seem to keep happening.
 
-Flight to Dallas is uneventful
+It is earlier than taco deli openes, so I will be unable to get one last taste of texmex. I am able to find a much-required and much-desired coffee.  So instead of eating I sit down and people-watch.  I think about the somewhat-crazyness of this situation I've put myself in.  It's April 4, I won't be back home until the end of May. A shot of adreneline runs through me as I think about this, and about my house.  The house that is "sleeping" now; the water is turned off, there are blankets over the couches to keep the dust off, the fridge nearly empty after tossing anything that might go bad over the course if to months, the garbage cans are empty both inside and in the outside municiple wheeled cans. Perhaps most importantly, my plants are being babysat by my cousin down the road, they're on a travel adventure all their own.
 
-Boarding flight to Narita is a mess.  The stewards seem either unable or unwilling to help passengers who are wandering around the plane looking for somewhere to put their bags. "American" airlines -- SAD.
+The airport speaker comes alive and snaps me out of my daydream. Flight AA1658 to Dallas will be boarding in 30 minutes.  Time to get moving.
+
+The flight to Dallas is uneventful, and a short 1 hour 20 minutes. They layover is four hours but goes by quickly.  I finally find some "real food" (an airport egg sandwich that somehow costs $14). I'm in the international terminal, so I do more people watching, wondering which ones I see might be coming with me on my flight, and which ones are going someher else in the world? Are they going home? Or are they, like me, thinking of the future days and what I might find? The future of food is what dominates my thoughts, I wonder what kinds of things I will find in these foreign lands?
+
+One guy I saw looked a little lost when the gate agents started announcing that your passports must be signed.  He had that "baby deer looking a little lost" look.  He kept looking at his passport, one with a very empty signature line I noticed, and then looking around.
+
+"Need a pen?" I asked.
+
+He gratefully accepted and then we started talking.  Apparently this is his first time flying, his first time in an airplrt even!  "Wow, go big for the first time!" I said.  It turns out he has a friend in Japan who builds custom cars, and he going to Japan for six months to work with him.  
+
+"Well, you're going to have a great time, I'm sure." I said.  Adventures all around, like threads being woven through airports and contrails.
+
+The flight to Narita boards.  It's a 777, but an old one, the plastic overhead looks a little ivory-colored, not exactly sparkling clean.  This ol' lady has been fluing for a while it seems. The stewards seem either unable or unwilling to help passengers who are wandering around the plane looking for somewhere to put their bags. Mild chaos on a flight that has almost 14 hours to go until it will land in Japan.
 
 As soon as I finally find a place for my bag and sit down, the woman on my left asks if I can switch places with her since the people to my right are her group.  They are both aisle seats, and the woman on her left looks much smaller than the large guy on my right, so I agree.  Then, as soon as I sit down this new woman asks if I can switch places with her husband, who is on the left hand side of the plane (Boeing 777). I look over and see a guy looking at me, expectantly. But I think he noticed the look in my eyes saying "please don't make me do this".  He says something to his wife in a language I don't understand -- I don't think it was Japanese, and she turns to me and says "He says it is fine."
 
-Maybe he was actually titally fine sitting by himself in a different aisle from his wife and children for the next 13 hours and 45 minutes!
+Maybe he was actually totally fine sitting by himself in a different aisle from his wife and children for the next 13 hours and 45 minutes!
+
+After takeoff I am able to sleep for a lot of the flight. Running on 3 hours sleep helps. The plane is freezing cold, and I soon find a way to pull on my hoodie strings to revel only my mouth and nose, the black cloth of the hoodie serves as a night-mask for my eyes.  And, taking a queue from my seat-neighbor, I also pull the whole blanket provided by the airline over my head.  It creates a little heat igloo, and traps some humudity too.  There is a food service that was unremarkable enough that I have no recocolection of what it was.  And then I fall asleep again.  Somewhere in there we crossed the interational date line and it was Friday.
