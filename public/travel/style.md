@@ -24,6 +24,7 @@ Avoid sounding like a travel blogger, influencer, or guidebook.
   * Mix longer descriptive passages with occasional one-line paragraphs for emphasis
 * Avoid rigid structure—let the narrative feel like it unfolds naturally
 * Chronological flow is preferred, but allow brief reflective tangents
+* Maintain the tense.  This is a travel journal, so past-tense preferred.
 
 ## Detail & Sensory Writing
 
