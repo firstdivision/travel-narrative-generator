@@ -82,6 +82,12 @@ async function loadChapterData() {
     }
 
     const markdown = await chapterResponse.text();
+    const trimmedMarkdown = markdown.trimStart().toLowerCase();
+
+    if (trimmedMarkdown.startsWith("<!doctype html") || trimmedMarkdown.startsWith("<html")) {
+      throw new Error(`Chapter file \"${chapterEntry.file}\" returned HTML instead of markdown.`);
+    }
+
     const fallbackTitle = chapterEntry.date || `Chapter ${index + 1}`;
     const chapter = extractChapterFromMarkdown(markdown, fallbackTitle);
 
