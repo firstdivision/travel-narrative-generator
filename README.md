@@ -1,12 +1,28 @@
 # Travel Journal Web App
 
-This project is now a Vite-powered web app that renders a travel journal entry from markdown at runtime.
+This project is now a Vite-powered web app that renders travel journal chapters from markdown at runtime.
 
 ## Source Content
 
-The markdown files live in `public/travel/`.
+The markdown files live in `public/travel/` with per-day chapters:
 
-The page fetches `public/travel/narrative.md` in the browser and renders it into readable HTML.
+```text
+travel/
+	days/
+		2026-04-10.md
+		2026-04-11.md
+	narrative/
+		2026-04-10.md
+		2026-04-11.md
+		manifest.json
+	style.md
+```
+
+- `public/travel/days/*.md` contains raw notes chapters.
+- `public/travel/narrative/*.md` contains rewritten chapters produced by the GitHub Action.
+- `public/travel/narrative/manifest.json` lists chapters for the browser app.
+
+The page fetches `public/travel/narrative/manifest.json` and then loads each chapter markdown file in order.
 
 ## Run Locally
 

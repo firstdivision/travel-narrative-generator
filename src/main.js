@@ -27,57 +27,76 @@ function escapeHtml(text) {
     .replaceAll("'", "&#39;");
 }
 
-function buildChapterData(markdown) {
+function extractChapterFromMarkdown(markdown, fallbackTitle) {
   const tokens = marked.lexer(markdown);
-  const usedSlugs = new Map();
-  const chapters = [];
-  const prefaceTokens = [];
-  let documentTitle = "Travel Journal";
-  let currentChapter = null;
+  let documentTitle = null;
+  let chapterTitle = null;
+  const contentTokens = [];
 
   for (const token of tokens) {
-    if (token.type === "heading" && token.depth === 1) {
+    if (!documentTitle && token.type === "heading" && token.depth === 1) {
       documentTitle = token.text;
       continue;
     }
 
-    if (token.type === "heading" && token.depth === 2) {
-      if (currentChapter) {
-        chapters.push(currentChapter);
-      }
-
-      const baseSlug = slugifyHeading(token.text) || `chapter-${chapters.length + 1}`;
-      const nextCount = (usedSlugs.get(baseSlug) || 0) + 1;
-      usedSlugs.set(baseSlug, nextCount);
-
-      currentChapter = {
-        title: token.text,
-        slug: nextCount === 1 ? baseSlug : `${baseSlug}-${nextCount}`,
-        tokens: [],
-      };
+    if (!chapterTitle && token.type === "heading" && token.depth === 2) {
+      chapterTitle = token.text;
       continue;
     }
 
-    if (currentChapter) {
-      currentChapter.tokens.push(token);
-    } else {
-      prefaceTokens.push(token);
+    contentTokens.push(token);
+  }
+
+  return {
+    documentTitle,
+    chapterTitle: chapterTitle || fallbackTitle,
+    contentTokens,
+  };
+}
+
+async function loadChapterData() {
+  const manifestResponse = await fetch("/travel/narrative/manifest.json", {
+    cache: "no-cache",
+  });
+
+  if (!manifestResponse.ok) {
+    throw new Error(`Failed to load manifest (${manifestResponse.status})`);
+  }
+
+  const manifest = await manifestResponse.json();
+  const chapterEntries = Array.isArray(manifest.chapters) ? manifest.chapters : [];
+
+  if (!chapterEntries.length) {
+    throw new Error("No chapter files were found in the manifest.");
+  }
+
+  const usedSlugs = new Map();
+  const chapters = [];
+  let documentTitle = "Travel Journal";
+
+  for (const [index, chapterEntry] of chapterEntries.entries()) {
+    const chapterResponse = await fetch(chapterEntry.file, { cache: "no-cache" });
+
+    if (!chapterResponse.ok) {
+      throw new Error(`Failed to load chapter markdown (${chapterResponse.status})`);
     }
-  }
 
-  if (currentChapter) {
-    chapters.push(currentChapter);
-  }
+    const markdown = await chapterResponse.text();
+    const fallbackTitle = chapterEntry.date || `Chapter ${index + 1}`;
+    const chapter = extractChapterFromMarkdown(markdown, fallbackTitle);
 
-  if (prefaceTokens.length && chapters.length) {
-    chapters[0].tokens.unshift(...prefaceTokens);
-  }
+    if (index === 0 && chapter.documentTitle) {
+      documentTitle = chapter.documentTitle;
+    }
 
-  if (!chapters.length) {
+    const baseSlug = slugifyHeading(chapter.chapterTitle) || `chapter-${index + 1}`;
+    const nextCount = (usedSlugs.get(baseSlug) || 0) + 1;
+    usedSlugs.set(baseSlug, nextCount);
+
     chapters.push({
-      title: documentTitle,
-      slug: slugifyHeading(documentTitle) || "chapter-1",
-      tokens: prefaceTokens,
+      title: chapter.chapterTitle,
+      slug: nextCount === 1 ? baseSlug : `${baseSlug}-${nextCount}`,
+      tokens: chapter.contentTokens,
     });
   }
 
@@ -214,13 +233,7 @@ async function renderJournal() {
   });
 
   try {
-    const response = await fetch("/travel/narrative.md", { cache: "no-cache" });
-    if (!response.ok) {
-      throw new Error(`Failed to load markdown (${response.status})`);
-    }
-
-    const markdown = await response.text();
-    const chapterData = buildChapterData(markdown);
+    const chapterData = await loadChapterData();
 
     populateChapterMenu(jumpSelect, chapterData.chapters);
 

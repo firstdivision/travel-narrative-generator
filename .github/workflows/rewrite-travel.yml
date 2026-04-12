@@ -1,11 +1,11 @@
 name: Rewrite travel narrative
-run-name: Rewrite narrative from notes update
+run-name: Rewrite narrative from day chapter update
 
 on:
   push:
     branches: [main]
     paths:
-      - "public/travel/notes.md"
+      - "public/travel/days/*.md"
 
 permissions:
   contents: write
@@ -18,28 +18,63 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve changed day file
+        id: changed_day
+        run: |
+          DAY_FILES=$(git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" -- "public/travel/days/*.md")
+          COUNT=$(printf "%s\n" "$DAY_FILES" | sed '/^$/d' | wc -l | tr -d ' ')
+
+          if [ "$COUNT" -eq 0 ]; then
+            echo "No day chapter changes found."
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "$COUNT" -gt 1 ]; then
+            echo "Expected exactly one changed day chapter per push, found $COUNT:"
+            printf "%s\n" "$DAY_FILES"
+            exit 1
+          fi
+
+          SOURCE_DAY_FILE=$(printf "%s\n" "$DAY_FILES" | sed '/^$/d')
+          echo "source_day_file=$SOURCE_DAY_FILE" >> "$GITHUB_OUTPUT"
+          echo "should_run=true" >> "$GITHUB_OUTPUT"
+          echo "Processing $SOURCE_DAY_FILE"
 
       - name: Set up Node
+        if: steps.changed_day.outputs.should_run == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Install OpenAI SDK
+        if: steps.changed_day.outputs.should_run == 'true'
         run: npm install openai
 
       - name: Generate narrative
+        if: steps.changed_day.outputs.should_run == 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SOURCE_DAY_FILE: ${{ steps.changed_day.outputs.source_day_file }}
         run: node .github/scripts/rewrite-travel.mjs
 
       - name: Commit updated narrative
+        if: steps.changed_day.outputs.should_run == 'true'
         run: |
           TARGET_BRANCH="gpt-rewrite"
+          SOURCE_DAY_FILE="${{ steps.changed_day.outputs.source_day_file }}"
+          CHAPTER_FILE=$(basename "$SOURCE_DAY_FILE")
+          NARRATIVE_FILE="public/travel/narrative/$CHAPTER_FILE"
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          cp public/travel/narrative.md /tmp/narrative.md
+          mkdir -p /tmp/travel-narrative
+          cp "$NARRATIVE_FILE" "/tmp/travel-narrative/$CHAPTER_FILE"
+          cp public/travel/narrative/manifest.json /tmp/travel-narrative/manifest.json
 
           if git ls-remote --exit-code --heads origin "$TARGET_BRANCH" > /dev/null; then
             git fetch origin "$TARGET_BRANCH:$TARGET_BRANCH"
@@ -48,14 +83,16 @@ jobs:
             git switch -c "$TARGET_BRANCH"
           fi
 
-          cp /tmp/narrative.md public/travel/narrative.md
+          mkdir -p public/travel/narrative
+          cp "/tmp/travel-narrative/$CHAPTER_FILE" "$NARRATIVE_FILE"
+          cp /tmp/travel-narrative/manifest.json public/travel/narrative/manifest.json
 
-          git add public/travel/narrative.md
+          git add "$NARRATIVE_FILE" public/travel/narrative/manifest.json
 
           if git diff --cached --quiet; then
             echo "No narrative changes to commit"
             exit 0
           fi
 
-          git commit -m "Update travel narrative"
+          git commit -m "Update travel narrative for $CHAPTER_FILE"
           git push --set-upstream origin "$TARGET_BRANCH"
