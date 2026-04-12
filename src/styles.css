@@ -140,6 +140,17 @@ body::after {
   line-height: 1.2;
 }
 
+.hero-home-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero-home-link:hover,
+.hero-home-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
 h1 {
   margin: 0.65rem 0 0.85rem;
   font-family: "Noto Serif JP", "Times New Roman", serif;

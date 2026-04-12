@@ -141,14 +141,14 @@ function getChapterIndexFromHash(chapters) {
   return chapterIndex >= 0 ? chapterIndex : 0;
 }
 
-function renderChapter({ card, jumpSelect, heroTitle, subtitle }, chapterData, chapterIndex) {
+function renderChapter({ card, jumpSelect, heroTitleLink, subtitle }, chapterData, chapterIndex) {
   const { documentTitle, chapters } = chapterData;
   const chapter = chapters[chapterIndex];
   const previousChapter = chapters[chapterIndex - 1];
   const nextChapter = chapters[chapterIndex + 1];
   const chapterHtml = DOMPurify.sanitize(marked.parser(chapter.tokens));
 
-  heroTitle.textContent = documentTitle;
+  heroTitleLink.textContent = documentTitle;
   subtitle.textContent = `${chapter.title} · Chapter ${chapterIndex + 1} of ${chapters.length}`;
   jumpSelect.value = chapter.slug;
   document.title = `${chapter.title} | ${documentTitle}`;
@@ -190,8 +190,16 @@ async function renderJournal() {
     <main class="page-shell">
       <section class="hero-panel" aria-label="Travel journal overview">
         <div class="hero-copy">
-          <p class="kicker">Asia Overland Chronicle</p>
-          <h1 class="hero-title">Loading travel journal...</h1>
+          <p class="kicker">
+            <a class="hero-home-link" href="#" aria-label="Return to home page">
+              Asia Overland Chronicle
+            </a>
+          </p>
+          <h1>
+            <a class="hero-title hero-home-link" href="#" aria-label="Return to home page">
+              Loading travel journal...
+            </a>
+          </h1>
           <p class="subtitle">
             Preparing chapter navigation...
           </p>
@@ -215,7 +223,7 @@ async function renderJournal() {
 
   const card = document.querySelector(".journal-card");
   const jumpSelect = document.querySelector("#section-jump");
-  const heroTitle = document.querySelector(".hero-title");
+  const heroTitleLink = document.querySelector(".hero-title");
   const subtitle = document.querySelector(".subtitle");
 
   jumpSelect.addEventListener("change", (event) => {
@@ -245,7 +253,7 @@ async function renderJournal() {
 
     const syncChapter = ({ scroll = false } = {}) => {
       const chapterIndex = getChapterIndexFromHash(chapterData.chapters);
-      renderChapter({ card, jumpSelect, heroTitle, subtitle }, chapterData, chapterIndex);
+      renderChapter({ card, jumpSelect, heroTitleLink, subtitle }, chapterData, chapterIndex);
 
       if (scroll) {
         scrollToChapterStart();
@@ -259,7 +267,7 @@ async function renderJournal() {
     syncChapter();
   } catch (error) {
     jumpSelect.innerHTML = '<option value="">Chapters unavailable</option>';
-    heroTitle.textContent = "Travel journal unavailable";
+    heroTitleLink.textContent = "Travel journal unavailable";
     subtitle.textContent = "The chapter view could not be prepared.";
     card.innerHTML = `
       <p class="status error">Unable to load the travel narrative.</p>
