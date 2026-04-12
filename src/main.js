@@ -165,13 +165,14 @@ async function renderJournal() {
     <main class="page-shell">
       <section class="hero-panel" aria-label="Travel journal overview">
         <div class="hero-copy">
-          <p class="kicker">Southeast Asia Field Journal</p>
+          <p class="kicker">Asia Overland Chronicle</p>
           <h1 class="hero-title">Loading travel journal...</h1>
           <p class="subtitle">
             Preparing chapter navigation...
           </p>
         </div>
         <div class="hero-actions">
+          <p class="journey-seal">Route Archive</p>
           <label class="jump-label" for="section-jump">Jump to chapter</label>
           <select id="section-jump" class="jump-select" disabled>
             <option value="">Loading chapters...</option>

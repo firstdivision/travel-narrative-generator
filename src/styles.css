@@ -1,29 +1,32 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap");
 
 :root {
-  --bg: #efe5d3;
-  --bg-deep: #d8c2a1;
-  --surface: rgba(251, 246, 237, 0.9);
-  --surface-strong: rgba(247, 240, 228, 0.96);
-  --surface-border: rgba(45, 60, 53, 0.14);
-  --ink: #1e241f;
-  --muted: #59635d;
-  --accent: #9f3b2f;
-  --accent-soft: rgba(159, 59, 47, 0.12);
-  --jade: #1f5c4f;
-  --jade-soft: rgba(31, 92, 79, 0.14);
-  --gold: #b88b3b;
-  --shadow-lg: 0 24px 70px rgba(47, 33, 19, 0.16);
-  --shadow-md: 0 18px 42px rgba(47, 33, 19, 0.12);
-  --pattern: linear-gradient(
-    90deg,
-    transparent 0,
-    transparent 14px,
-    rgba(184, 139, 59, 0.18) 14px,
-    rgba(184, 139, 59, 0.18) 16px,
-    transparent 16px,
-    transparent 30px
-  );
+  --bg: #f1e2c6;
+  --bg-deep: #d8bd93;
+  --surface: rgba(255, 250, 240, 0.88);
+  --surface-strong: rgba(255, 248, 236, 0.94);
+  --surface-border: rgba(27, 58, 51, 0.22);
+  --ink: #1f1c17;
+  --muted: #4f564f;
+  --accent: #b5381e;
+  --accent-soft: rgba(181, 56, 30, 0.1);
+  --indigo: #223a78;
+  --indigo-soft: rgba(34, 58, 120, 0.14);
+  --jade: #145447;
+  --jade-soft: rgba(20, 84, 71, 0.14);
+  --gold: #c08a2a;
+  --shadow-lg: 0 30px 72px rgba(41, 20, 9, 0.2);
+  --shadow-md: 0 18px 38px rgba(41, 20, 9, 0.15);
+  --lattice: linear-gradient(
+      60deg,
+      rgba(192, 138, 42, 0.1) 0 2px,
+      transparent 2px 18px
+    ),
+    linear-gradient(
+      -60deg,
+      rgba(20, 84, 71, 0.09) 0 2px,
+      transparent 2px 18px
+    );
 }
 
 * {
@@ -40,9 +43,10 @@ body {
   font-family: "Source Serif 4", Georgia, serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at top left, rgba(159, 59, 47, 0.14), transparent 32%),
-    radial-gradient(circle at 85% 10%, rgba(31, 92, 79, 0.18), transparent 26%),
-    linear-gradient(180deg, rgba(255, 247, 235, 0.76), transparent 24%),
+    radial-gradient(circle at 8% 10%, rgba(181, 56, 30, 0.22), transparent 24%),
+    radial-gradient(circle at 90% 18%, rgba(20, 84, 71, 0.26), transparent 20%),
+    radial-gradient(circle at 82% 84%, rgba(34, 58, 120, 0.16), transparent 22%),
+    linear-gradient(180deg, rgba(255, 247, 235, 0.82), transparent 28%),
     linear-gradient(180deg, var(--bg), var(--bg-deep));
   position: relative;
 }
@@ -52,9 +56,24 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.14)),
-    var(--pattern);
-  opacity: 0.35;
+    linear-gradient(rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12)),
+    var(--lattice);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: -5rem;
+  right: -5rem;
+  width: 16rem;
+  height: 16rem;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, rgba(192, 138, 42, 0.34), rgba(181, 56, 30, 0.28) 45%, transparent 72%);
+  filter: blur(1px);
+  opacity: 0.7;
   pointer-events: none;
 }
 
@@ -75,10 +94,10 @@ body::before {
   gap: 1rem 1.5rem;
   align-items: center;
   padding: clamp(1.4rem, 2vw, 2rem);
-  border: 1px solid rgba(248, 241, 230, 0.24);
+  border: 1px solid rgba(249, 231, 189, 0.28);
   background:
-    linear-gradient(135deg, rgba(23, 55, 48, 0.95), rgba(28, 38, 34, 0.9)),
-    linear-gradient(120deg, rgba(184, 139, 59, 0.16), transparent 60%);
+    linear-gradient(130deg, rgba(20, 65, 54, 0.95), rgba(24, 29, 43, 0.93)),
+    linear-gradient(115deg, rgba(192, 138, 42, 0.2), transparent 58%);
   box-shadow: var(--shadow-lg);
   border-radius: 1.75rem;
   overflow: hidden;
@@ -93,40 +112,41 @@ body::before {
 }
 
 .hero-panel::before {
-  inset: 1rem auto 1rem 1rem;
+  inset: 0.8rem 0.8rem auto auto;
   width: 120px;
-  border: 1px solid rgba(232, 212, 171, 0.16);
-  border-right: 0;
-  border-radius: 1rem 0 0 1rem;
+  height: 120px;
+  background:
+    radial-gradient(circle at center, transparent 38%, rgba(232, 212, 171, 0.18) 39%, rgba(232, 212, 171, 0.18) 42%, transparent 43%),
+    radial-gradient(circle at center, transparent 57%, rgba(232, 212, 171, 0.12) 58%, rgba(232, 212, 171, 0.12) 60%, transparent 61%);
+  border-radius: 50%;
 }
 
 .hero-panel::after {
-  right: -3.5rem;
-  top: -3.5rem;
-  width: 14rem;
-  height: 14rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(184, 139, 59, 0.22), transparent 68%);
+  inset: auto 0 0 0;
+  height: 64px;
+  background:
+    linear-gradient(180deg, transparent, rgba(192, 138, 42, 0.12)),
+    radial-gradient(circle at 18px 0, transparent 15px, rgba(249, 231, 189, 0.18) 16px, rgba(249, 231, 189, 0.18) 18px, transparent 19px) 0 0 / 36px 24px repeat-x;
 }
 
 .kicker {
   margin: 0;
-  color: #e8d4ab;
+  color: #f4dfb1;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: clamp(1.02rem, 1.4vw, 1.22rem);
-  font-family: "Instrument Sans", "Segoe UI", sans-serif;
+  font-family: "Noto Sans Thai", "Segoe UI", sans-serif;
   font-weight: 600;
   line-height: 1.2;
 }
 
 h1 {
   margin: 0.65rem 0 0.85rem;
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Noto Serif JP", "Times New Roman", serif;
   font-size: clamp(2.6rem, 5vw, 4.9rem);
-  line-height: 0.95;
+  line-height: 0.98;
   font-weight: 600;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   color: #f8f0de;
 }
 
@@ -145,14 +165,28 @@ h1 {
   gap: 0.55rem;
   padding: 0.95rem 1rem 1rem;
   border-radius: 1rem;
-  background: rgba(244, 236, 222, 0.08);
-  border: 1px solid rgba(232, 212, 171, 0.18);
+  background: rgba(16, 34, 41, 0.36);
+  border: 1px solid rgba(232, 212, 171, 0.24);
   backdrop-filter: blur(10px);
+}
+
+.journey-seal {
+  margin: 0;
+  justify-self: start;
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid rgba(249, 231, 189, 0.38);
+  border-radius: 999px;
+  font: 600 0.66rem/1.2 "Noto Sans Thai", "Segoe UI", sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #f4dfb1;
+  background: rgba(181, 56, 30, 0.22);
 }
 
 .jump-label {
   margin: 0;
-  font-family: "Instrument Sans", "Segoe UI", sans-serif;
+  font-family: "Noto Sans Thai", "Segoe UI", sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 0.72rem;
@@ -166,12 +200,12 @@ h1 {
   border: 1px solid rgba(232, 212, 171, 0.28);
   border-radius: 0.8rem;
   padding: 0.78rem 2.6rem 0.78rem 0.9rem;
-  font: 500 0.96rem/1.2 "Instrument Sans", "Segoe UI", sans-serif;
+  font: 500 0.96rem/1.2 "Noto Sans Thai", "Segoe UI", sans-serif;
   color: #f8f0de;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23e8d4ab' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M1 1.25 6 6.25l5-5'/%3E%3C/svg%3E") no-repeat right 0.9rem center / 0.8rem,
-    rgba(19, 34, 31, 0.45);
+    rgba(14, 32, 40, 0.52);
   cursor: pointer;
 }
 
@@ -196,7 +230,7 @@ h1 {
 
 .journal-card {
   background:
-    linear-gradient(180deg, rgba(255, 252, 246, 0.72), rgba(247, 240, 228, 0.96)),
+    linear-gradient(180deg, rgba(255, 253, 247, 0.72), rgba(248, 238, 220, 0.94)),
     var(--surface);
   border: 1px solid var(--surface-border);
   border-radius: 1.5rem;
@@ -216,12 +250,12 @@ h1 {
   width: min(100%, 740px);
   margin: 0 auto;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(31, 92, 79, 0.14);
+  border-bottom: 1px solid rgba(20, 84, 71, 0.18);
 }
 
 .chapter-kicker {
   margin: 0 0 0.5rem;
-  font: 700 0.78rem/1.2 "Instrument Sans", "Segoe UI", sans-serif;
+  font: 700 0.78rem/1.2 "Noto Sans Thai", "Segoe UI", sans-serif;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
@@ -229,18 +263,31 @@ h1 {
 
 .chapter-title {
   margin: 0;
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Noto Serif JP", "Times New Roman", serif;
   font-size: clamp(2.2rem, 3vw, 3rem);
-  line-height: 0.98;
-  color: #1a2c27;
+  line-height: 1.02;
+  color: #1f2f5e;
 }
 
 .journal-card::before {
   content: "";
   position: absolute;
   inset: 1rem;
-  border: 1px solid rgba(31, 92, 79, 0.08);
+  border: 1px solid rgba(20, 84, 71, 0.11);
   border-radius: 1rem;
+  pointer-events: none;
+}
+
+.journal-card::after {
+  content: "";
+  position: absolute;
+  right: 1.1rem;
+  bottom: 1.1rem;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid rgba(181, 56, 30, 0.24);
+  box-shadow: 0 0 0 6px rgba(181, 56, 30, 0.1) inset;
   pointer-events: none;
 }
 
@@ -284,17 +331,17 @@ h1 {
 .journal-content h1,
 .journal-content h2,
 .journal-content h3 {
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Noto Serif JP", "Times New Roman", serif;
   line-height: 1.05;
   margin: 2rem 0 0.85rem;
-  color: #1a2c27;
+  color: #1f2f5e;
 }
 
 .journal-content h1 {
   padding-bottom: 0.85rem;
   margin-top: 0;
   font-size: clamp(2.4rem, 3.2vw, 3.3rem);
-  border-bottom: 1px solid rgba(31, 92, 79, 0.16);
+  border-bottom: 1px solid rgba(20, 84, 71, 0.2);
 }
 
 .journal-content h2 {
@@ -308,9 +355,11 @@ h1 {
 .journal-content blockquote {
   margin: 1.5rem 0;
   padding: 0.85rem 1.1rem 0.85rem 1.2rem;
-  border-left: 3px solid rgba(159, 59, 47, 0.55);
-  background: var(--accent-soft);
-  color: #30433e;
+  border-left: 3px solid rgba(181, 56, 30, 0.65);
+  background:
+    linear-gradient(90deg, rgba(181, 56, 30, 0.12), transparent),
+    var(--accent-soft);
+  color: #2f3c39;
   border-radius: 0 0.8rem 0.8rem 0;
 }
 
@@ -321,8 +370,8 @@ h1 {
 }
 
 .journal-content a {
-  color: var(--jade);
-  text-decoration-color: rgba(31, 92, 79, 0.35);
+  color: var(--indigo);
+  text-decoration-color: rgba(34, 58, 120, 0.35);
   text-underline-offset: 0.14em;
 }
 
@@ -330,14 +379,14 @@ h1 {
   border: 0;
   height: 1px;
   margin: 2rem 0;
-  background: linear-gradient(90deg, rgba(31, 92, 79, 0), rgba(31, 92, 79, 0.18), rgba(31, 92, 79, 0));
+  background: linear-gradient(90deg, rgba(34, 58, 120, 0), rgba(34, 58, 120, 0.24), rgba(34, 58, 120, 0));
 }
 
 .chapter-nav {
   width: min(100%, 740px);
   margin: 0 auto;
   padding-top: 1rem;
-  border-top: 1px solid rgba(31, 92, 79, 0.14);
+  border-top: 1px solid rgba(20, 84, 71, 0.16);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 1rem;
@@ -355,11 +404,13 @@ h1 {
   max-width: 100%;
   padding: 0.95rem 1.1rem;
   border-radius: 1rem;
-  border: 1px solid rgba(31, 92, 79, 0.15);
-  background: rgba(255, 252, 246, 0.82);
+  border: 1px solid rgba(20, 84, 71, 0.18);
+  background:
+    linear-gradient(120deg, rgba(192, 138, 42, 0.08), transparent 52%),
+    rgba(255, 252, 246, 0.88);
   box-shadow: var(--shadow-md);
-  font: 600 0.95rem/1.4 "Instrument Sans", "Segoe UI", sans-serif;
-  color: var(--jade);
+  font: 600 0.95rem/1.4 "Noto Sans Thai", "Segoe UI", sans-serif;
+  color: var(--indigo);
   text-decoration: none;
   transition:
     transform 180ms ease,
@@ -370,12 +421,14 @@ h1 {
 .chapter-link:hover,
 .chapter-link:focus-visible {
   transform: translateY(-2px);
-  border-color: rgba(31, 92, 79, 0.3);
-  background: rgba(245, 239, 230, 0.98);
+  border-color: rgba(34, 58, 120, 0.32);
+  background:
+    linear-gradient(120deg, rgba(192, 138, 42, 0.14), transparent 52%),
+    rgba(252, 242, 225, 0.98);
 }
 
 .chapter-link:focus-visible {
-  outline: 2px solid rgba(31, 92, 79, 0.2);
+  outline: 2px solid rgba(34, 58, 120, 0.24);
   outline-offset: 3px;
 }
 
@@ -439,11 +492,11 @@ h1 {
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px) scale(0.99);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
