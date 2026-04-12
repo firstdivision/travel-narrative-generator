@@ -1,25 +1,20 @@
-name: "Build site after rewrite"
+name: "Build site"
 
 "on":
-  workflow_run:
-    workflows:
-      - "Rewrite travel narrative"
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
 
 jobs:
   build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out rewritten commit
+      - name: Check out repo
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Set up Node
         uses: actions/setup-node@v4
