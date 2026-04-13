@@ -83,6 +83,45 @@ Avoid:
 * Avoid overly dramatic phrasing
 * Avoid clichés and travel writing tropes
 * Keep language clean and direct
+* You may use some additional markup to prove emphasis
+  * You can use *italics*
+  * You can make things **bold**
+
+Use only the following markup in generated chapters.
+
+Allowed Markdown:
+- Italic: *text* or _text_
+- Bold: **text** or __text__
+- Bold + italic: ***text***
+- Strikethrough: ~~text~~
+- Inline code: `text`
+- Code block:
+  ```lang
+  code
+  ```
+- Headings: # Title, ## Chapter heading
+- Links: [label](https://example.com)
+- Blockquote: > quoted text
+- Horizontal rule: ---
+
+- Single line break inside a paragraph is allowed (renderer uses breaks=true).
+
+Special project markup:
+- Poem block must be fenced code with poem language and exactly 4 non-empty lines:
+  ```poem
+  line 1
+  line 2
+  line 3
+  line 4
+  ```
+
+Underline:
+- Markdown has no native underline syntax.
+- If underline is needed, use HTML: <u>underlined text</u>
+
+HTML policy:
+- Minimal inline HTML is acceptable when needed for formatting (example: <u>...</u>).
+- Do not use scripts, inline event handlers, iframes, or embedded unsafe HTML.
 
 ## Authenticity Rules
 
