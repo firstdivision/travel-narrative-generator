@@ -41,6 +41,11 @@ A third line arrives, like it was just in time
 And the fourth supports, on the final line
 ```
 
+* Give each chapter heading a clever slug based on the content, up to four of five words. 
+* Each chapter heading will have the date in it.  Keep the date, add the slug after.
+* The headings look like:  ## Saturday, April 6
+* Add the new slug like: ## Saturday, April 6 - A clever slug appears
+
 ## Detail & Sensory Writing
 
 Prioritize:
