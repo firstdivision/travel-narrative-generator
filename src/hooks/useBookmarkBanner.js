@@ -22,7 +22,7 @@ export function useBookmarkBanner(chapterData, chapters, currentChapter) {
   // This avoids overwriting saved progress on initial load and is resilient to
   // development double-effect execution.
   useEffect(() => {
-    if (!chapterData || !currentChapter) {
+    if (!chapterData || !currentChapter || !Array.isArray(currentChapter.tokens)) {
       return;
     }
 

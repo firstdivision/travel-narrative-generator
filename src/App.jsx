@@ -95,7 +95,7 @@ export function App() {
               <p className="status error">Unable to load the travel narrative.</p>
               <p className="error-detail">{error.message}</p>
             </>
-          ) : loading || !currentChapter ? (
+          ) : loading || !currentChapter || !Array.isArray(currentChapter.tokens) ? (
             <p className="status">Loading journal entry...</p>
           ) : (
             <ChapterView

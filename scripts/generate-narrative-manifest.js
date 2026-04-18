@@ -11,8 +11,36 @@ const narrativeFiles = fs
   .filter((fileName) => fileName.endsWith(".md"))
   .sort();
 
+function slugifyHeading(text) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+function extractChapterTitle(markdown, fallbackTitle) {
+  const lines = markdown.split(/\r?\n/);
+
+  for (const line of lines) {
+    const headingMatch = line.match(/^##\s+(.+)$/);
+
+    if (headingMatch?.[1]) {
+      return headingMatch[1].trim();
+    }
+  }
+
+  return fallbackTitle;
+}
+
 function hashContent(value) {
   return createHash("sha256").update(value).digest("hex");
+}
+
+function chapterIdFromDate(date, index) {
+  const seed = date || `chapter-${index + 1}`;
+  return `ch-${createHash("sha256").update(seed).digest("hex").slice(0, 12)}`;
 }
 
 function hasPhotosForDate(date) {
@@ -36,18 +64,29 @@ function hasPhotosForDate(date) {
 
 const manifest = {
   generatedAt: new Date().toISOString(),
-  chapters: narrativeFiles.map((fileName) => {
+  chapters: [],
+};
+
+for (const [index, fileName] of narrativeFiles.entries()) {
     const absolutePath = path.join(narrativeDir, fileName);
     const markdown = fs.readFileSync(absolutePath, "utf8");
+    const date = fileName.replace(/\.md$/, "");
+    const fallbackTitle = date || `Chapter ${index + 1}`;
+    const title = extractChapterTitle(markdown, fallbackTitle);
+    const id = chapterIdFromDate(date, index);
+    const prettySlug = slugifyHeading(title) || `chapter-${index + 1}`;
 
-    return {
-      date: fileName.replace(/\.md$/, ""),
+    manifest.chapters.push({
+      id,
+      date,
       file: `/travel/narrative/${fileName}`,
+      title,
+      slug: id,
+      prettySlug,
       contentHash: hashContent(markdown),
-      hasPhotos: hasPhotosForDate(fileName.replace(/\.md$/, "")),
-    };
-  }),
-};
+      hasPhotos: hasPhotosForDate(date),
+    });
+}
 
 const outputPath = path.join(narrativeDir, "manifest.json");
 fs.writeFileSync(outputPath, `${JSON.stringify(manifest, null, 2)}\n`);

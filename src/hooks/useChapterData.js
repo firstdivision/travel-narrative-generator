@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { getHashSlug } from "../lib/bookmark";
 import { CHAPTER_REFRESH_INTERVAL } from "../lib/constants";
-import { getManifestSignature, loadChapterData, loadNarrativeManifest } from "../lib/data";
+import {
+  getManifestSignature,
+  loadChapterContent,
+  loadNarrativeManifest,
+  loadNarrativeManifestMetadata,
+} from "../lib/data";
+
+const INVALID_CHAPTER_MESSAGE = "Opps! It looks like you asked for a chapter that doesn't exist...";
 
 function getChapterKey(chapter) {
   return chapter?.date || chapter?.slug || "";
@@ -31,6 +38,75 @@ function getCurrentSlug(chapterData) {
   }
 
   return chapterData?.chapters?.[0]?.slug || "";
+}
+
+function getChapterIndexFromSlug(chapters, targetSlug) {
+  if (!Array.isArray(chapters) || !chapters.length) {
+    return -1;
+  }
+
+  if (!targetSlug) {
+    return 0;
+  }
+
+  return chapters.findIndex((chapter) => chapter.slug === targetSlug);
+}
+
+function resolveChapterIndexOrThrow(chapters, targetSlug) {
+  const chapterIndex = getChapterIndexFromSlug(chapters, targetSlug);
+
+  if (chapterIndex >= 0) {
+    return chapterIndex;
+  }
+
+  throw new Error(INVALID_CHAPTER_MESSAGE);
+}
+
+function buildChapterData(metadata, chapterIndex, chapterContent) {
+  const chapters = metadata.chapters.map((chapter, index) => ({
+    ...chapter,
+    title: index === chapterIndex ? chapterContent.chapterTitle : chapter.title,
+    tokens: index === chapterIndex ? chapterContent.contentTokens : null,
+  }));
+
+  return {
+    documentTitle: chapterContent.documentTitle || "Travel Journal",
+    chapters,
+    manifestSignature: metadata.manifestSignature,
+  };
+}
+
+function applyMetadataToCurrentChapter(previousData, metadata) {
+  const currentSlug = getCurrentSlug(previousData);
+  const nextChapterIndex = getChapterIndexFromSlug(metadata.chapters, currentSlug);
+
+  if (nextChapterIndex < 0) {
+    return {
+      documentTitle: previousData?.documentTitle || "Travel Journal",
+      chapters: metadata.chapters,
+      manifestSignature: metadata.manifestSignature,
+    };
+  }
+
+  const previousChapter = previousData?.chapters?.find((chapter) => chapter.slug === currentSlug);
+
+  const chapters = metadata.chapters.map((chapter, index) => {
+    if (index !== nextChapterIndex || !previousChapter) {
+      return chapter;
+    }
+
+    return {
+      ...chapter,
+      title: previousChapter.title,
+      tokens: previousChapter.tokens,
+    };
+  });
+
+  return {
+    documentTitle: previousData?.documentTitle || "Travel Journal",
+    chapters,
+    manifestSignature: metadata.manifestSignature,
+  };
 }
 
 function summarizeChapterChanges(previousData, nextData) {
@@ -111,6 +187,7 @@ export function useChapterData() {
   const pendingDataRef = useRef(null);
   const loadingRef = useRef(true);
   const manifestSignatureRef = useRef("");
+  const requestCounterRef = useRef(0);
 
   useEffect(() => {
     liveDataRef.current = chapterData;
@@ -127,17 +204,45 @@ export function useChapterData() {
   useEffect(() => {
     let active = true;
 
-    const loadInitialData = async () => {
-      try {
-        const data = await loadChapterData();
+    const loadChapterForSlug = async ({ metadata, slug, updateLoading }) => {
+      const chapterIndex = resolveChapterIndexOrThrow(metadata.chapters, slug);
+      const chapterEntry = metadata.chapters[chapterIndex];
+      const requestId = requestCounterRef.current + 1;
+      requestCounterRef.current = requestId;
 
-        if (!active) {
+      if (updateLoading) {
+        setLoading(true);
+      }
+
+      try {
+        const chapterContent = await loadChapterContent(chapterEntry.file, chapterEntry.title);
+
+        if (!active || requestCounterRef.current !== requestId) {
           return;
         }
 
-        setChapterData(data);
-        manifestSignatureRef.current = data.manifestSignature || "";
+        const nextData = buildChapterData(metadata, chapterIndex, chapterContent);
+        setChapterData(nextData);
+        manifestSignatureRef.current = nextData.manifestSignature || metadata.manifestSignature || "";
         setError(null);
+      } catch (loadError) {
+        if (!active || requestCounterRef.current !== requestId) {
+          return;
+        }
+
+        setError(loadError);
+      } finally {
+        if (active && requestCounterRef.current === requestId && updateLoading) {
+          setLoading(false);
+        }
+      }
+    };
+
+    const loadInitialData = async () => {
+      try {
+        const metadata = await loadNarrativeManifestMetadata();
+        const currentSlug = getHashSlug();
+        await loadChapterForSlug({ metadata, slug: currentSlug, updateLoading: false });
       } catch (loadError) {
         if (!active) {
           return;
@@ -149,6 +254,18 @@ export function useChapterData() {
           setLoading(false);
         }
       }
+    };
+
+    const handleHashChange = () => {
+      const metadata = pendingDataRef.current || liveDataRef.current;
+
+      if (!metadata) {
+        return;
+      }
+
+      const currentSlug = getHashSlug();
+
+      loadChapterForSlug({ metadata, slug: currentSlug, updateLoading: true });
     };
 
     const checkForUpdates = async () => {
@@ -164,30 +281,31 @@ export function useChapterData() {
           return;
         }
 
-        const latestData = await loadChapterData();
+        const latestMetadata = await loadNarrativeManifestMetadata();
 
         if (!active) {
           return;
         }
 
-        manifestSignatureRef.current = latestData.manifestSignature || nextManifestSignature;
+        manifestSignatureRef.current = latestMetadata.manifestSignature || nextManifestSignature;
 
         const baselineData = pendingDataRef.current || liveDataRef.current;
 
         if (!baselineData) {
-          setChapterData(latestData);
-          setError(null);
+          const currentSlug = getHashSlug();
+          await loadChapterForSlug({ metadata: latestMetadata, slug: currentSlug, updateLoading: false });
           return;
         }
 
-        const diff = summarizeChapterChanges(baselineData, latestData);
+        const mergedLatestData = applyMetadataToCurrentChapter(baselineData, latestMetadata);
+        const diff = summarizeChapterChanges(baselineData, mergedLatestData);
 
         if (!diff.hasChanges) {
           return;
         }
 
         if (diff.currentChapterChanged) {
-          setPendingChapterData(latestData);
+          setPendingChapterData(mergedLatestData);
           setUpdateNotice({
             type: "current-chapter-updated",
             chapterTitle: diff.currentChapterTitle,
@@ -195,7 +313,7 @@ export function useChapterData() {
           return;
         }
 
-        setChapterData(latestData);
+        setChapterData(mergedLatestData);
         setPendingChapterData(null);
         setError(null);
 
@@ -215,18 +333,40 @@ export function useChapterData() {
     };
 
     loadInitialData();
+    window.addEventListener("hashchange", handleHashChange);
     const intervalId = window.setInterval(checkForUpdates, CHAPTER_REFRESH_INTERVAL);
 
     return () => {
       active = false;
+      window.removeEventListener("hashchange", handleHashChange);
       window.clearInterval(intervalId);
     };
   }, []);
 
-  function applyPendingUpdate() {
-    if (pendingDataRef.current) {
-      setChapterData(pendingDataRef.current);
+  async function applyPendingUpdate() {
+    const pendingData = pendingDataRef.current;
+
+    if (!pendingData) {
+      setUpdateNotice(null);
+      return;
+    }
+
+    const currentSlug = getHashSlug();
+
+    try {
+      setLoading(true);
+      const chapterIndex = resolveChapterIndexOrThrow(pendingData.chapters, currentSlug);
+      const chapterEntry = pendingData.chapters[chapterIndex];
+      const chapterContent = await loadChapterContent(chapterEntry.file, chapterEntry.title);
+      const nextData = buildChapterData(pendingData, chapterIndex, chapterContent);
+
+      setChapterData(nextData);
       setPendingChapterData(null);
+      setError(null);
+    } catch (loadError) {
+      setError(loadError);
+    } finally {
+      setLoading(false);
     }
 
     setUpdateNotice(null);
