@@ -1,3 +1,5 @@
+import { ChapterSelector } from "./ChapterSelector";
+
 const HERO_SCRIPTS = [
   ["hero-script hero-script-jp hero-script-1", "旅の記録 ・ 道 ・ 風景"],
   ["hero-script hero-script-th hero-script-2", "สวัสดี · การเดินทาง · บันทึก"],
@@ -31,8 +33,6 @@ export function HeroPanel({
   loading,
   onJumpToChapter,
 }) {
-  const hasChapters = chapters.length > 0;
-
   return (
     <section className="hero-panel" aria-label="Travel journal overview">
       <div className="hero-script-cloud" aria-hidden="true">
@@ -57,38 +57,12 @@ export function HeroPanel({
         <p className="subtitle">{subtitle}</p>
       </div>
 
-      <div className="hero-actions">
-        <p className="journey-seal">Route Archive</p>
-        <label className="jump-label" htmlFor="section-jump">
-          Jump to chapter
-        </label>
-        <select
-          id="section-jump"
-          className="jump-select"
-          disabled={!hasChapters || loading}
-          value={hasChapters ? currentSlug : ""}
-          onChange={(event) => {
-            if (event.target.value) {
-              onJumpToChapter(event.target.value);
-            }
-          }}
-        >
-          {!hasChapters ? (
-            <option value="">{loading ? "Loading chapters..." : "No chapters available"}</option>
-          ) : (
-            [
-              <option key="placeholder" value="">
-                Jump to chapter
-              </option>,
-              ...chapters.map((chapter, index) => (
-                <option key={chapter.slug} value={chapter.slug}>
-                  {`Chapter ${index + 1}: ${chapter.title}`}
-                </option>
-              )),
-            ]
-          )}
-        </select>
-      </div>
+      <ChapterSelector
+        chapters={chapters}
+        currentSlug={currentSlug}
+        loading={loading}
+        onJumpToChapter={onJumpToChapter}
+      />
     </section>
   );
 }
