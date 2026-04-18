@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { BookmarkBanner } from "./components/BookmarkBanner";
 import { ChapterView } from "./components/ChapterView";
 import { ContentUpdateBanner } from "./components/ContentUpdateBanner";
@@ -44,16 +45,23 @@ export function App() {
     },
   });
 
-  // Derived display state
+  // Track last fully-loaded chapter so content stays visible during chapter transitions
+  const lastChapterRef = useRef(null);
+  if (currentChapter && Array.isArray(currentChapter.tokens)) {
+    lastChapterRef.current = currentChapter;
+  }
+  const displayChapter = lastChapterRef.current;
+
+  // Derived display state — only show loading text on initial load (no prior data)
   const heroTitle = error
     ? "Travel journal unavailable"
-    : loading
+    : loading && !chapterData
       ? "Loading travel journal..."
       : chapterData?.documentTitle || "Travel Journal";
 
   const subtitle = error
     ? "The chapter view could not be prepared."
-    : loading
+    : loading && !chapterData
       ? "Preparing chapter navigation..."
       : currentChapter
         ? `${currentChapter.title} · Chapter ${currentChapterIndex + 1} of ${chapters.length}`
@@ -95,11 +103,11 @@ export function App() {
               <p className="status error">Unable to load the travel narrative.</p>
               <p className="error-detail">{error.message}</p>
             </>
-          ) : loading || !currentChapter || !Array.isArray(currentChapter.tokens) ? (
+          ) : !displayChapter ? (
             <p className="status">Loading journal entry...</p>
           ) : (
             <ChapterView
-              chapter={currentChapter}
+              chapter={displayChapter}
               chapterIndex={currentChapterIndex}
               chapters={chapters}
               onOpenLightbox={openLightbox}
