@@ -1,15 +1,21 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useChapterData } from "../useChapterData";
-import { loadChapterData } from "../../lib/data";
+import { getManifestSignature, loadChapterData, loadNarrativeManifest } from "../../lib/data";
 
 vi.mock("../../lib/data", () => ({
   loadChapterData: vi.fn(),
+  loadNarrativeManifest: vi.fn(),
+  getManifestSignature: vi.fn((manifest) => JSON.stringify(manifest)),
 }));
 
 describe("useChapterData", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useRealTimers();
+    window.location.hash = "";
+    loadNarrativeManifest.mockResolvedValue({ generatedAt: "2026-04-18T00:00:00.000Z", chapters: [] });
+    getManifestSignature.mockImplementation((manifest) => JSON.stringify(manifest));
   });
 
   it("returns loading state initially", () => {

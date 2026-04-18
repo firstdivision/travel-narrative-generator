@@ -1,5 +1,6 @@
 import { BookmarkBanner } from "./components/BookmarkBanner";
 import { ChapterView } from "./components/ChapterView";
+import { ContentUpdateBanner } from "./components/ContentUpdateBanner";
 import { HeroPanel } from "./components/HeroPanel";
 import { Lightbox } from "./components/Lightbox";
 import { useChapterData } from "./hooks/useChapterData";
@@ -11,7 +12,7 @@ import { useDocumentTitle } from "./hooks/useDocumentTitle";
 
 export function App() {
   // Load chapter data
-  const { chapterData, error, loading } = useChapterData();
+  const { chapterData, error, loading, updateNotice, applyPendingUpdate, dismissUpdateNotice } = useChapterData();
 
   // Navigate chapters via hash
   const nav = useChapterNavigation(chapterData);
@@ -70,6 +71,14 @@ export function App() {
       />
 
       <section className="content-layout">
+        {updateNotice && (
+          <ContentUpdateBanner
+            notice={updateNotice}
+            onReload={applyPendingUpdate}
+            onDismiss={dismissUpdateNotice}
+          />
+        )}
+
         {bookmarkBanner && (
           <BookmarkBanner
             bookmark={bookmarkBanner}

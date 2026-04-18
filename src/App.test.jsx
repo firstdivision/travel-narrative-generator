@@ -2,11 +2,13 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { marked } from "marked";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
-import { loadChapterData, loadPhotosForDate } from "./lib/data";
+import { getManifestSignature, loadChapterData, loadNarrativeManifest, loadPhotosForDate } from "./lib/data";
 import { getBookmarkCookie, scrollToChapterStart, setBookmarkCookie } from "./lib/bookmark";
 
 vi.mock("./lib/data", () => ({
   loadChapterData: vi.fn(),
+  loadNarrativeManifest: vi.fn(),
+  getManifestSignature: vi.fn((manifest) => JSON.stringify(manifest)),
   loadPhotosForDate: vi.fn(),
 }));
 
@@ -26,6 +28,7 @@ function createChapter(title, slug, options = {}) {
     title,
     slug,
     date: options.date ?? null,
+    contentHash: options.contentHash,
     tokens: marked.lexer(options.body ?? `${title} body copy.`),
   };
 }
@@ -33,11 +36,14 @@ function createChapter(title, slug, options = {}) {
 describe("App", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.useRealTimers();
     window.location.hash = "";
     document.title = "Travel Journal";
     document.cookie = "travel_bookmark=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
     getBookmarkCookie.mockReturnValue(null);
     loadPhotosForDate.mockResolvedValue([]);
+    loadNarrativeManifest.mockResolvedValue({ generatedAt: "2026-04-18T00:00:00.000Z", chapters: [] });
+    getManifestSignature.mockImplementation((manifest) => JSON.stringify(manifest));
   });
 
   it("renders chapter content and responds to hash navigation", async () => {
@@ -277,7 +283,7 @@ describe("App", () => {
     expect(await screen.findByText("Chapter 1 · Chapter 1 of 3")).toBeInTheDocument();
 
     // But bookmark banner suggests returning to Chapter 2
-    expect(screen.getByText(/Pick up where you left off/)).toBeInTheDocument();
+    expect(await screen.findByText(/Pick up where you left off/)).toBeInTheDocument();
     expect(screen.getByText("Chapter 2")).toBeInTheDocument();
 
     // Verify setBookmarkCookie was NOT called on initial load (preserves old bookmark)

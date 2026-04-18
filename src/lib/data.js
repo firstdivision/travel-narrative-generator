@@ -1,7 +1,29 @@
 import { slugifyHeading } from "./format";
 import { extractChapterFromMarkdown } from "./markdown";
 
-export async function loadChapterData() {
+function hashContent(value) {
+  let hash = 0;
+
+  for (let index = 0; index < value.length; index += 1) {
+    hash = ((hash << 5) - hash + value.charCodeAt(index)) | 0;
+  }
+
+  return String(hash >>> 0);
+}
+
+export function getManifestSignature(manifest) {
+  const chapters = Array.isArray(manifest?.chapters)
+    ? manifest.chapters.map((chapter) => ({
+        date: chapter?.date || "",
+        file: chapter?.file || "",
+        contentHash: chapter?.contentHash || "",
+      }))
+    : [];
+
+  return JSON.stringify({ chapters });
+}
+
+export async function loadNarrativeManifest() {
   const manifestResponse = await fetch("/travel/narrative/manifest.json", {
     cache: "no-cache",
   });
@@ -10,7 +32,12 @@ export async function loadChapterData() {
     throw new Error(`Failed to load manifest (${manifestResponse.status})`);
   }
 
-  const manifest = await manifestResponse.json();
+  return manifestResponse.json();
+}
+
+export async function loadChapterData() {
+  const manifest = await loadNarrativeManifest();
+  const manifestSignature = getManifestSignature(manifest);
   const chapterEntries = Array.isArray(manifest.chapters) ? manifest.chapters : [];
 
   if (!chapterEntries.length) {
@@ -51,10 +78,11 @@ export async function loadChapterData() {
       slug: nextCount === 1 ? baseSlug : `${baseSlug}-${nextCount}`,
       tokens: chapter.contentTokens,
       date: chapterEntry.date || null,
+      contentHash: chapterEntry.contentHash || hashContent(markdown),
     });
   }
 
-  return { documentTitle, chapters };
+  return { documentTitle, chapters, manifestSignature };
 }
 
 export async function loadPhotosForDate(date) {
