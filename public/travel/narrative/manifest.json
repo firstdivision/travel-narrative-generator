@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-18T07:45:52.697Z",
+  "generatedAt": "2026-04-18T08:57:15.947Z",
   "chapters": [
     {
       "date": "2026-04-04-intro",
@@ -20,6 +20,10 @@
     {
       "date": "2026-04-07",
       "file": "/travel/narrative/2026-04-07.md"
+    },
+    {
+      "date": "2026-04-08",
+      "file": "/travel/narrative/2026-04-08.md"
     }
   ]
 }
