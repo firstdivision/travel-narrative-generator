@@ -90,7 +90,7 @@ body::after {
 
 .hero-panel {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 360px);
   gap: 1rem 1.5rem;
   align-items: center;
   padding: clamp(1.4rem, 2vw, 2rem);
@@ -384,7 +384,8 @@ h1 {
 
 .hero-actions {
   justify-self: end;
-  width: min(100%, 280px);
+  width: 100%;
+  overflow: hidden;
   display: grid;
   gap: 0.55rem;
   padding: 0.95rem 1rem 1rem;
@@ -482,10 +483,14 @@ h1 {
 .chapter-dropdown {
   position: relative;
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .chapter-dropdown-button {
   width: 100%;
+  min-width: 0;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -512,6 +517,7 @@ h1 {
 
 .chapter-dropdown-value {
   flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -544,13 +550,21 @@ h1 {
 
 .chapter-dropdown-option {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.55rem;
   padding: 0.62rem 0.75rem;
   border-radius: 0.55rem;
   font: 500 0.92rem/1.3 "Noto Sans Thai", "Segoe UI", sans-serif;
   color: #e2ceaa;
   cursor: pointer;
+  overflow: hidden;
+}
+
+.chapter-dropdown-option-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .chapter-dropdown-option:hover,

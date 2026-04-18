@@ -27,10 +27,12 @@ export function ChapterSelector({ chapters, currentSlug, loading, onJumpToChapte
   useLayoutEffect(() => {
     if (!open || !dropdownRef.current) return;
     const rect = dropdownRef.current.getBoundingClientRect();
+    const maxWidth = Math.min(480, window.innerWidth - 16);
+    const width = Math.max(rect.width, Math.min(maxWidth, window.innerWidth - rect.left - 8));
     setListPos({
       top: rect.bottom + window.scrollY + 6,
       left: rect.left + window.scrollX,
-      width: rect.width,
+      width,
     });
   }, [open]);
 
@@ -152,7 +154,7 @@ export function ChapterSelector({ chapters, currentSlug, loading, onJumpToChapte
                 <span className="chapter-dropdown-option-num">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                {chapter.title}
+                <span className="chapter-dropdown-option-title">{chapter.title}</span>
               </li>
             ))}
           </ul>,
