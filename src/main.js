@@ -61,6 +61,27 @@ function escapeHtml(text) {
     .replaceAll("'", "&#39;");
 }
 
+// ── Bookmark ─────────────────────────────────────────────────────────────────
+
+function setBookmarkCookie(slug, title, scrollY = 0) {
+  const value = encodeURIComponent(JSON.stringify({ slug, title, scrollY }));
+  const expires = new Date();
+  expires.setFullYear(expires.getFullYear() + 1);
+  document.cookie = `travel_bookmark=${value}; expires=${expires.toUTCString()}; path=/; SameSite=Strict`;
+}
+
+function getBookmarkCookie() {
+  const match = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("travel_bookmark="));
+  if (!match) return null;
+  try {
+    return JSON.parse(decodeURIComponent(match.split("=").slice(1).join("=")));
+  } catch {
+    return null;
+  }
+}
+
 function normalizeLeadingPoemToken(tokens) {
   const [firstToken, ...remainingTokens] = tokens;
 
@@ -481,12 +502,72 @@ async function renderJournal() {
     initLightbox();
     populateChapterMenu(jumpSelect, chapterData.chapters);
 
+    let currentBookmarkSlug = null;
+    let currentBookmarkTitle = null;
+    let scrollSaveTimer = null;
+    let restoreScrollY = null;
+
+    window.addEventListener("scroll", () => {
+      if (!currentBookmarkSlug) return;
+      clearTimeout(scrollSaveTimer);
+      scrollSaveTimer = setTimeout(() => {
+        setBookmarkCookie(currentBookmarkSlug, currentBookmarkTitle, Math.round(window.scrollY));
+      }, 500);
+    }, { passive: true });
+
+    const bookmark = getBookmarkCookie();
+    const currentHash = decodeURIComponent(window.location.hash.replace(/^#/, "")).trim();
+    const bookmarkExists =
+      bookmark?.slug && chapterData.chapters.some((c) => c.slug === bookmark.slug);
+
+    if (bookmarkExists && bookmark.slug !== currentHash) {
+      const bookmarkIndex = chapterData.chapters.findIndex((c) => c.slug === bookmark.slug);
+      const nextAfterBookmark = chapterData.chapters[bookmarkIndex + 1] ?? null;
+
+      const banner = document.createElement("div");
+      banner.className = "bookmark-banner";
+      banner.setAttribute("role", "status");
+
+      const nextChapterHtml = nextAfterBookmark
+        ? `, or start the next chapter <a class="bookmark-banner-readnew" href="#${escapeHtml(nextAfterBookmark.slug)}"><strong>${escapeHtml(nextAfterBookmark.title)}</strong></a>`
+        : "";
+
+      banner.innerHTML = `
+        <p class="bookmark-banner-heading">Pick up where you left off?</p>
+        <span class="bookmark-banner-text">Continue reading <a class="bookmark-banner-resume" href="#${escapeHtml(bookmark.slug)}"><strong>${escapeHtml(bookmark.title)}</strong></a>${nextChapterHtml}?</span>
+        <button class="bookmark-banner-dismiss" aria-label="Dismiss bookmark">&#x2715;</button>
+      `;
+      card.before(banner);
+      banner.querySelector(".bookmark-banner-resume").addEventListener("click", (e) => {
+        e.preventDefault();
+        restoreScrollY = bookmark.scrollY ?? null;
+        banner.remove();
+        window.location.hash = bookmark.slug;
+      });
+      banner.querySelector(".bookmark-banner-dismiss").addEventListener("click", () => {
+        banner.remove();
+      });
+      banner.querySelector(".bookmark-banner-readnew")?.addEventListener("click", () => {
+        banner.remove();
+      });
+    }
+
     const syncChapter = ({ scroll = false } = {}) => {
       const chapterIndex = getChapterIndexFromHash(chapterData.chapters);
       renderChapter({ card, jumpSelect, heroTitleLink, subtitle }, chapterData, chapterIndex);
+      const { slug, title } = chapterData.chapters[chapterIndex];
+      currentBookmarkSlug = slug;
+      currentBookmarkTitle = title;
+      setBookmarkCookie(slug, title, 0);
 
       if (scroll) {
-        scrollToChapterStart();
+        if (restoreScrollY != null) {
+          const y = restoreScrollY;
+          restoreScrollY = null;
+          requestAnimationFrame(() => window.scrollTo({ top: y, behavior: "smooth" }));
+        } else {
+          scrollToChapterStart();
+        }
       }
     };
 
