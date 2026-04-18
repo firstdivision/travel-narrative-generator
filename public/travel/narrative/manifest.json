@@ -1,37 +1,53 @@
 {
-  "generatedAt": "2026-04-18T12:34:55.021Z",
+  "generatedAt": "2026-04-18T12:53:55.266Z",
   "chapters": [
     {
       "date": "2026-04-02-intro",
-      "file": "/travel/narrative/2026-04-02-intro.md"
+      "file": "/travel/narrative/2026-04-02-intro.md",
+      "contentHash": "b50851c6366dd43722a030e6b2afb49d130715a991112580a415562f81b8811a",
+      "hasPhotos": false
     },
     {
       "date": "2026-04-02",
-      "file": "/travel/narrative/2026-04-02.md"
+      "file": "/travel/narrative/2026-04-02.md",
+      "contentHash": "b62fbcec5326ad2c2eebb8f60a41c6a3471cc53a58a0f9ae5b86392c8ab32df7",
+      "hasPhotos": false
     },
     {
       "date": "2026-04-03",
-      "file": "/travel/narrative/2026-04-03.md"
+      "file": "/travel/narrative/2026-04-03.md",
+      "contentHash": "c62c278751d9955eee6b488f593b9ecf233ce4a9fd01797780fb449f53ea13c5",
+      "hasPhotos": true
     },
     {
       "date": "2026-04-04",
-      "file": "/travel/narrative/2026-04-04.md"
+      "file": "/travel/narrative/2026-04-04.md",
+      "contentHash": "c460e5746909780c553322972e4ea617813b687d0a7fbea51e3a2fd91aa1ba00",
+      "hasPhotos": true
     },
     {
       "date": "2026-04-05",
-      "file": "/travel/narrative/2026-04-05.md"
+      "file": "/travel/narrative/2026-04-05.md",
+      "contentHash": "25cc2931f46a909a1aaeef74dbab37718902670735708ef99c547f6114d435da",
+      "hasPhotos": true
     },
     {
       "date": "2026-04-06",
-      "file": "/travel/narrative/2026-04-06.md"
+      "file": "/travel/narrative/2026-04-06.md",
+      "contentHash": "b39c8f188124be7e9a6eeefbe80ada34a280b8cfa26c551ee5e2ec09760b1014",
+      "hasPhotos": true
     },
     {
       "date": "2026-04-07",
-      "file": "/travel/narrative/2026-04-07.md"
+      "file": "/travel/narrative/2026-04-07.md",
+      "contentHash": "7fedf35d2a91dd21986ddcfc9906f811dffbfbe8b638475882034ebcd7fe1822",
+      "hasPhotos": false
     },
     {
       "date": "2026-04-08",
-      "file": "/travel/narrative/2026-04-08.md"
+      "file": "/travel/narrative/2026-04-08.md",
+      "contentHash": "635c1dc2a98e644d97bd775e54b2f12d9709087e13f247ae0d7f20e12997d386",
+      "hasPhotos": false
     }
   ]
 }

@@ -68,7 +68,10 @@ function summarizeChapterChanges(previousData, nextData) {
 
     const nextChapter = nextChapterIndex.get(key);
 
-    if (chapter.contentHash !== nextChapter.contentHash) {
+    if (
+      chapter.contentHash !== nextChapter.contentHash ||
+      chapter.hasPhotos !== nextChapter.hasPhotos
+    ) {
       contentChanged = true;
       break;
     }
@@ -80,7 +83,9 @@ function summarizeChapterChanges(previousData, nextData) {
   const nextCurrentChapter = currentChapterKey ? nextChapterIndex.get(currentChapterKey) : null;
   const currentChapterChanged =
     Boolean(currentChapter) &&
-    (!nextCurrentChapter || currentChapter.contentHash !== nextCurrentChapter.contentHash);
+    (!nextCurrentChapter ||
+      currentChapter.contentHash !== nextCurrentChapter.contentHash ||
+      currentChapter.hasPhotos !== nextCurrentChapter.hasPhotos);
 
   return {
     hasChanges: orderChanged || contentChanged,

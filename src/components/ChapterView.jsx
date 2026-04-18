@@ -17,7 +17,11 @@ export function ChapterView({ chapter, chapterIndex, chapters, onOpenLightbox })
 
       <div className="journal-content" dangerouslySetInnerHTML={{ __html: chapterHtml }} />
 
-      <PhotoGallery date={chapter.date} onOpenLightbox={onOpenLightbox} />
+      <PhotoGallery
+        date={chapter.date}
+        hasPhotos={chapter.hasPhotos}
+        onOpenLightbox={onOpenLightbox}
+      />
 
       <nav className="chapter-nav" aria-label="Chapter navigation">
         {previousChapter ? (

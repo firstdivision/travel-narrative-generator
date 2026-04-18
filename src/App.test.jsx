@@ -28,6 +28,7 @@ function createChapter(title, slug, options = {}) {
     title,
     slug,
     date: options.date ?? null,
+    hasPhotos: options.hasPhotos,
     contentHash: options.contentHash,
     tokens: marked.lexer(options.body ?? `${title} body copy.`),
   };
@@ -90,7 +91,7 @@ describe("App", () => {
   it("opens, advances, and closes the lightbox from a photo gallery", async () => {
     loadChapterData.mockResolvedValue({
       documentTitle: "Travel Journal",
-      chapters: [createChapter("Gallery Day", "gallery-day", { date: "2026-04-03" })],
+      chapters: [createChapter("Gallery Day", "gallery-day", { date: "2026-04-03", hasPhotos: true })],
     });
     loadPhotosForDate.mockResolvedValue([
       "/travel/photos/2026-04-03/one.jpg",
@@ -100,6 +101,7 @@ describe("App", () => {
     render(<App />);
 
     expect(await screen.findByRole("heading", { level: 2, name: "Gallery Day" })).toBeInTheDocument();
+    expect(loadPhotosForDate).toHaveBeenCalledWith("2026-04-03");
     expect(await screen.findByRole("button", { name: "Open photo 1 of 2" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Open photo 1 of 2" }));
@@ -297,5 +299,24 @@ describe("App", () => {
     await waitFor(() => {
       expect(setBookmarkCookie).toHaveBeenCalledWith("ch3", "Chapter 3", 0);
     });
+  });
+
+  it("does not load day photo index when chapter hasPhotos is false", async () => {
+    loadChapterData.mockResolvedValue({
+      documentTitle: "Travel Journal",
+      chapters: [
+        createChapter("No Photo Day", "no-photo-day", {
+          date: "2026-04-08",
+          hasPhotos: false,
+        }),
+      ],
+    });
+
+    render(<App />);
+
+    expect(await screen.findByRole("heading", { level: 2, name: "No Photo Day" })).toBeInTheDocument();
+
+    expect(loadPhotosForDate).not.toHaveBeenCalled();
+    expect(screen.queryByLabelText("Day photographs")).not.toBeInTheDocument();
   });
 });

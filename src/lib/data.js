@@ -17,6 +17,7 @@ export function getManifestSignature(manifest) {
         date: chapter?.date || "",
         file: chapter?.file || "",
         contentHash: chapter?.contentHash || "",
+        hasPhotos: Boolean(chapter?.hasPhotos),
       }))
     : [];
 
@@ -79,13 +80,14 @@ export async function loadChapterData() {
       tokens: chapter.contentTokens,
       date: chapterEntry.date || null,
       contentHash: chapterEntry.contentHash || hashContent(markdown),
+      hasPhotos: chapterEntry.hasPhotos !== false,
     });
   }
 
   return { documentTitle, chapters, manifestSignature };
 }
-
 export async function loadPhotosForDate(date) {
+
   if (!date) {
     return [];
   }

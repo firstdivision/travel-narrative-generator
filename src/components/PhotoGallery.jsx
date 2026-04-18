@@ -1,22 +1,34 @@
 import { useEffect, useState } from "react";
 import { loadPhotosForDate } from "../lib/data";
 
-export function PhotoGallery({ date, onOpenLightbox }) {
+export function PhotoGallery({ date, hasPhotos, onOpenLightbox }) {
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
     let active = true;
 
-    loadPhotosForDate(date).then((loadedPhotos) => {
+    const loadPhotos = async () => {
+      if (!date || hasPhotos === false) {
+        if (active) {
+          setPhotos([]);
+        }
+
+        return;
+      }
+
+      const loadedPhotos = await loadPhotosForDate(date);
+
       if (active) {
         setPhotos(loadedPhotos);
       }
-    });
+    };
+
+    loadPhotos();
 
     return () => {
       active = false;
     };
-  }, [date]);
+  }, [date, hasPhotos]);
 
   if (!photos.length) {
     return null;

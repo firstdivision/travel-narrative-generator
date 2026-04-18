@@ -3,6 +3,8 @@ import path from "path";
 import { createHash } from "crypto";
 
 const narrativeDir = "public/travel/narrative";
+const photosDir = "public/travel/photos";
+const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"]);
 
 const narrativeFiles = fs
   .readdirSync(narrativeDir)
@@ -11,6 +13,25 @@ const narrativeFiles = fs
 
 function hashContent(value) {
   return createHash("sha256").update(value).digest("hex");
+}
+
+function hasPhotosForDate(date) {
+  const dayDir = path.join(photosDir, date);
+
+  try {
+    if (!fs.statSync(dayDir).isDirectory()) {
+      return false;
+    }
+
+    const dayFiles = fs.readdirSync(dayDir);
+
+    return dayFiles.some((fileName) => {
+      const extension = path.extname(fileName).toLowerCase();
+      return imageExtensions.has(extension);
+    });
+  } catch {
+    return false;
+  }
 }
 
 const manifest = {
@@ -23,6 +44,7 @@ const manifest = {
       date: fileName.replace(/\.md$/, ""),
       file: `/travel/narrative/${fileName}`,
       contentHash: hashContent(markdown),
+      hasPhotos: hasPhotosForDate(fileName.replace(/\.md$/, "")),
     };
   }),
 };
