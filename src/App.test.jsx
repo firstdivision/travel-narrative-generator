@@ -227,6 +227,31 @@ describe("App", () => {
     });
   });
 
+  it("clears bookmark banner when selecting a chapter from the dropdown", async () => {
+    const chapters = [
+      createChapter("Introduction", "introduction"),
+      createChapter("Day Two", "day-two"),
+    ];
+
+    loadChapterData.mockResolvedValue({
+      documentTitle: "Travel Journal",
+      chapters,
+    });
+
+    getBookmarkCookie.mockReturnValue({ slug: "day-two", title: "Day Two", scrollY: 100 });
+    render(<App />);
+
+    expect(await screen.findByText(/Pick up where you left off/)).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Jump to chapter"), {
+      target: { value: "day-two" },
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText(/Pick up where you left off/)).not.toBeInTheDocument();
+    });
+  });
+
   it("preserves bookmark on fresh page load and allows resuming from previous session", async () => {
     const chapters = [
       createChapter("Chapter 1", "ch1"),

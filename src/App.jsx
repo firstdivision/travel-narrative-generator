@@ -21,6 +21,11 @@ export function App() {
   const bookmark = useBookmarkBanner(chapterData, chapters, currentChapter);
   const { bookmarkBanner, bookmarkNextChapter, restoreScrollY, resumeBookmark, dismissBookmark, clearBookmarkBanner, setRestoreScrollY } = bookmark;
 
+  const handleJumpToChapter = (targetSlug) => {
+    clearBookmarkBanner();
+    jumpToChapter(targetSlug);
+  };
+
   // Manage lightbox state
   const { lightboxOpen, lightboxPhotos, lightboxIndex, openLightbox, closeLightbox, shiftLightbox } = useLightbox();
 
@@ -61,7 +66,7 @@ export function App() {
         chapters={chapters}
         currentSlug={currentSlug}
         loading={loading}
-        onJumpToChapter={jumpToChapter}
+        onJumpToChapter={handleJumpToChapter}
       />
 
       <section className="content-layout">
