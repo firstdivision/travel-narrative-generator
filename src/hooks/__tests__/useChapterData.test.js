@@ -20,6 +20,7 @@ const manifestMetadata = {
   chapters: [
     {
       title: "2026-04-02",
+      displaySlug: "Thursday, April 2 - Coffee Before Contrails",
       slug: "2026-04-02",
       date: "2026-04-02",
       file: "/travel/narrative/2026-04-02.md",
@@ -29,6 +30,7 @@ const manifestMetadata = {
     },
     {
       title: "2026-04-03",
+      displaySlug: "Friday, April 3 - Godzilla, Jetlag, Ramen",
       slug: "2026-04-03",
       date: "2026-04-03",
       file: "/travel/narrative/2026-04-03.md",
@@ -90,10 +92,40 @@ describe("useChapterData", () => {
 
     expect(loadChapterContent).toHaveBeenCalled();
     expect(loadChapterContent).toHaveBeenCalledWith("/travel/narrative/2026-04-03.md", "2026-04-03");
+    expect(result.current.chapterData.chapters[1].displaySlug).toBe(
+      "Friday, April 3 - Godzilla, Jetlag, Ramen"
+    );
     expect(result.current.chapterData.chapters[1].title).toBe("Day Two");
     expect(result.current.chapterData.chapters[1].tokens).toEqual([{ type: "paragraph", text: "Loaded chapter" }]);
     expect(result.current.chapterData.chapters[0].tokens).toBeNull();
     expect(result.current.error).toBeNull();
+  });
+
+  it("works when chapter metadata does not include displaySlug", async () => {
+    loadNarrativeManifestMetadata.mockResolvedValue({
+      manifestSignature: "signature-a",
+      chapters: [
+        {
+          title: "2026-04-02",
+          slug: "2026-04-02",
+          date: "2026-04-02",
+          file: "/travel/narrative/2026-04-02.md",
+          contentHash: "hash-1",
+          hasPhotos: true,
+          tokens: null,
+        },
+      ],
+    });
+
+    const { result } = renderHook(() => useChapterData());
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
+    expect(result.current.error).toBeNull();
+    expect(result.current.chapterData.chapters[0].displaySlug).toBeUndefined();
+    expect(result.current.chapterData.chapters[0].title).toBe("Day One");
   });
 
   it("shows a friendly error when hash chapter does not exist", async () => {

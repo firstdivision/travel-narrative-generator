@@ -22,6 +22,7 @@ export function getManifestSignature(manifest) {
         id: chapter?.id || "",
         date: chapter?.date || "",
         title: chapter?.title || "",
+        displaySlug: chapter?.displaySlug || "",
         slug: chapter?.slug || "",
         prettySlug: chapter?.prettySlug || "",
         file: chapter?.file || "",
@@ -62,6 +63,7 @@ export async function loadNarrativeManifestMetadata() {
     return {
       id: slug,
       title,
+      displaySlug: chapterEntry?.displaySlug || title,
       slug,
       prettySlug: chapterEntry?.prettySlug || slugifyHeading(title) || `chapter-${index + 1}`,
       date: chapterEntry?.date || null,

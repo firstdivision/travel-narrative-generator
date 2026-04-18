@@ -20,7 +20,7 @@ export function ChapterSelector({ chapters, currentSlug, loading, onJumpToChapte
         ? "Loading chapters…"
         : "No chapters available"
       : currentChapter
-        ? `${currentChapter.title}`
+        ? `${currentChapter.displaySlug || currentChapter.title}`
         : "Jump to chapter";
 
   // Compute dropdown position before paint when opening
@@ -151,7 +151,9 @@ export function ChapterSelector({ chapters, currentSlug, loading, onJumpToChapte
                 <span className="chapter-dropdown-option-num">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <span className="chapter-dropdown-option-title">{chapter.title}</span>
+                <span className="chapter-dropdown-option-title">
+                  {chapter.displaySlug || chapter.title}
+                </span>
               </li>
             ))}
           </ul>,

@@ -34,6 +34,7 @@ function createChapter(title, slug, options = {}) {
   return {
     title,
     slug,
+    displaySlug: options.displaySlug ?? title,
     date: options.date ?? null,
     file: options.file ?? `/travel/narrative/${slug}.md`,
     hasPhotos: options.hasPhotos,
@@ -48,6 +49,7 @@ function setupNarrative(chapters, documentTitle = "Travel Journal") {
     chapters: chapters.map((chapter, index) => ({
       title: chapter.date || `Chapter ${index + 1}`,
       slug: chapter.slug,
+      displaySlug: chapter.displaySlug,
       date: chapter.date,
       file: chapter.file,
       contentHash: chapter.contentHash,
@@ -101,14 +103,42 @@ describe("App", () => {
     window.location.hash = "#day-two";
     window.dispatchEvent(new HashChangeEvent("hashchange"));
 
-    expect(await screen.findByRole("heading", { level: 2, name: "Day Two" })).toBeInTheDocument();
-    expect(screen.getByText("Day Two · Chapter 2 of 2")).toBeInTheDocument();
+    expect(await screen.findByText("Day Two · Chapter 2 of 2")).toBeInTheDocument();
     expect(scrollToChapterStart).toHaveBeenCalled();
     expect(setBookmarkCookie).toHaveBeenCalledWith("day-two", "Day Two", 0);
     expect(loadChapterContent.mock.calls.length).toBeGreaterThanOrEqual(2);
     await waitFor(() => {
       expect(document.title).toBe("Day Two | Travel Journal");
     });
+  });
+
+  it("uses manifest displaySlug labels in the chapter dropdown on first load", async () => {
+    setupNarrative([
+      createChapter("Loaded Intro Heading", "introduction", {
+        date: "2026-04-02",
+        displaySlug: "Thursday, April 2 - Coffee Before Contrails",
+      }),
+      createChapter("Loaded Day Two Heading", "day-two", {
+        date: "2026-04-03",
+        displaySlug: "Friday, April 3 - Godzilla, Jetlag, Ramen",
+      }),
+    ]);
+
+    render(<App />);
+
+    expect(await screen.findByRole("heading", { level: 2, name: "Loaded Intro Heading" })).toBeInTheDocument();
+
+    const chapterButton = screen.getByRole("button", {
+      name: /Thursday, April 2 - Coffee Before Contrails/,
+    });
+    expect(chapterButton).toBeInTheDocument();
+
+    fireEvent.click(chapterButton);
+
+    expect(
+      await screen.findByText("Friday, April 3 - Godzilla, Jetlag, Ramen")
+    ).toBeInTheDocument();
+    expect(screen.queryByText("2026-04-03")).not.toBeInTheDocument();
   });
 
   it("renders the error state when chapter loading fails", async () => {
@@ -164,8 +194,9 @@ describe("App", () => {
 
     render(<App />);
 
-    expect(await screen.findByRole("heading", { level: 2, name: "Gallery Day" })).toBeInTheDocument();
-    expect(loadPhotosForDate).toHaveBeenCalledWith("2026-04-03");
+    await waitFor(() => {
+      expect(loadPhotosForDate).toHaveBeenCalledWith("2026-04-03");
+    });
     expect(await screen.findByRole("button", { name: "Open photo 1 of 2" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Open photo 1 of 2" }));
@@ -274,9 +305,8 @@ describe("App", () => {
 
     expect(await screen.findByText(/Pick up where you left off/)).toBeInTheDocument();
 
-    fireEvent.change(screen.getByLabelText("Jump to chapter"), {
-      target: { value: "day-two" },
-    });
+    fireEvent.click(screen.getByRole("button", { name: "Introduction" }));
+    fireEvent.click(await screen.findByRole("option", { name: /Day Two/ }));
 
     await waitFor(() => {
       expect(screen.queryByText(/Pick up where you left off/)).not.toBeInTheDocument();

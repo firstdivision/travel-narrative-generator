@@ -81,6 +81,7 @@ for (const [index, fileName] of narrativeFiles.entries()) {
       date,
       file: `/travel/narrative/${fileName}`,
       title,
+      displaySlug: title,
       slug: id,
       prettySlug,
       contentHash: hashContent(markdown),

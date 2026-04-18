@@ -198,8 +198,8 @@ describe("useBookmarkBanner", () => {
     getBookmarkCookie.mockReturnValue(null);
 
     const chapters = [
-      { title: "Chapter 1", slug: "ch1" },
-      { title: "Chapter 2", slug: "ch2" },
+      { title: "Chapter 1", slug: "ch1", tokens: [] },
+      { title: "Chapter 2", slug: "ch2", tokens: [] },
     ];
 
     const { rerender } = renderHook(

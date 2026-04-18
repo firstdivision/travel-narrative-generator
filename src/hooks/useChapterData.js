@@ -146,7 +146,8 @@ function summarizeChapterChanges(previousData, nextData) {
 
     if (
       chapter.contentHash !== nextChapter.contentHash ||
-      chapter.hasPhotos !== nextChapter.hasPhotos
+      chapter.hasPhotos !== nextChapter.hasPhotos ||
+      chapter.displaySlug !== nextChapter.displaySlug
     ) {
       contentChanged = true;
       break;
