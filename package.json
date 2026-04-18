@@ -7,7 +7,9 @@
     "dev": "node scripts/generate-photo-indexes.js && vite",
     "build": "node scripts/generate-photo-indexes.js && vite build",
     "preview": "vite preview",
-    "manifest": "node scripts/generate-narrative-manifest.js"
+    "manifest": "node scripts/generate-narrative-manifest.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -16,7 +18,11 @@
     "marked": "^15.0.12"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.3.5"
+    "jsdom": "^26.1.0",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4"
   }
 }
