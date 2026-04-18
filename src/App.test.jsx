@@ -167,4 +167,104 @@ describe("App", () => {
     expect(await screen.findByText(/Pick up where you left off/)).toBeInTheDocument();
     expect(screen.getByText("Day Two")).toBeInTheDocument();
   });
+
+  it("restores reading progress when user clicks resume bookmark", async () => {
+    const chapters = [
+      createChapter("Introduction", "introduction"),
+      createChapter("Day Two", "day-two"),
+      createChapter("Day Three", "day-three"),
+    ];
+
+    loadChapterData.mockResolvedValue({
+      documentTitle: "Travel Journal",
+      chapters,
+    });
+
+    // User has a saved bookmark for Day Two with scroll position 200
+    getBookmarkCookie.mockReturnValue({ slug: "day-two", title: "Day Two", scrollY: 200 });
+    render(<App />);
+
+    // Initially on Introduction, bookmark banner visible
+    expect(await screen.findByText("Introduction · Chapter 1 of 3")).toBeInTheDocument();
+    expect(screen.getByText(/Pick up where you left off/)).toBeInTheDocument();
+
+    // Find the "resume" link and click it
+    const resumeLinks = screen.getAllByText("Day Two");
+    const resumeLink = resumeLinks.find((link) => link.closest(".bookmark-banner-resume"));
+
+    fireEvent.click(resumeLink);
+
+    // Should navigate to Day Two
+    expect(await screen.findByText("Day Two · Chapter 2 of 3")).toBeInTheDocument();
+    // Bookmark banner should be dismissed
+    expect(screen.queryByText(/Pick up where you left off/)).not.toBeInTheDocument();
+  });
+
+  it("dismisses bookmark banner when user clicks dismiss", async () => {
+    const chapters = [
+      createChapter("Introduction", "introduction"),
+      createChapter("Day Two", "day-two"),
+    ];
+
+    loadChapterData.mockResolvedValue({
+      documentTitle: "Travel Journal",
+      chapters,
+    });
+
+    // User has a saved bookmark for Day Two
+    getBookmarkCookie.mockReturnValue({ slug: "day-two", title: "Day Two", scrollY: 100 });
+    render(<App />);
+
+    expect(await screen.findByText(/Pick up where you left off/)).toBeInTheDocument();
+
+    // Find and click the dismiss button (X)
+    const dismissButton = screen.getByLabelText("Dismiss bookmark");
+    fireEvent.click(dismissButton);
+
+    // Bookmark banner should be gone
+    await waitFor(() => {
+      expect(screen.queryByText(/Pick up where you left off/)).not.toBeInTheDocument();
+    });
+  });
+
+  it("preserves bookmark on fresh page load and allows resuming from previous session", async () => {
+    const chapters = [
+      createChapter("Chapter 1", "ch1"),
+      createChapter("Chapter 2", "ch2"),
+      createChapter("Chapter 3", "ch3"),
+    ];
+
+    // Simulate: User was on Chapter 2 with scroll position 300 in previous session
+    getBookmarkCookie.mockReturnValue({
+      slug: "ch2",
+      title: "Chapter 2",
+      scrollY: 300,
+    });
+
+    loadChapterData.mockResolvedValue({
+      documentTitle: "Travel Journal",
+      chapters,
+    });
+
+    render(<App />);
+
+    // Page loads to default Chapter 1
+    expect(await screen.findByText("Chapter 1 · Chapter 1 of 3")).toBeInTheDocument();
+
+    // But bookmark banner suggests returning to Chapter 2
+    expect(screen.getByText(/Pick up where you left off/)).toBeInTheDocument();
+    expect(screen.getByText("Chapter 2")).toBeInTheDocument();
+
+    // Verify setBookmarkCookie was NOT called on initial load (preserves old bookmark)
+    expect(setBookmarkCookie).not.toHaveBeenCalled();
+
+    // User navigates manually to Chapter 3
+    window.location.hash = "#ch3";
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+
+    // Now setBookmarkCookie SHOULD be called to save new position
+    await waitFor(() => {
+      expect(setBookmarkCookie).toHaveBeenCalledWith("ch3", "Chapter 3", 0);
+    });
+  });
 });

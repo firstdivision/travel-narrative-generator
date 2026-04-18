@@ -16,10 +16,11 @@ export function useBookmarkBanner(chapterData, chapters, currentChapter) {
   const [restoreScrollY, setRestoreScrollY] = useState(null);
   const [bookmarkPromptChecked, setBookmarkPromptChecked] = useState(false);
   const currentBookmarkRef = useRef({ slug: null, title: null });
-  const isInitialLoadRef = useRef(true);
+  const previousChapterSlugRef = useRef(null);
 
-  // Update bookmark cookie when chapter changes (but NOT on initial load)
-  // Skipping the initial load preserves any existing bookmark from a previous session
+  // Update bookmark cookie only when navigating to a different chapter.
+  // This avoids overwriting saved progress on initial load and is resilient to
+  // development double-effect execution.
   useEffect(() => {
     if (!chapterData || !currentChapter) {
       return;
@@ -28,11 +29,17 @@ export function useBookmarkBanner(chapterData, chapters, currentChapter) {
     const { slug, title } = currentChapter;
     currentBookmarkRef.current = { slug, title };
 
-    // Skip updating cookie on initial load to preserve existing bookmark
-    if (isInitialLoadRef.current) {
-      isInitialLoadRef.current = false;
+    // Skip the first observed chapter and repeated executions for same chapter.
+    if (!previousChapterSlugRef.current) {
+      previousChapterSlugRef.current = slug;
       return;
     }
+
+    if (previousChapterSlugRef.current === slug) {
+      return;
+    }
+
+    previousChapterSlugRef.current = slug;
 
     setBookmarkCookie(slug, title, 0);
   }, [chapterData, currentChapter]);
