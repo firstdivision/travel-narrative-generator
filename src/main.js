@@ -188,11 +188,114 @@ async function loadChapterData() {
       title: chapter.chapterTitle,
       slug: nextCount === 1 ? baseSlug : `${baseSlug}-${nextCount}`,
       tokens: chapter.contentTokens,
+      date: chapterEntry.date || null,
     });
   }
 
   return { documentTitle, chapters };
 }
+
+// ── Photo gallery & lightbox ─────────────────────────────────────────────────
+
+let lightboxPhotos = [];
+let lightboxIndex = 0;
+let lightboxEl = null;
+let lightboxImgEl = null;
+
+function initLightbox() {
+  if (lightboxEl) return;
+
+  lightboxEl = document.createElement("div");
+  lightboxEl.className = "lightbox";
+  lightboxEl.setAttribute("role", "dialog");
+  lightboxEl.setAttribute("aria-modal", "true");
+  lightboxEl.setAttribute("aria-label", "Photo viewer");
+  lightboxEl.hidden = true;
+  lightboxEl.innerHTML = `
+    <div class="lightbox-backdrop"></div>
+    <button class="lightbox-close" aria-label="Close photo viewer">&#x2715;</button>
+    <button class="lightbox-prev" aria-label="Previous photo">&#x2039;</button>
+    <button class="lightbox-next" aria-label="Next photo">&#x203A;</button>
+    <figure class="lightbox-figure">
+      <img class="lightbox-img" src="" alt="" />
+    </figure>
+  `;
+  document.body.appendChild(lightboxEl);
+  lightboxImgEl = lightboxEl.querySelector(".lightbox-img");
+
+  lightboxEl.querySelector(".lightbox-backdrop").addEventListener("click", closeLightbox);
+  lightboxEl.querySelector(".lightbox-close").addEventListener("click", closeLightbox);
+  lightboxEl.querySelector(".lightbox-prev").addEventListener("click", () => shiftLightbox(-1));
+  lightboxEl.querySelector(".lightbox-next").addEventListener("click", () => shiftLightbox(1));
+
+  let touchStartX = 0;
+  lightboxEl.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  lightboxEl.addEventListener("touchend", (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) shiftLightbox(dx < 0 ? 1 : -1);
+  }, { passive: true });
+
+  document.addEventListener("keydown", (e) => {
+    if (!lightboxEl || lightboxEl.hidden) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") shiftLightbox(-1);
+    if (e.key === "ArrowRight") shiftLightbox(1);
+  });
+}
+
+function openLightbox(photos, index) {
+  lightboxPhotos = photos;
+  lightboxIndex = index;
+  syncLightboxImage();
+  lightboxEl.hidden = false;
+  document.body.style.overflow = "hidden";
+  lightboxEl.querySelector(".lightbox-close").focus();
+}
+
+function closeLightbox() {
+  lightboxEl.hidden = true;
+  document.body.style.overflow = "";
+}
+
+function shiftLightbox(dir) {
+  lightboxIndex = (lightboxIndex + dir + lightboxPhotos.length) % lightboxPhotos.length;
+  syncLightboxImage();
+}
+
+function syncLightboxImage() {
+  lightboxImgEl.src = lightboxPhotos[lightboxIndex];
+  lightboxImgEl.alt = `Photo ${lightboxIndex + 1} of ${lightboxPhotos.length}`;
+  const single = lightboxPhotos.length <= 1;
+  lightboxEl.querySelector(".lightbox-prev").hidden = single;
+  lightboxEl.querySelector(".lightbox-next").hidden = single;
+}
+
+async function loadPhotosForDate(date) {
+  if (!date) return [];
+  try {
+    const res = await fetch(`/travel/photos/${date}/index.json`, { cache: "no-cache" });
+    if (!res.ok) return [];
+    const filenames = await res.json();
+    if (!Array.isArray(filenames)) return [];
+    return filenames.map((f) => `/travel/photos/${date}/${f}`);
+  } catch {
+    return [];
+  }
+}
+
+function buildPhotoGallery(photos) {
+  const thumbs = photos
+    .map(
+      (src, i) =>
+        `<button class="gallery-thumb-btn" data-gallery-index="${i}" aria-label="Open photo ${i + 1} of ${photos.length}">` +
+        `<img class="gallery-thumb" src="${escapeHtml(src)}" alt="Day photo ${i + 1}" loading="lazy" /></button>`,
+    )
+    .join("");
+
+  return `<section class="photo-gallery" aria-label="Day photographs">${thumbs}</section>`;
+}
+
+// ── Chapter menu ─────────────────────────────────────────────────────────────
 
 function populateChapterMenu(select, chapters) {
   if (!chapters.length) {
@@ -247,6 +350,8 @@ function renderChapter({ card, jumpSelect, heroTitleLink, subtitle }, chapterDat
 
       <div class="journal-content">${chapterHtml}</div>
 
+      <div class="photo-gallery-slot" hidden></div>
+
       <nav class="chapter-nav" aria-label="Chapter navigation">
         ${
           previousChapter
@@ -261,6 +366,21 @@ function renderChapter({ card, jumpSelect, heroTitleLink, subtitle }, chapterDat
       </nav>
     </div>
   `;
+
+  if (chapter.date) {
+    loadPhotosForDate(chapter.date).then((photos) => {
+      const slot = card.querySelector(".photo-gallery-slot");
+      if (!slot || !photos.length) return;
+
+      slot.outerHTML = buildPhotoGallery(photos);
+
+      card.querySelectorAll(".gallery-thumb-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          openLightbox(photos, Number(btn.dataset.galleryIndex));
+        });
+      });
+    });
+  }
 }
 
 function scrollToChapterStart() {
@@ -358,6 +478,7 @@ async function renderJournal() {
   try {
     const chapterData = await loadChapterData();
 
+    initLightbox();
     populateChapterMenu(jumpSelect, chapterData.chapters);
 
     const syncChapter = ({ scroll = false } = {}) => {
