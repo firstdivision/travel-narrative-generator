@@ -2,31 +2,56 @@ import { BookmarkBanner } from "./components/BookmarkBanner";
 import { ChapterView } from "./components/ChapterView";
 import { HeroPanel } from "./components/HeroPanel";
 import { Lightbox } from "./components/Lightbox";
-import { useJournalController } from "./hooks/useJournalController";
+import { useChapterData } from "./hooks/useChapterData";
+import { useChapterNavigation } from "./hooks/useChapterNavigation";
+import { useBookmarkBanner } from "./hooks/useBookmarkBanner";
+import { useLightbox } from "./hooks/useLightbox";
+import { useScrollBookmark } from "./hooks/useScrollBookmark";
+import { useDocumentTitle } from "./hooks/useDocumentTitle";
 
 export function App() {
-  const {
-    error,
-    loading,
-    chapters,
+  // Load chapter data
+  const { chapterData, error, loading } = useChapterData();
+
+  // Navigate chapters via hash
+  const nav = useChapterNavigation(chapterData);
+  const { chapters, currentChapterIndex, currentChapter, currentSlug, jumpToChapter } = nav;
+
+  // Manage bookmark prompt and restoration
+  const bookmark = useBookmarkBanner(chapterData, chapters, currentChapter);
+  const { bookmarkBanner, bookmarkNextChapter, restoreScrollY, resumeBookmark, dismissBookmark, clearBookmarkBanner, setRestoreScrollY } = bookmark;
+
+  // Manage lightbox state
+  const { lightboxOpen, lightboxPhotos, lightboxIndex, openLightbox, closeLightbox, shiftLightbox } = useLightbox();
+
+  // Side effects
+  useScrollBookmark(currentChapter);
+  useDocumentTitle({
+    chapterData,
     currentChapter,
-    currentChapterIndex,
-    currentSlug,
-    heroTitle,
-    subtitle,
-    bookmarkBanner,
-    bookmarkNextChapter,
-    lightboxOpen,
-    lightboxPhotos,
-    lightboxIndex,
-    jumpToChapter,
-    resumeBookmark,
-    dismissBookmark,
-    clearBookmarkBanner,
-    openLightbox,
-    closeLightbox,
-    shiftLightbox,
-  } = useJournalController();
+    error,
+    shouldScroll: nav.shouldScroll,
+    restoreScrollY,
+    onScrollComplete: () => {
+      nav.clearShouldScroll();
+      setRestoreScrollY(null);
+    },
+  });
+
+  // Derived display state
+  const heroTitle = error
+    ? "Travel journal unavailable"
+    : loading
+      ? "Loading travel journal..."
+      : chapterData?.documentTitle || "Travel Journal";
+
+  const subtitle = error
+    ? "The chapter view could not be prepared."
+    : loading
+      ? "Preparing chapter navigation..."
+      : currentChapter
+        ? `${currentChapter.title} · Chapter ${currentChapterIndex + 1} of ${chapters.length}`
+        : "Preparing chapter navigation...";
 
   return (
     <main className="page-shell">

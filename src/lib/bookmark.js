@@ -1,4 +1,4 @@
-const BOOKMARK_COOKIE_NAME = "travel_bookmark";
+import { BOOKMARK_COOKIE_NAME } from "./constants";
 
 export function setBookmarkCookie(slug, title, scrollY = 0) {
   const value = encodeURIComponent(JSON.stringify({ slug, title, scrollY }));

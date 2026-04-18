@@ -53,7 +53,8 @@ describe("App", () => {
 
     expect(await screen.findByRole("heading", { level: 2, name: "Introduction" })).toBeInTheDocument();
     expect(screen.getByText("Introduction · Chapter 1 of 2")).toBeInTheDocument();
-    expect(setBookmarkCookie).toHaveBeenCalledWith("introduction", "Introduction", 0);
+    // Note: setBookmarkCookie is NOT called on initial load (preserves existing bookmark)
+    expect(setBookmarkCookie).not.toHaveBeenCalled();
 
     window.location.hash = "#day-two";
     window.dispatchEvent(new HashChangeEvent("hashchange"));
@@ -61,6 +62,8 @@ describe("App", () => {
     expect(await screen.findByRole("heading", { level: 2, name: "Day Two" })).toBeInTheDocument();
     expect(screen.getByText("Day Two · Chapter 2 of 2")).toBeInTheDocument();
     expect(scrollToChapterStart).toHaveBeenCalled();
+    // Now when navigating to a new chapter, the bookmark IS updated
+    expect(setBookmarkCookie).toHaveBeenCalledWith("day-two", "Day Two", 0);
     await waitFor(() => {
       expect(document.title).toBe("Day Two | Travel Journal");
     });
@@ -105,5 +108,63 @@ describe("App", () => {
     await waitFor(() => {
       expect(screen.queryByRole("dialog", { name: "Photo viewer" })).not.toBeInTheDocument();
     });
+  });
+
+  it("shows bookmark banner only when bookmark is for a different chapter", async () => {
+    const chapters = [
+      createChapter("Introduction", "introduction"),
+      createChapter("Day Two", "day-two"),
+      createChapter("Day Three", "day-three"),
+    ];
+
+    loadChapterData.mockResolvedValue({
+      documentTitle: "Travel Journal",
+      chapters,
+    });
+
+    // Test 1: No banner when no bookmark exists
+    getBookmarkCookie.mockReturnValue(null);
+    render(<App />);
+    expect(await screen.findByText("Introduction · Chapter 1 of 3")).toBeInTheDocument();
+    expect(screen.queryByText(/Pick up where you left off/)).not.toBeInTheDocument();
+  });
+
+  it("does not show bookmark banner when bookmark is for current chapter", async () => {
+    const chapters = [
+      createChapter("Introduction", "introduction"),
+      createChapter("Day Two", "day-two"),
+    ];
+
+    loadChapterData.mockResolvedValue({
+      documentTitle: "Travel Journal",
+      chapters,
+    });
+
+    // Bookmark is for the current chapter (Introduction)
+    getBookmarkCookie.mockReturnValue({ slug: "introduction", title: "Introduction", scrollY: 100 });
+    render(<App />);
+    expect(await screen.findByText("Introduction · Chapter 1 of 2")).toBeInTheDocument();
+    expect(screen.queryByText(/Pick up where you left off/)).not.toBeInTheDocument();
+  });
+
+  it("shows bookmark banner when bookmark is for a different chapter than current", async () => {
+    const chapters = [
+      createChapter("Introduction", "introduction"),
+      createChapter("Day Two", "day-two"),
+      createChapter("Day Three", "day-three"),
+    ];
+
+    loadChapterData.mockResolvedValue({
+      documentTitle: "Travel Journal",
+      chapters,
+    });
+
+    // Bookmark is for Day Two, but we're viewing Introduction (default)
+    getBookmarkCookie.mockReturnValue({ slug: "day-two", title: "Day Two", scrollY: 50 });
+    render(<App />);
+    
+    expect(await screen.findByText("Introduction · Chapter 1 of 3")).toBeInTheDocument();
+    expect(await screen.findByText(/Pick up where you left off/)).toBeInTheDocument();
+    expect(screen.getByText("Day Two")).toBeInTheDocument();
   });
 });
