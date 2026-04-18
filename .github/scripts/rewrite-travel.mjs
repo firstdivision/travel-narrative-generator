@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { createHash } from "crypto";
 import OpenAI from "openai";
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -85,13 +86,72 @@ const narrativeFiles = fs
   .filter((fileName) => fileName.endsWith(".md"))
   .sort();
 
+const photosDir = "public/travel/photos";
+const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"]);
+
+function slugifyHeading(text) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+function extractChapterTitle(markdown, fallbackTitle) {
+  const lines = markdown.split(/\r?\n/);
+  for (const line of lines) {
+    const headingMatch = line.match(/^##\s+(.+)$/);
+    if (headingMatch?.[1]) {
+      return headingMatch[1].trim();
+    }
+  }
+  return fallbackTitle;
+}
+
+function chapterIdFromDate(date, index) {
+  const seed = date || `chapter-${index + 1}`;
+  return `ch-${createHash("sha256").update(seed).digest("hex").slice(0, 12)}`;
+}
+
+function hasPhotosForDate(date) {
+  const dayDir = path.join(photosDir, date);
+  try {
+    if (!fs.statSync(dayDir).isDirectory()) return false;
+    return fs.readdirSync(dayDir).some((fileName) =>
+      imageExtensions.has(path.extname(fileName).toLowerCase())
+    );
+  } catch {
+    return false;
+  }
+}
+
 const manifest = {
   generatedAt: new Date().toISOString(),
-  chapters: narrativeFiles.map((fileName) => ({
-    date: fileName.replace(/\.md$/, ""),
-    file: `/travel/narrative/${fileName}`,
-  })),
+  chapters: [],
 };
+
+for (const [index, fileName] of narrativeFiles.entries()) {
+  const absolutePath = path.join(narrativeDir, fileName);
+  const markdown = fs.readFileSync(absolutePath, "utf8");
+  const date = fileName.replace(/\.md$/, "");
+  const fallbackTitle = date || `Chapter ${index + 1}`;
+  const title = extractChapterTitle(markdown, fallbackTitle);
+  const id = chapterIdFromDate(date, index);
+  const prettySlug = slugifyHeading(title) || `chapter-${index + 1}`;
+
+  manifest.chapters.push({
+    id,
+    date,
+    file: `/travel/narrative/${fileName}`,
+    title,
+    displaySlug: title,
+    slug: id,
+    prettySlug,
+    contentHash: createHash("sha256").update(markdown).digest("hex"),
+    hasPhotos: hasPhotosForDate(date),
+  });
+}
 
 fs.writeFileSync(
   path.join(narrativeDir, "manifest.json"),

@@ -1,37 +1,93 @@
 {
-  "generatedAt": "2026-04-18T15:48:03.788Z",
+  "generatedAt": "2026-04-18T15:52:26.503Z",
   "chapters": [
     {
+      "id": "ch-75fffffd05b5",
       "date": "2026-04-02-intro",
-      "file": "/travel/narrative/2026-04-02-intro.md"
+      "file": "/travel/narrative/2026-04-02-intro.md",
+      "title": "Introduction",
+      "displaySlug": "Introduction",
+      "slug": "ch-75fffffd05b5",
+      "prettySlug": "introduction",
+      "contentHash": "b50851c6366dd43722a030e6b2afb49d130715a991112580a415562f81b8811a",
+      "hasPhotos": false
     },
     {
+      "id": "ch-885269195504",
       "date": "2026-04-02",
-      "file": "/travel/narrative/2026-04-02.md"
+      "file": "/travel/narrative/2026-04-02.md",
+      "title": "Thursday, April 2 - Coffee Before Contrails",
+      "displaySlug": "Thursday, April 2 - Coffee Before Contrails",
+      "slug": "ch-885269195504",
+      "prettySlug": "thursday-april-2-coffee-before-contrails",
+      "contentHash": "b62fbcec5326ad2c2eebb8f60a41c6a3471cc53a58a0f9ae5b86392c8ab32df7",
+      "hasPhotos": false
     },
     {
+      "id": "ch-6ed28801f1b5",
       "date": "2026-04-03",
-      "file": "/travel/narrative/2026-04-03.md"
+      "file": "/travel/narrative/2026-04-03.md",
+      "title": "Friday, April 3 - Godzilla, Jetlag, Ramen",
+      "displaySlug": "Friday, April 3 - Godzilla, Jetlag, Ramen",
+      "slug": "ch-6ed28801f1b5",
+      "prettySlug": "friday-april-3-godzilla-jetlag-ramen",
+      "contentHash": "c62c278751d9955eee6b488f593b9ecf233ce4a9fd01797780fb449f53ea13c5",
+      "hasPhotos": true
     },
     {
+      "id": "ch-2c0c33483a7c",
       "date": "2026-04-04",
-      "file": "/travel/narrative/2026-04-04.md"
+      "file": "/travel/narrative/2026-04-04.md",
+      "title": "Saturday, April 4 - Blossoms, Bidets, and Rain",
+      "displaySlug": "Saturday, April 4 - Blossoms, Bidets, and Rain",
+      "slug": "ch-2c0c33483a7c",
+      "prettySlug": "saturday-april-4-blossoms-bidets-and-rain",
+      "contentHash": "c460e5746909780c553322972e4ea617813b687d0a7fbea51e3a2fd91aa1ba00",
+      "hasPhotos": true
     },
     {
+      "id": "ch-dc791cac3a41",
       "date": "2026-04-05",
-      "file": "/travel/narrative/2026-04-05.md"
+      "file": "/travel/narrative/2026-04-05.md",
+      "title": "Sunday, April 5 - From Haneda to Home",
+      "displaySlug": "Sunday, April 5 - From Haneda to Home",
+      "slug": "ch-dc791cac3a41",
+      "prettySlug": "sunday-april-5-from-haneda-to-home",
+      "contentHash": "25cc2931f46a909a1aaeef74dbab37718902670735708ef99c547f6114d435da",
+      "hasPhotos": true
     },
     {
+      "id": "ch-c7b068f85950",
       "date": "2026-04-06",
-      "file": "/travel/narrative/2026-04-06.md"
+      "file": "/travel/narrative/2026-04-06.md",
+      "title": "Monday, April 6 - Doors, Coffee, and Concrete",
+      "displaySlug": "Monday, April 6 - Doors, Coffee, and Concrete",
+      "slug": "ch-c7b068f85950",
+      "prettySlug": "monday-april-6-doors-coffee-and-concrete",
+      "contentHash": "a1c730196b9d5e1943d15235a20d43a4c923aaa01a4f51c7badea93f043264af",
+      "hasPhotos": true
     },
     {
+      "id": "ch-6d4211134cc1",
       "date": "2026-04-07",
-      "file": "/travel/narrative/2026-04-07.md"
+      "file": "/travel/narrative/2026-04-07.md",
+      "title": "Tuesday April 7 - Badges, Blue Screens",
+      "displaySlug": "Tuesday April 7 - Badges, Blue Screens",
+      "slug": "ch-6d4211134cc1",
+      "prettySlug": "tuesday-april-7-badges-blue-screens",
+      "contentHash": "ab259499651004d015207ef1a988cc703d4d3b538c775b33bba94484ab2b8ef4",
+      "hasPhotos": false
     },
     {
+      "id": "ch-45b7b29cb08b",
       "date": "2026-04-08",
-      "file": "/travel/narrative/2026-04-08.md"
+      "file": "/travel/narrative/2026-04-08.md",
+      "title": "Wednesday April 8 - Early Steps Indoors",
+      "displaySlug": "Wednesday April 8 - Early Steps Indoors",
+      "slug": "ch-45b7b29cb08b",
+      "prettySlug": "wednesday-april-8-early-steps-indoors",
+      "contentHash": "635c1dc2a98e644d97bd775e54b2f12d9709087e13f247ae0d7f20e12997d386",
+      "hasPhotos": false
     }
   ]
 }
