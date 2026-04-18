@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node scripts/generate-photo-indexes.js && vite",
     "build": "node scripts/generate-photo-indexes.js && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "manifest": "node scripts/generate-narrative-manifest.js"
   },
   "dependencies": {
     "dompurify": "^3.2.6",
