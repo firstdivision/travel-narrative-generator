@@ -20,7 +20,7 @@ export function ChapterSelector({ chapters, currentSlug, loading, onJumpToChapte
         ? "Loading chapters…"
         : "No chapters available"
       : currentChapter
-        ? `Chapter ${currentIndex + 1}: ${currentChapter.title}`
+        ? `${currentChapter.title}`
         : "Jump to chapter";
 
   // Compute dropdown position before paint when opening
@@ -96,9 +96,6 @@ export function ChapterSelector({ chapters, currentSlug, loading, onJumpToChapte
   return (
     <div className="hero-actions">
       <p className="journey-seal">Route Archive</p>
-      <p className="jump-label" id={labelId}>
-        Jump to chapter
-      </p>
       <div className="chapter-dropdown" ref={dropdownRef}>
         <button
           ref={buttonRef}
