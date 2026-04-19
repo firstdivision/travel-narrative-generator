@@ -576,9 +576,22 @@ h1 {
 
 .chapter-dropdown-option-title {
   flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.chapter-dropdown-option-photos {
+  flex-shrink: 0;
+  padding: 0.22rem 0.5rem;
+  border: 1px solid rgba(232, 212, 171, 0.24);
+  border-radius: 999px;
+  background: rgba(20, 84, 71, 0.22);
+  color: #f3dfb8;
+  font: 700 0.62rem/1 "Noto Sans Thai", "Segoe UI", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .chapter-dropdown-option:hover,
@@ -591,6 +604,14 @@ h1 {
 .chapter-dropdown-option.is-current {
   color: #f8f0de;
   background: rgba(181, 56, 30, 0.22);
+}
+
+.chapter-dropdown-option:hover .chapter-dropdown-option-photos,
+.chapter-dropdown-option:focus-visible .chapter-dropdown-option-photos,
+.chapter-dropdown-option.is-current .chapter-dropdown-option-photos {
+  border-color: rgba(248, 240, 222, 0.28);
+  background: rgba(20, 84, 71, 0.32);
+  color: #f8f0de;
 }
 
 .chapter-dropdown-option-num {

@@ -141,6 +141,35 @@ describe("App", () => {
     expect(screen.queryByText("2026-04-03")).not.toBeInTheDocument();
   });
 
+  it("shows a photo indicator in the chapter dropdown only for chapters with photos", async () => {
+    setupNarrative([
+      createChapter("Loaded Intro Heading", "introduction", {
+        date: "2026-04-02",
+        displaySlug: "Thursday, April 2 - Coffee Before Contrails",
+        hasPhotos: true,
+      }),
+      createChapter("Loaded Day Two Heading", "day-two", {
+        date: "2026-04-03",
+        displaySlug: "Friday, April 3 - Godzilla, Jetlag, Ramen",
+        hasPhotos: false,
+      }),
+    ]);
+
+    render(<App />);
+
+    const chapterButton = await screen.findByRole("button", {
+      name: /Thursday, April 2 - Coffee Before Contrails/,
+    });
+
+    fireEvent.click(chapterButton);
+
+    const options = await screen.findAllByRole("option");
+
+    expect(options[0]).toHaveTextContent("Photos");
+    expect(options[1]).not.toHaveTextContent("Photos");
+    expect(screen.getByLabelText("Includes photos")).toBeInTheDocument();
+  });
+
   it("renders the error state when chapter loading fails", async () => {
     loadNarrativeManifestMetadata.mockResolvedValue({
       manifestSignature: "test-signature",

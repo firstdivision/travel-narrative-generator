@@ -173,6 +173,11 @@ export function ChapterSelector({ chapters, currentSlug, loading, onJumpToChapte
                   <span className="chapter-dropdown-option-title">
                     {chapter.displaySlug || chapter.title}
                   </span>
+                  {chapter.hasPhotos && (
+                    <span className="chapter-dropdown-option-photos" aria-label="Includes photos">
+                      Photos
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
