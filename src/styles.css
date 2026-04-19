@@ -741,8 +741,8 @@ h1 {
 .chapter-title {
   margin: 0;
   font-family: "Noto Serif JP", "Times New Roman", serif;
-  font-size: clamp(2.2rem, 3vw, 3rem);
-  line-height: 1.02;
+  font-size: clamp(1.4rem, 2vw, 1.85rem);
+  line-height: 1.25;
   color: #1f2f5e;
 }
 
