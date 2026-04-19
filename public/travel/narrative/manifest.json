@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T03:13:07.071Z",
+  "generatedAt": "2026-04-19T03:20:27.888Z",
   "chapters": [
     {
       "id": "ch-75fffffd05b5",
@@ -87,6 +87,17 @@
       "slug": "ch-45b7b29cb08b",
       "prettySlug": "wednesday-april-8-curry-before-code",
       "contentHash": "d04a3ae41f360428529aaae8891f6b6f462a51b7f2ea472dca7c79fceb896146",
+      "hasPhotos": false
+    },
+    {
+      "id": "ch-d67425239ed6",
+      "date": "2026-04-09",
+      "file": "/travel/narrative/2026-04-09.md",
+      "title": "Thursday, April 9 - Lunch, Greens, Crackers",
+      "displaySlug": "Thursday, April 9 - Lunch, Greens, Crackers",
+      "slug": "ch-d67425239ed6",
+      "prettySlug": "thursday-april-9-lunch-greens-crackers",
+      "contentHash": "b00eab17203f71a997550cbadadb784e45c7025609b4c6e8ef5826e040e09908",
       "hasPhotos": false
     }
   ]
