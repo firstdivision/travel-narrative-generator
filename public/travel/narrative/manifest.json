@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T05:30:59.882Z",
+  "generatedAt": "2026-04-19T06:06:36.866Z",
   "chapters": [
     {
       "id": "ch-75fffffd05b5",
@@ -120,6 +120,17 @@
       "slug": "ch-5eac617ef952",
       "prettySlug": "saturday-april-11-trains-towers-and-noodles",
       "contentHash": "76b1b40e0b78bb17c593b73afd2a633b7df302d8527bbe97e97e30fb07e32bea",
+      "hasPhotos": false
+    },
+    {
+      "id": "ch-6cb5308b66c2",
+      "date": "2026-04-12",
+      "file": "/travel/narrative/2026-04-12.md",
+      "title": "Sunday, April 12 - Beef Balls and Dumplings",
+      "displaySlug": "Sunday, April 12 - Beef Balls and Dumplings",
+      "slug": "ch-6cb5308b66c2",
+      "prettySlug": "sunday-april-12-beef-balls-and-dumplings",
+      "contentHash": "7b3d2f36cd6017675246fea4517837f3945780dec95a3647a42c0c62418fd526",
       "hasPhotos": false
     }
   ]
