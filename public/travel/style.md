@@ -15,7 +15,7 @@ Avoid sounding like a travel blogger, influencer, or guidebook.
 * Slightly cinematic, but not overwritten
 
 ## Structure & Flow
-
+* If you see the word "grab" used as a noun, capitalize it, because I am probably referencing the rideshare company "Grab".
 * Include the headers from the notes like the title and dates
   * e.g.: # The Great Asia Adventure - Main Title
   * "## Thursday, April 4" Sub heading, date.
