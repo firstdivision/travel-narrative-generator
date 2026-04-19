@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T07:40:50.744Z",
+  "generatedAt": "2026-04-19T07:43:45.008Z",
   "chapters": [
     {
       "id": "ch-75fffffd05b5",
@@ -87,7 +87,7 @@
       "slug": "ch-45b7b29cb08b",
       "prettySlug": "wednesday-april-8-curry-before-code",
       "contentHash": "d04a3ae41f360428529aaae8891f6b6f462a51b7f2ea472dca7c79fceb896146",
-      "hasPhotos": false
+      "hasPhotos": true
     },
     {
       "id": "ch-d67425239ed6",
