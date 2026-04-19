@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node scripts/generate-photo-indexes.js && vite",
-    "build": "node scripts/generate-photo-indexes.js && vite build",
+    "dev": "node scripts/generate-photo-indexes.js && node scripts/generate-narrative-manifest.js && vite",
+    "build": "node scripts/generate-photo-indexes.js && node scripts/generate-narrative-manifest.js && vite build",
     "preview": "vite preview",
     "manifest": "node scripts/generate-narrative-manifest.js",
     "test": "vitest run",
