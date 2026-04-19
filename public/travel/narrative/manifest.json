@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T03:46:15.608Z",
+  "generatedAt": "2026-04-19T05:30:59.882Z",
   "chapters": [
     {
       "id": "ch-75fffffd05b5",
@@ -109,6 +109,17 @@
       "slug": "ch-02677856420d",
       "prettySlug": "friday-april-10-friday-still-friday",
       "contentHash": "a0d2cd68e134c303543df83c35f0bd25f26258ad9273709ed0a6178da5a1ebe6",
+      "hasPhotos": false
+    },
+    {
+      "id": "ch-5eac617ef952",
+      "date": "2026-04-11",
+      "file": "/travel/narrative/2026-04-11.md",
+      "title": "Saturday, April 11 - Trains, Towers, and Noodles",
+      "displaySlug": "Saturday, April 11 - Trains, Towers, and Noodles",
+      "slug": "ch-5eac617ef952",
+      "prettySlug": "saturday-april-11-trains-towers-and-noodles",
+      "contentHash": "76b1b40e0b78bb17c593b73afd2a633b7df302d8527bbe97e97e30fb07e32bea",
       "hasPhotos": false
     }
   ]
