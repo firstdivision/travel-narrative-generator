@@ -1,5 +1,81 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { loadAllPhotos } from "../lib/data";
+
+const hydratedImageSources = new Set();
+
+function LazyGalleryImage({ src, alt }) {
+  const frameRef = useRef(null);
+  const [shouldLoad, setShouldLoad] = useState(() => {
+    if (hydratedImageSources.has(src)) {
+      return true;
+    }
+
+    return typeof window !== "undefined" && !("IntersectionObserver" in window);
+  });
+
+  useEffect(() => {
+    if (hydratedImageSources.has(src)) {
+      setShouldLoad(true);
+      return;
+    }
+
+    setShouldLoad(typeof window !== "undefined" && !("IntersectionObserver" in window));
+  }, [src]);
+
+  useEffect(() => {
+    if (shouldLoad) {
+      hydratedImageSources.add(src);
+      return;
+    }
+
+    const frameElement = frameRef.current;
+
+    if (!frameElement) {
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      setShouldLoad(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+
+        if (entry?.isIntersecting) {
+          hydratedImageSources.add(src);
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: "0px 0px 120px 0px",
+        threshold: 0.15,
+      }
+    );
+
+    observer.observe(frameElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [shouldLoad, src]);
+
+  return (
+    <span ref={frameRef} className="gallery-thumb-frame">
+      {shouldLoad && (
+        <img
+          className="gallery-thumb"
+          src={src}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+        />
+      )}
+    </span>
+  );
+}
 
 export function Gallery({ chapters, onOpenLightbox }) {
   const [photos, setPhotos] = useState([]);
@@ -51,12 +127,9 @@ export function Gallery({ chapters, onOpenLightbox }) {
             aria-label={`Open photo ${index + 1} of ${photos.length}`}
             onClick={() => onOpenLightbox(lightboxPhotos, index)}
           >
-            <img
-              className="gallery-thumb"
+            <LazyGalleryImage
               src={photo.src}
               alt={`${photo.chapterTitle || "Travel"} · ${photo.date || "Unknown date"} · photo ${photo.index + 1}`}
-              loading="lazy"
-              decoding="async"
             />
           </button>
         ))}
