@@ -83,7 +83,7 @@ describe("App", () => {
     document.cookie = "travel_bookmark=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
     getBookmarkCookie.mockReturnValue(null);
     loadPhotosForDate.mockResolvedValue([]);
-    loadNarrativeManifest.mockResolvedValue({ generatedAt: "2026-04-18T00:00:00.000Z", chapters: [] });
+    loadNarrativeManifest.mockResolvedValue({ chapters: [] });
     getManifestSignature.mockImplementation((manifest) => JSON.stringify(manifest));
   });
 
@@ -139,6 +139,93 @@ describe("App", () => {
       await screen.findByText("Friday, April 3 - Godzilla, Jetlag, Ramen")
     ).toBeInTheDocument();
     expect(screen.queryByText("2026-04-03")).not.toBeInTheDocument();
+  });
+
+  it("scrolls the chapter dropdown to center the current chapter when opened", async () => {
+    const originalOffsetTop = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetTop");
+    const originalOffsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetHeight");
+    const originalClientHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientHeight");
+    const originalScrollHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "scrollHeight");
+
+    Object.defineProperty(HTMLElement.prototype, "offsetTop", {
+      configurable: true,
+      get() {
+        if (this.getAttribute("role") !== "option" || !this.parentElement) {
+          return 0;
+        }
+
+        return Array.from(this.parentElement.children).indexOf(this) * 40;
+      },
+    });
+
+    Object.defineProperty(HTMLElement.prototype, "offsetHeight", {
+      configurable: true,
+      get() {
+        return this.getAttribute("role") === "option" ? 40 : 0;
+      },
+    });
+
+    Object.defineProperty(HTMLElement.prototype, "clientHeight", {
+      configurable: true,
+      get() {
+        return this.getAttribute("role") === "listbox" ? 200 : 0;
+      },
+    });
+
+    Object.defineProperty(HTMLElement.prototype, "scrollHeight", {
+      configurable: true,
+      get() {
+        if (this.getAttribute("role") !== "listbox") {
+          return 0;
+        }
+
+        return this.children.length * 40;
+      },
+    });
+
+    try {
+      setupNarrative(Array.from({ length: 12 }, (_, index) => {
+        const chapterNumber = index + 1;
+        return createChapter(`Chapter ${chapterNumber}`, `chapter-${chapterNumber}`);
+      }));
+      window.location.hash = "#chapter-8";
+
+      render(<App />);
+
+      expect(await screen.findByText("Chapter 8 · Chapter 8 of 12")).toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole("button", { name: "Chapter 8" }));
+
+      const listbox = await screen.findByRole("listbox");
+
+      await waitFor(() => {
+        expect(listbox.scrollTop).toBe(200);
+      });
+    } finally {
+      if (originalOffsetTop) {
+        Object.defineProperty(HTMLElement.prototype, "offsetTop", originalOffsetTop);
+      } else {
+        delete HTMLElement.prototype.offsetTop;
+      }
+
+      if (originalOffsetHeight) {
+        Object.defineProperty(HTMLElement.prototype, "offsetHeight", originalOffsetHeight);
+      } else {
+        delete HTMLElement.prototype.offsetHeight;
+      }
+
+      if (originalClientHeight) {
+        Object.defineProperty(HTMLElement.prototype, "clientHeight", originalClientHeight);
+      } else {
+        delete HTMLElement.prototype.clientHeight;
+      }
+
+      if (originalScrollHeight) {
+        Object.defineProperty(HTMLElement.prototype, "scrollHeight", originalScrollHeight);
+      } else {
+        delete HTMLElement.prototype.scrollHeight;
+      }
+    }
   });
 
   it("shows a photo indicator in the chapter dropdown only for chapters with photos", async () => {

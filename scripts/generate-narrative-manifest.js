@@ -63,7 +63,6 @@ function hasPhotosForDate(date) {
 }
 
 const manifest = {
-  generatedAt: new Date().toISOString(),
   chapters: [],
 };
 

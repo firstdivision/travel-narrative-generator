@@ -51,6 +51,23 @@ export function ChapterSelector({ chapters, currentSlug, loading, onJumpToChapte
     });
   }, [open]);
 
+  // Keep the selected chapter visible and centered when opening the list
+  useLayoutEffect(() => {
+    if (!open) return;
+    const ul = ulRef.current;
+    if (!ul) return;
+
+    const selectedOption = ul.querySelector('[aria-selected="true"]');
+    if (!selectedOption) return;
+
+    const centeredTop =
+      selectedOption.offsetTop - (ul.clientHeight - selectedOption.offsetHeight) / 2;
+    const maxScrollTop = Math.max(0, ul.scrollHeight - ul.clientHeight);
+    const targetTop = Math.max(0, Math.min(maxScrollTop, centeredTop));
+
+    ul.scrollTop = targetTop;
+  }, [open, currentSlug, chapters.length]);
+
   // Close when clicking outside
   useEffect(() => {
     if (!open) return;

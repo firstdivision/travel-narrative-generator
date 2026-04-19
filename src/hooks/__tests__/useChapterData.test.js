@@ -52,7 +52,7 @@ describe("useChapterData", () => {
       chapterTitle: "Day One",
       contentTokens: [],
     });
-    loadNarrativeManifest.mockResolvedValue({ generatedAt: "2026-04-18T00:00:00.000Z", chapters: [] });
+    loadNarrativeManifest.mockResolvedValue({ chapters: [] });
     getManifestSignature.mockImplementation((manifest) => JSON.stringify(manifest));
   });
 
