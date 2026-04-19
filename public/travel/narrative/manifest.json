@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T03:20:27.888Z",
+  "generatedAt": "2026-04-19T03:46:15.608Z",
   "chapters": [
     {
       "id": "ch-75fffffd05b5",
@@ -98,6 +98,17 @@
       "slug": "ch-d67425239ed6",
       "prettySlug": "thursday-april-9-lunch-greens-crackers",
       "contentHash": "b00eab17203f71a997550cbadadb784e45c7025609b4c6e8ef5826e040e09908",
+      "hasPhotos": false
+    },
+    {
+      "id": "ch-02677856420d",
+      "date": "2026-04-10",
+      "file": "/travel/narrative/2026-04-10.md",
+      "title": "Friday, April 10 - Friday, Still Friday",
+      "displaySlug": "Friday, April 10 - Friday, Still Friday",
+      "slug": "ch-02677856420d",
+      "prettySlug": "friday-april-10-friday-still-friday",
+      "contentHash": "a0d2cd68e134c303543df83c35f0bd25f26258ad9273709ed0a6178da5a1ebe6",
       "hasPhotos": false
     }
   ]
