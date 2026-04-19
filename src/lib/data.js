@@ -156,3 +156,38 @@ export async function loadPhotosForDate(date) {
     return [];
   }
 }
+
+export async function loadAllPhotos(chapters = null) {
+  let chapterList = Array.isArray(chapters) ? chapters : null;
+
+  if (!chapterList) {
+    const metadata = await loadNarrativeManifestMetadata();
+    chapterList = metadata.chapters;
+  }
+
+  if (!Array.isArray(chapterList) || !chapterList.length) {
+    return [];
+  }
+
+  const orderedPhotoChapters = chapterList.filter((chapter) => chapter?.date && chapter?.hasPhotos !== false);
+
+  if (!orderedPhotoChapters.length) {
+    return [];
+  }
+
+  const dayPhotos = await Promise.all(
+    orderedPhotoChapters.map(async (chapter) => {
+      const photos = await loadPhotosForDate(chapter.date);
+
+      return photos.map((src, index) => ({
+        src,
+        index,
+        date: chapter.date,
+        chapterTitle: chapter.title,
+        chapterSlug: chapter.slug,
+      }));
+    })
+  );
+
+  return dayPhotos.flat();
+}

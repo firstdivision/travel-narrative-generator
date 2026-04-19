@@ -118,9 +118,10 @@ body::after {
   padding: 0.65rem 0.15rem;
 }
 
-.hero-actions {
+.hero-main-menu {
   position: relative;
   z-index: 1;
+  grid-column: 1 / -1;
 }
 
 .hero-copy::before,
@@ -382,17 +383,57 @@ h1 {
   line-height: 1.7;
 }
 
-.hero-actions {
-  justify-self: end;
+.hero-main-menu {
+  justify-self: stretch;
   width: 100%;
   overflow: hidden;
   display: grid;
-  gap: 0.55rem;
-  padding: 0.95rem 1rem 1rem;
+  gap: 0.62rem;
+  padding: 0.9rem 1rem 1rem;
   border-radius: 1rem;
   background: rgba(16, 34, 41, 0.36);
   border: 1px solid rgba(232, 212, 171, 0.24);
   backdrop-filter: blur(10px);
+}
+
+.hero-menu {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.5fr);
+  gap: 0.55rem;
+  align-items: stretch;
+}
+
+.hero-menu-button {
+  border: 1px solid rgba(232, 212, 171, 0.28);
+  border-radius: 0.8rem;
+  padding: 0.7rem 0.9rem;
+  font: 600 0.78rem/1 "Noto Sans Thai", "Segoe UI", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #f8f0de;
+  background: rgba(14, 32, 40, 0.42);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+.hero-menu-button:hover,
+.hero-menu-button:focus-visible,
+.hero-menu-button.is-active {
+  background: rgba(181, 56, 30, 0.34);
+  border-color: rgba(249, 231, 189, 0.4);
+}
+
+.hero-menu-button:hover,
+.hero-menu-button:focus-visible {
+  transform: translateY(-1px);
+}
+
+.hero-menu-button:focus-visible {
+  outline: 2px solid rgba(232, 212, 171, 0.34);
+  outline-offset: 2px;
 }
 
 .journey-seal {
@@ -493,16 +534,27 @@ h1 {
   overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  border: 1px solid rgba(232, 212, 171, 0.28);
+  gap: 0.42rem;
+  border: 1px solid rgba(232, 212, 171, 0.34);
   border-radius: 0.8rem;
-  padding: 0.78rem 0.9rem;
-  font: 500 0.96rem/1.2 "Noto Sans Thai", "Segoe UI", sans-serif;
+  padding: 0.7rem 0.9rem;
+  font: 500 0.88rem/1.2 "Noto Sans Thai", "Segoe UI", sans-serif;
   color: #f8f0de;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
-    rgba(14, 32, 40, 0.52);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03)),
+    rgba(14, 32, 40, 0.64);
   cursor: pointer;
   text-align: left;
+}
+
+.chapter-dropdown-button:hover,
+.chapter-dropdown-button:focus-visible {
+  border-color: rgba(249, 231, 189, 0.42);
+}
+
+.chapter-dropdown-button.is-active {
+  background: linear-gradient(135deg, rgba(181, 56, 30, 0.26), rgba(255, 255, 255, 0.03)),
+    rgba(14, 32, 40, 0.64);
+  border-color: rgba(249, 231, 189, 0.4);
 }
 
 .chapter-dropdown-button:disabled {
@@ -521,6 +573,20 @@ h1 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.chapter-dropdown-prefix {
+  flex-shrink: 0;
+  font: 700 0.68rem/1 "Noto Sans Thai", "Segoe UI", sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #f4dfb1;
+}
+
+.chapter-dropdown-divider {
+  flex-shrink: 0;
+  color: rgba(248, 240, 222, 0.6);
+  font-size: 0.7rem;
 }
 
 .chapter-dropdown-chevron {
@@ -643,6 +709,18 @@ h1 {
 .chapter-shell {
   display: grid;
   gap: 2rem;
+}
+
+.gallery-shell {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.gallery-header {
+  width: min(100%, 740px);
+  margin: 0 auto;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(20, 84, 71, 0.18);
 }
 
 .chapter-header {
@@ -934,9 +1012,14 @@ h1 {
     display: none;
   }
 
-  .hero-actions {
+  .hero-main-menu {
     justify-self: stretch;
     width: 100%;
+  }
+
+  .hero-menu {
+    grid-template-columns: 1fr;
+    gap: 0.48rem;
   }
 
   .journal-card {
@@ -988,6 +1071,11 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 0.75rem;
+}
+
+.photo-gallery-all {
+  width: min(100%, 920px);
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 }
 
 .gallery-thumb-btn {

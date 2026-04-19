@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
 import {
   getManifestSignature,
+  loadAllPhotos,
   loadChapterContent,
   loadNarrativeManifest,
   loadNarrativeManifestMetadata,
@@ -17,6 +18,7 @@ vi.mock("./lib/data", () => ({
   loadNarrativeManifest: vi.fn(),
   getManifestSignature: vi.fn((manifest) => JSON.stringify(manifest)),
   loadPhotosForDate: vi.fn(),
+  loadAllPhotos: vi.fn(),
 }));
 
 vi.mock("./lib/bookmark", async () => {
@@ -83,6 +85,7 @@ describe("App", () => {
     document.cookie = "travel_bookmark=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
     getBookmarkCookie.mockReturnValue(null);
     loadPhotosForDate.mockResolvedValue([]);
+    loadAllPhotos.mockResolvedValue([]);
     loadNarrativeManifest.mockResolvedValue({ chapters: [] });
     getManifestSignature.mockImplementation((manifest) => JSON.stringify(manifest));
   });
@@ -96,16 +99,18 @@ describe("App", () => {
     render(<App />);
 
     expect(await screen.findByRole("heading", { level: 2, name: "Introduction" })).toBeInTheDocument();
-    expect(screen.getByText("Introduction · Chapter 1 of 2")).toBeInTheDocument();
+    expect(screen.getByText("Chapter 1 of 2")).toBeInTheDocument();
     expect(setBookmarkCookie).not.toHaveBeenCalled();
     expect(loadChapterContent).toHaveBeenCalled();
 
     window.location.hash = "#day-two";
     window.dispatchEvent(new HashChangeEvent("hashchange"));
 
-    expect(await screen.findByText("Day Two · Chapter 2 of 2")).toBeInTheDocument();
+    expect(await screen.findByText("Chapter 2 of 2")).toBeInTheDocument();
     expect(scrollToChapterStart).toHaveBeenCalled();
-    expect(setBookmarkCookie).toHaveBeenCalledWith("day-two", "Day Two", 0);
+    await waitFor(() => {
+      expect(setBookmarkCookie).toHaveBeenCalledWith("day-two", "Day Two", 0);
+    });
     expect(loadChapterContent.mock.calls.length).toBeGreaterThanOrEqual(2);
     await waitFor(() => {
       expect(document.title).toBe("Day Two | Travel Journal");
@@ -192,9 +197,9 @@ describe("App", () => {
 
       render(<App />);
 
-      expect(await screen.findByText("Chapter 8 · Chapter 8 of 12")).toBeInTheDocument();
+      expect(await screen.findByText("Chapter 8 of 12")).toBeInTheDocument();
 
-      fireEvent.click(screen.getByRole("button", { name: "Chapter 8" }));
+      fireEvent.click(screen.getByRole("button", { name: /Read Journal\s+Chapter 8/i }));
 
       const listbox = await screen.findByRole("listbox");
 
@@ -338,7 +343,7 @@ describe("App", () => {
 
     getBookmarkCookie.mockReturnValue(null);
     render(<App />);
-    expect(await screen.findByText("Introduction · Chapter 1 of 3")).toBeInTheDocument();
+    expect(await screen.findByText("Chapter 1 of 3")).toBeInTheDocument();
     expect(screen.queryByText(/Pick up where you left off/)).not.toBeInTheDocument();
   });
 
@@ -350,7 +355,7 @@ describe("App", () => {
 
     getBookmarkCookie.mockReturnValue({ slug: "introduction", title: "Introduction", scrollY: 100 });
     render(<App />);
-    expect(await screen.findByText("Introduction · Chapter 1 of 2")).toBeInTheDocument();
+    expect(await screen.findByText("Chapter 1 of 2")).toBeInTheDocument();
     expect(screen.queryByText(/Pick up where you left off/)).not.toBeInTheDocument();
   });
 
@@ -364,7 +369,7 @@ describe("App", () => {
     getBookmarkCookie.mockReturnValue({ slug: "day-two", title: "Day Two", scrollY: 50 });
     render(<App />);
 
-    expect(await screen.findByText("Introduction · Chapter 1 of 3")).toBeInTheDocument();
+    expect(await screen.findByText("Chapter 1 of 3")).toBeInTheDocument();
     expect(await screen.findByText(/Pick up where you left off/)).toBeInTheDocument();
     expect(screen.getByText("Day Two")).toBeInTheDocument();
   });
@@ -379,7 +384,7 @@ describe("App", () => {
     getBookmarkCookie.mockReturnValue({ slug: "day-two", title: "Day Two", scrollY: 200 });
     render(<App />);
 
-    expect(await screen.findByText("Introduction · Chapter 1 of 3")).toBeInTheDocument();
+    expect(await screen.findByText("Chapter 1 of 3")).toBeInTheDocument();
     expect(screen.getByText(/Pick up where you left off/)).toBeInTheDocument();
 
     const resumeLinks = screen.getAllByText("Day Two");
@@ -387,7 +392,7 @@ describe("App", () => {
 
     fireEvent.click(resumeLink);
 
-    expect(await screen.findByText("Day Two · Chapter 2 of 3")).toBeInTheDocument();
+    expect(await screen.findByText("Chapter 2 of 3")).toBeInTheDocument();
     expect(screen.queryByText(/Pick up where you left off/)).not.toBeInTheDocument();
   });
 
@@ -421,7 +426,7 @@ describe("App", () => {
 
     expect(await screen.findByText(/Pick up where you left off/)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Introduction" }));
+    fireEvent.click(screen.getByRole("button", { name: /Read Journal\s+Introduction/i }));
     fireEvent.click(await screen.findByRole("option", { name: /Day Two/ }));
 
     await waitFor(() => {
@@ -444,7 +449,7 @@ describe("App", () => {
 
     render(<App />);
 
-    expect(await screen.findByText("Chapter 1 · Chapter 1 of 3")).toBeInTheDocument();
+    expect(await screen.findByText("Chapter 1 of 3")).toBeInTheDocument();
     expect(await screen.findByText(/Pick up where you left off/)).toBeInTheDocument();
     expect(screen.getByText("Chapter 2")).toBeInTheDocument();
     expect(setBookmarkCookie).not.toHaveBeenCalled();
@@ -475,5 +480,72 @@ describe("App", () => {
 
     expect(loadPhotosForDate).not.toHaveBeenCalled();
     expect(screen.queryByLabelText("Day photographs")).not.toBeInTheDocument();
+  });
+
+  it("renders #gallery route with merged photos and reuses lightbox", async () => {
+    window.location.hash = "#gallery";
+
+    setupNarrative([
+      createChapter("Day One", "day-one", { date: "2026-04-02", hasPhotos: true }),
+      createChapter("Day Two", "day-two", { date: "2026-04-03", hasPhotos: true }),
+    ]);
+
+    loadAllPhotos.mockResolvedValue([
+      {
+        src: "/travel/photos/2026-04-02/one.jpg",
+        index: 0,
+        date: "2026-04-02",
+        chapterTitle: "Day One",
+        chapterSlug: "day-one",
+      },
+      {
+        src: "/travel/photos/2026-04-02/two.jpg",
+        index: 1,
+        date: "2026-04-02",
+        chapterTitle: "Day One",
+        chapterSlug: "day-one",
+      },
+      {
+        src: "/travel/photos/2026-04-03/three.jpg",
+        index: 0,
+        date: "2026-04-03",
+        chapterTitle: "Day Two",
+        chapterSlug: "day-two",
+      },
+    ]);
+
+    render(<App />);
+
+    expect(await screen.findByRole("heading", { level: 2, name: "All Photos" })).toBeInTheDocument();
+    expect(loadAllPhotos).toHaveBeenCalled();
+
+    const firstThumb = screen.getByRole("button", { name: "Open photo 1 of 3" });
+    expect(firstThumb).toBeInTheDocument();
+
+    const thumbImage = screen.getByAltText("Day One · 2026-04-02 · photo 1");
+    expect(thumbImage).toHaveAttribute("loading", "lazy");
+
+    fireEvent.click(firstThumb);
+
+    expect(await screen.findByRole("dialog", { name: "Photo viewer" })).toBeInTheDocument();
+    expect(screen.getByAltText("Photo 1 of 3")).toBeInTheDocument();
+  });
+
+  it("navigates to gallery when hero button is clicked", async () => {
+    setupNarrative([
+      createChapter("Introduction", "introduction"),
+      createChapter("Day Two", "day-two"),
+    ]);
+
+    loadAllPhotos.mockResolvedValue([]);
+
+    render(<App />);
+
+    expect(await screen.findByText("Chapter 1 of 2")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "All Photos" }));
+
+    expect(await screen.findByRole("heading", { level: 2, name: "All Photos" })).toBeInTheDocument();
+    expect(window.location.hash).toBe("#gallery");
   });
 });

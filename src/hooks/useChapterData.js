@@ -9,6 +9,7 @@ import {
 } from "../lib/data";
 
 const INVALID_CHAPTER_MESSAGE = "Opps! It looks like you asked for a chapter that doesn't exist...";
+const GALLERY_ROUTE_SLUG = "gallery";
 
 function getChapterKey(chapter) {
   return chapter?.date || chapter?.slug || "";
@@ -53,6 +54,10 @@ function getChapterIndexFromSlug(chapters, targetSlug) {
 }
 
 function resolveChapterIndexOrThrow(chapters, targetSlug) {
+  if (targetSlug === GALLERY_ROUTE_SLUG) {
+    return 0;
+  }
+
   const chapterIndex = getChapterIndexFromSlug(chapters, targetSlug);
 
   if (chapterIndex >= 0) {

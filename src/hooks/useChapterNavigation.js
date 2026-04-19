@@ -26,19 +26,22 @@ export function useChapterNavigation(chapterData) {
   }, []);
 
   const chapters = chapterData?.chapters ?? [];
-  const currentChapterIndex = chapters.length ? getChapterIndexFromHash(chapters) : 0;
-  const currentChapter = chapters[currentChapterIndex] ?? null;
+  const isGalleryRoute = hashSlug === "gallery";
+  const currentChapterIndex = isGalleryRoute ? -1 : (chapters.length ? getChapterIndexFromHash(chapters) : 0);
+  const currentChapter = isGalleryRoute ? null : chapters[currentChapterIndex] ?? null;
 
   return {
     chapters,
+    isGalleryRoute,
     currentChapterIndex,
     currentChapter,
-    currentSlug: currentChapter?.slug || "",
+    currentSlug: isGalleryRoute ? "gallery" : currentChapter?.slug || "",
     shouldScroll: shouldScrollRef.current,
     clearShouldScroll() {
       shouldScrollRef.current = false;
     },
     jumpToChapter(targetSlug) {
+      shouldScrollRef.current = true;
       window.location.hash = targetSlug;
     },
   };

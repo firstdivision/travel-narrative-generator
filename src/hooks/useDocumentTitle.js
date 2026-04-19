@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { scrollToChapterStart } from "../lib/bookmark";
 
 /**
@@ -10,6 +10,7 @@ import { scrollToChapterStart } from "../lib/bookmark";
  */
 export function useDocumentTitle(state) {
   const { chapterData, currentChapter, error, shouldScroll, restoreScrollY, onScrollComplete } = state;
+  const lastNavigatedSlugRef = useRef("");
 
   // Update document title
   useEffect(() => {
@@ -29,8 +30,23 @@ export function useDocumentTitle(state) {
   // Handle scroll restoration on navigation
   useEffect(() => {
     if (!chapterData || !currentChapter || !shouldScroll) {
+      const currentSlug = currentChapter?.slug || "";
+
+      if (!chapterData || !currentChapter || !currentSlug) {
+        return;
+      }
+
+      if (currentSlug === lastNavigatedSlugRef.current) {
+        return;
+      }
+
+      // Fallback for chapter-link hash navigations when shouldScroll is not observed.
+      scrollToChapterStart();
+      lastNavigatedSlugRef.current = currentSlug;
       return;
     }
+
+    const currentSlug = currentChapter?.slug || "";
 
     if (restoreScrollY != null) {
       const targetY = restoreScrollY;
@@ -43,6 +59,10 @@ export function useDocumentTitle(state) {
 
     if (typeof onScrollComplete === "function") {
       onScrollComplete();
+    }
+
+    if (currentSlug) {
+      lastNavigatedSlugRef.current = currentSlug;
     }
   }, [chapterData, currentChapter, shouldScroll, restoreScrollY]);
 }

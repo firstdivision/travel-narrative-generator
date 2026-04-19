@@ -11,6 +11,7 @@ describe("useChapterNavigation", () => {
     const { result } = renderHook(() => useChapterNavigation(null));
 
     expect(result.current.chapters).toEqual([]);
+    expect(result.current.isGalleryRoute).toBe(false);
     expect(result.current.currentChapter).toBeNull();
     expect(result.current.currentChapterIndex).toBe(0);
     expect(result.current.currentSlug).toBe("");
@@ -30,8 +31,30 @@ describe("useChapterNavigation", () => {
     );
 
     expect(result.current.currentChapter).toEqual(chapters[0]);
+    expect(result.current.isGalleryRoute).toBe(false);
     expect(result.current.currentChapterIndex).toBe(0);
     expect(result.current.currentSlug).toBe("ch1");
+  });
+
+  it("treats #gallery as a dedicated non-chapter route", () => {
+    const chapters = [
+      { title: "Ch1", slug: "ch1" },
+      { title: "Ch2", slug: "ch2" },
+    ];
+
+    window.location.hash = "#gallery";
+
+    const { result } = renderHook(() =>
+      useChapterNavigation({
+        documentTitle: "Test",
+        chapters,
+      })
+    );
+
+    expect(result.current.isGalleryRoute).toBe(true);
+    expect(result.current.currentChapter).toBeNull();
+    expect(result.current.currentChapterIndex).toBe(-1);
+    expect(result.current.currentSlug).toBe("gallery");
   });
 
   it("selects chapter by hash", () => {

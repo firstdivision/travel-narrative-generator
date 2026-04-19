@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { BookmarkBanner } from "./components/BookmarkBanner";
 import { ChapterView } from "./components/ChapterView";
 import { ContentUpdateBanner } from "./components/ContentUpdateBanner";
+import { Gallery } from "./components/Gallery";
 import { HeroPanel } from "./components/HeroPanel";
 import { Lightbox } from "./components/Lightbox";
 import { useChapterData } from "./hooks/useChapterData";
@@ -17,7 +18,7 @@ export function App() {
 
   // Navigate chapters via hash
   const nav = useChapterNavigation(chapterData);
-  const { chapters, currentChapterIndex, currentChapter, currentSlug, jumpToChapter } = nav;
+  const { chapters, isGalleryRoute, currentChapterIndex, currentChapter, currentSlug, jumpToChapter } = nav;
 
   // Manage bookmark prompt and restoration
   const bookmark = useBookmarkBanner(chapterData, chapters, currentChapter);
@@ -59,21 +60,13 @@ export function App() {
       ? "Loading travel journal..."
       : chapterData?.documentTitle || "Travel Journal";
 
-  const subtitle = error
-    ? "The chapter view could not be prepared."
-    : loading && !chapterData
-      ? "Preparing chapter navigation..."
-      : currentChapter
-        ? `${currentChapter.title} · Chapter ${currentChapterIndex + 1} of ${chapters.length}`
-        : "Preparing chapter navigation...";
-
   return (
     <main className="page-shell">
       <HeroPanel
         documentTitle={heroTitle}
-        subtitle={subtitle}
         chapters={chapters}
         currentSlug={currentSlug}
+        isGalleryRoute={isGalleryRoute}
         loading={loading}
         onJumpToChapter={handleJumpToChapter}
       />
@@ -103,6 +96,11 @@ export function App() {
               <p className="status error">Unable to load the travel narrative.</p>
               <p className="error-detail">{error.message}</p>
             </>
+          ) : isGalleryRoute ? (
+            <Gallery
+              chapters={chapters}
+              onOpenLightbox={openLightbox}
+            />
           ) : !displayChapter ? (
             <p className="status">Loading journal entry...</p>
           ) : (

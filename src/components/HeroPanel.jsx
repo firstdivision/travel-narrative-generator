@@ -27,9 +27,9 @@ const HERO_SCRIPTS = [
 
 export function HeroPanel({
   documentTitle,
-  subtitle,
   chapters,
   currentSlug,
+  isGalleryRoute,
   loading,
   onJumpToChapter,
 }) {
@@ -54,15 +54,26 @@ export function HeroPanel({
             {documentTitle}
           </a>
         </h1>
-        <p className="subtitle">{subtitle}</p>
       </div>
 
-      <ChapterSelector
-        chapters={chapters}
-        currentSlug={currentSlug}
-        loading={loading}
-        onJumpToChapter={onJumpToChapter}
-      />
+      <div className="hero-main-menu" role="group" aria-label="Primary navigation">
+        <div className="hero-menu">
+          <ChapterSelector
+            chapters={chapters}
+            currentSlug={currentSlug}
+            isGalleryRoute={isGalleryRoute}
+            loading={loading}
+            onJumpToChapter={onJumpToChapter}
+          />
+          <button
+            className={`hero-menu-button${isGalleryRoute ? " is-active" : ""}`}
+            type="button"
+            onClick={() => onJumpToChapter("gallery")}
+          >
+            All Photos
+          </button>
+        </div>
+      </div>
     </section>
   );
 }
