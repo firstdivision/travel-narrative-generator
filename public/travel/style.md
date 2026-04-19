@@ -16,6 +16,7 @@ Avoid sounding like a travel blogger, influencer, or guidebook.
 
 ## Structure & Flow
 * If you see the word "grab" used as a noun, capitalize it, because I am probably referencing the rideshare company "Grab".
+* I will likely be referencing a place near where I stay called "Tamarind Square". however, voice to text often miss types this and calls it things like Tamron Square, Tamarine Square, or Cameron Square if you see these replace it with "Tamarind Square". 
 * Include the headers from the notes like the title and dates
   * e.g.: # The Great Asia Adventure - Main Title
   * "## Thursday, April 4" Sub heading, date.
