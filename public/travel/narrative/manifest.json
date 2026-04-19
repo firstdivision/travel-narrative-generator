@@ -119,7 +119,7 @@
       "slug": "ch-5eac617ef952",
       "prettySlug": "saturday-april-11-trains-towers-and-noodles",
       "contentHash": "76b1b40e0b78bb17c593b73afd2a633b7df302d8527bbe97e97e30fb07e32bea",
-      "hasPhotos": false
+      "hasPhotos": true
     },
     {
       "id": "ch-6cb5308b66c2",
@@ -130,7 +130,7 @@
       "slug": "ch-6cb5308b66c2",
       "prettySlug": "sunday-april-12-beef-balls-and-dumplings",
       "contentHash": "7b3d2f36cd6017675246fea4517837f3945780dec95a3647a42c0c62418fd526",
-      "hasPhotos": false
+      "hasPhotos": true
     }
   ]
 }
