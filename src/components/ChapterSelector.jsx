@@ -4,11 +4,13 @@ import { createPortal } from "react-dom";
 export function ChapterSelector({ chapters, currentSlug, loading, onJumpToChapter }) {
   const [open, setOpen] = useState(false);
   const [listPos, setListPos] = useState({ top: 0, left: 0, width: 0 });
+  const [canScrollDown, setCanScrollDown] = useState(false);
   const hasChapters = chapters.length > 0;
   const labelId = useId();
   const listboxId = useId();
   const buttonRef = useRef(null);
   const listRef = useRef(null);
+  const ulRef = useRef(null);
   const dropdownRef = useRef(null);
 
   const currentIndex = chapters.findIndex((c) => c.slug === currentSlug);
@@ -22,6 +24,19 @@ export function ChapterSelector({ chapters, currentSlug, loading, onJumpToChapte
       : currentChapter
         ? `${currentChapter.displaySlug || currentChapter.title}`
         : "Jump to chapter";
+
+  // Track whether the list can scroll further down
+  useLayoutEffect(() => {
+    if (!open) return;
+    const ul = ulRef.current;
+    if (!ul) return;
+    const check = () => {
+      setCanScrollDown(ul.scrollTop + ul.clientHeight < ul.scrollHeight - 1);
+    };
+    check();
+    ul.addEventListener("scroll", check, { passive: true });
+    return () => ul.removeEventListener("scroll", check);
+  }, [open]);
 
   // Compute dropdown position before paint when opening
   useLayoutEffect(() => {
@@ -130,33 +145,41 @@ export function ChapterSelector({ chapters, currentSlug, loading, onJumpToChapte
         </button>
 
         {open && createPortal(
-          <ul
+          <div
             ref={listRef}
-            id={listboxId}
-            role="listbox"
-            aria-labelledby={labelId}
-            className="chapter-dropdown-list"
+            className="chapter-dropdown-portal"
             style={{ top: listPos.top, left: listPos.left, width: listPos.width }}
           >
-            {chapters.map((chapter, index) => (
-              <li
-                key={chapter.slug}
-                role="option"
-                aria-selected={chapter.slug === currentSlug}
-                className={`chapter-dropdown-option${chapter.slug === currentSlug ? " is-current" : ""}`}
-                tabIndex={0}
-                onClick={() => selectChapter(chapter.slug)}
-                onKeyDown={(e) => handleOptionKeyDown(e, chapter.slug)}
-              >
-                <span className="chapter-dropdown-option-num">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="chapter-dropdown-option-title">
-                  {chapter.displaySlug || chapter.title}
-                </span>
-              </li>
-            ))}
-          </ul>,
+            <ul
+              ref={ulRef}
+              id={listboxId}
+              role="listbox"
+              aria-labelledby={labelId}
+              className="chapter-dropdown-list"
+            >
+              {chapters.map((chapter, index) => (
+                <li
+                  key={chapter.slug}
+                  role="option"
+                  aria-selected={chapter.slug === currentSlug}
+                  className={`chapter-dropdown-option${chapter.slug === currentSlug ? " is-current" : ""}`}
+                  tabIndex={0}
+                  onClick={() => selectChapter(chapter.slug)}
+                  onKeyDown={(e) => handleOptionKeyDown(e, chapter.slug)}
+                >
+                  <span className="chapter-dropdown-option-num">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="chapter-dropdown-option-title">
+                    {chapter.displaySlug || chapter.title}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {canScrollDown && (
+              <div className="chapter-dropdown-scroll-hint" aria-hidden="true" />
+            )}
+          </div>,
           document.body
         )}
       </div>

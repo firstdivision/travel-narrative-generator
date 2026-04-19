@@ -532,9 +532,12 @@ h1 {
   transform: rotate(180deg);
 }
 
-.chapter-dropdown-list {
+.chapter-dropdown-portal {
   position: absolute;
   z-index: 9999;
+}
+
+.chapter-dropdown-list {
   margin: 0;
   padding: 0.35rem;
   list-style: none;
@@ -546,6 +549,17 @@ h1 {
   max-height: 18rem;
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+
+.chapter-dropdown-scroll-hint {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3rem;
+  background: linear-gradient(to bottom, transparent, rgba(12, 26, 34, 0.92));
+  border-radius: 0 0 0.9rem 0.9rem;
+  pointer-events: none;
 }
 
 .chapter-dropdown-option {
