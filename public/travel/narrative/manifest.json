@@ -163,7 +163,7 @@
       "slug": "ch-718aea8b69f7",
       "prettySlug": "tuesday-april-21-whopper-in-waiting",
       "contentHash": "8c5e69df206b038f3905b5c385e57362ef9eb4a4d3d4cb462ec31d229a009026",
-      "hasPhotos": false
+      "hasPhotos": true
     },
     {
       "id": "ch-5f0f53a65c09",
@@ -174,7 +174,7 @@
       "slug": "ch-5f0f53a65c09",
       "prettySlug": "wednesday-april-22-ceiling-noise-and-black-thorn",
       "contentHash": "bae7b3a8607f4a7882c4e822db8c10a898a2a709209b92df4573c7335f0468d5",
-      "hasPhotos": false
+      "hasPhotos": true
     }
   ]
 }
