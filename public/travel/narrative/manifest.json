@@ -153,6 +153,17 @@
       "prettySlug": "monday-april-20-plastic-cutlery-monday",
       "contentHash": "8bcc1e42a60c2b2b0a9fc092c43f0daf8b80cda35516cf3d7af7466b5a8c051d",
       "hasPhotos": false
+    },
+    {
+      "id": "ch-718aea8b69f7",
+      "date": "2026-04-21",
+      "file": "/travel/narrative/2026-04-21.md",
+      "title": "Tuesday, April 21 - The Whopper Question",
+      "displaySlug": "Tuesday, April 21 - The Whopper Question",
+      "slug": "ch-718aea8b69f7",
+      "prettySlug": "tuesday-april-21-the-whopper-question",
+      "contentHash": "ccb373bb566196d69583613791dc2300402a02b964d044e94839482dd712ceab",
+      "hasPhotos": false
     }
   ]
 }
