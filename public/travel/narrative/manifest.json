@@ -19,7 +19,7 @@
       "displaySlug": "Thursday, April 2 - Coffee Before Contrails",
       "slug": "ch-885269195504",
       "prettySlug": "thursday-april-2-coffee-before-contrails",
-      "contentHash": "b62fbcec5326ad2c2eebb8f60a41c6a3471cc53a58a0f9ae5b86392c8ab32df7",
+      "contentHash": "12551f86d99baf3dfb918b0f18927f33e79a946f9707544b1797d08b3a933c26",
       "hasPhotos": false
     },
     {
@@ -131,6 +131,17 @@
       "prettySlug": "sunday-april-12-beef-balls-and-dumplings",
       "contentHash": "7b3d2f36cd6017675246fea4517837f3945780dec95a3647a42c0c62418fd526",
       "hasPhotos": true
+    },
+    {
+      "id": "ch-864ef4a05b4e",
+      "date": "2026-04-13",
+      "file": "/travel/narrative/2026-04-13.md",
+      "title": "April 13 to 17 - Pipelines and Blanket Purchases",
+      "displaySlug": "April 13 to 17 - Pipelines and Blanket Purchases",
+      "slug": "ch-864ef4a05b4e",
+      "prettySlug": "april-13-to-17-pipelines-and-blanket-purchases",
+      "contentHash": "9a1f93774a015ae18da588f2dce152a60bfeb6f6be3d336f595ec946532d3cda",
+      "hasPhotos": false
     }
   ]
 }
