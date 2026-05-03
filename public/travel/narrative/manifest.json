@@ -1,6 +1,17 @@
 {
   "chapters": [
     {
+      "id": "ch-e9654d0b9c58",
+      "date": "2020-04-24",
+      "file": "/travel/narrative/2020-04-24.md",
+      "title": "Thursday, April 23 - Rain, Rice, and Impulse",
+      "displaySlug": "Thursday, April 23 - Rain, Rice, and Impulse",
+      "slug": "ch-e9654d0b9c58",
+      "prettySlug": "thursday-april-23-rain-rice-and-impulse",
+      "contentHash": "9e28c6a823a0db03404c1998dd6e4ef8e4b161c6aa66fc7b1e3ba4ed1d9e1937",
+      "hasPhotos": false
+    },
+    {
       "id": "ch-75fffffd05b5",
       "date": "2026-04-02-intro",
       "file": "/travel/narrative/2026-04-02-intro.md",
