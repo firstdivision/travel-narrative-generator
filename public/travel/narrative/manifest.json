@@ -185,7 +185,7 @@
       "slug": "ch-c8c4d0b1fe12",
       "prettySlug": "thursday-april-23-cardamom-rain-and-a-2-am-decision",
       "contentHash": "46d6361c697c58a7b99e4ab4fad7fcc49fa8f10c0101f17168e4e536d0c1bd14",
-      "hasPhotos": false
+      "hasPhotos": true
     },
     {
       "id": "ch-d1a244801a80",
@@ -196,7 +196,7 @@
       "slug": "ch-d1a244801a80",
       "prettySlug": "friday-april-24-snowman-packing-thump-thump-departure",
       "contentHash": "743a21583c662d9f3a5551a24802de3b5b1dd5dd2294fa03b2f1e398294bbe4f",
-      "hasPhotos": true
+      "hasPhotos": false
     }
   ]
 }
