@@ -41,12 +41,38 @@ const style = fs.existsSync(stylePath)
   ? fs.readFileSync(stylePath, "utf8")
   : "";
 
+function hasValidPoemBlock(poemBody) {
+  const lines = poemBody
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+  return lines.length === 4;
+}
+
+function hasRequiredTopPoem(markdown) {
+  const normalized = markdown.replace(/^\uFEFF/, "").trimStart();
+
+  // Case 1: no H1 title, poem must be at the top.
+  const topPoemMatch = normalized.match(/^```poem\n([\s\S]*?)\n```/);
+  if (topPoemMatch?.[1] && hasValidPoemBlock(topPoemMatch[1])) {
+    return true;
+  }
+
+  // Case 2: with H1 title, poem must be immediately after H1.
+  const h1ThenPoemMatch = normalized.match(/^#\s+.+\n(?:\n)?```poem\n([\s\S]*?)\n```/);
+  if (h1ThenPoemMatch?.[1] && hasValidPoemBlock(h1ThenPoemMatch[1])) {
+    return true;
+  }
+
+  return false;
+}
+
 for (const sourceDayFile of sourceDayFiles) {
   const chapterFileName = path.basename(sourceDayFile);
   const outputPath = path.join(narrativeDir, chapterFileName);
   const notes = fs.readFileSync(sourceDayFile, "utf8");
 
-  const prompt = `
+  const basePrompt = `
 You are rewriting raw travel notes into a polished first-person travel narrative.
 
 Requirements:
@@ -59,6 +85,14 @@ Requirements:
 - Keep headings in the same order they appear in the source.
 - Output only markdown for the final narrative.
 - Keep the chapter focused on this specific day file: ${chapterFileName}
+- Include one required poem block using this exact shape:
+  \`\`\`poem
+  line 1
+  line 2
+  line 3
+  line 4
+  \`\`\`
+- Placement rule: if there is no H1 heading in the output, the poem block must be the very first content in the file. If there is an H1 heading, place the poem block immediately after the H1 heading.
 
 Style guide:
 ${style}
@@ -67,14 +101,30 @@ Source notes:
 ${notes}
 `;
 
-  const response = await client.responses.create({
-    model: "gpt-5.4",
-    input: prompt,
-  });
+  let text = "";
+  const maxAttempts = 3;
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    const retryReminder =
+      attempt === 1
+        ? ""
+        : "\n\nValidation reminder: Your previous output failed poem validation. Return markdown that includes a correctly placed ```poem block with exactly four non-empty lines.";
 
-  const text =
-    response.output_text ||
-    "No narrative was returned by the model.";
+    const response = await client.responses.create({
+      model: "gpt-5.4",
+      input: `${basePrompt}${retryReminder}`,
+    });
+
+    text = response.output_text || "No narrative was returned by the model.";
+    if (hasRequiredTopPoem(text)) {
+      break;
+    }
+
+    if (attempt === maxAttempts) {
+      console.warn(
+        `Warning: ${chapterFileName} was generated without a valid top poem block after ${maxAttempts} attempts.`,
+      );
+    }
+  }
 
   fs.mkdirSync(narrativeDir, { recursive: true });
   fs.writeFileSync(outputPath, text);
