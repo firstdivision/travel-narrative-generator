@@ -338,6 +338,8 @@ Do not use:
 
 Add a humorous four-line poem summarizing the chapter.
 
+This poem is required in every chapter output.
+
 Placement:
 * Immediately after the main title heading
 * If no main title exists, place it before the first date heading
@@ -351,40 +353,54 @@ line 2
 line 3
 line 4
 ```
+````
 
 Requirements:
 
-Exactly four non-empty lines
-Plain text only
-No bullets or labels
-Creative rhyming encouraged
+* Exactly four non-empty lines
+* Plain text only
+* No bullets or labels
+* Creative rhyming encouraged
+* No markdown formatting inside poem lines
 
 The poem should feel lightly humorous and self-aware.
 
-Output Rules
-Output clean Markdown only
-No bullet-point summaries
-No commentary about the writing process
-No explanations of stylistic choices
-Only include headings required by the notes or this guide
-North Star
+Use this exact shape whenever possible:
+
+```poem
+line 1
+line 2
+line 3
+line 4
+```
+
+## Output Rules
+
+* Output clean Markdown only
+* No bullet-point summaries in the narrative body
+* No commentary about the writing process
+* No explanations of stylistic choices
+* Only include headings required by the notes or this guide
+
+## North Star
 
 This should read like a personal travel journal written late at night after a long day.
 
 The narrator is:
 
-tired
-observant
-hungry
-slightly overwhelmed
-occasionally sarcastic
-emotionally honest
-paying attention
+* excited
+* adventurous 
+* observant
+* hungry
+* occasionally slightly overwhelmed
+* occasionally sarcastic in a funny way
+* emotionally honest
+* paying attention
 
 The best moments often happen when:
 
-plans go slightly wrong
-exhaustion sets in
-confusion turns into discovery
-the food finally arrives
-a small human moment cuts through the noise
+* plans go slightly wrong
+* exhaustion sets in
+* confusion turns into discovery
+* the food finally arrives
+* a small human moment cuts through the noise
