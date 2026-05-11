@@ -217,7 +217,7 @@
       "displaySlug": "Saturday, May 9 - Ferries, False Alarms, and Salt Water",
       "slug": "ch-dbedba897a1b",
       "prettySlug": "saturday-may-9-ferries-false-alarms-and-salt-water",
-      "contentHash": "c2ddf7cd7f19f8b68822542d256533fdae7c0480aaebe11931193768e9d57b83",
+      "contentHash": "c8678cef387d71a41a4acd1b077f0b6016f2d4b96ad47ee6f2d80026958d9f6e",
       "hasPhotos": false
     },
     {
@@ -229,6 +229,17 @@
       "slug": "ch-5274a63313a6",
       "prettySlug": "sunday-may-10-snorkels-sand-and-fridge-beer",
       "contentHash": "cb1d35b539e013c1cf41c25a8f893b0bf0596987ba8862ed852215627fba38c9",
+      "hasPhotos": false
+    },
+    {
+      "id": "ch-776dae374cac",
+      "date": "2026-05-11",
+      "file": "/travel/narrative/2026-05-11.md",
+      "title": "Monday, May 11 - Elephants and Warning Shots",
+      "displaySlug": "Monday, May 11 - Elephants and Warning Shots",
+      "slug": "ch-776dae374cac",
+      "prettySlug": "monday-may-11-elephants-and-warning-shots",
+      "contentHash": "3a8be2db4e5f9c6471325106905112ba53e8d31153d96cd448c1507081cc49f4",
       "hasPhotos": false
     }
   ]
