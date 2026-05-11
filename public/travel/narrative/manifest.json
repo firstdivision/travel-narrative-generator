@@ -213,11 +213,22 @@
       "id": "ch-dbedba897a1b",
       "date": "2026-05-09",
       "file": "/travel/narrative/2026-05-09.md",
-      "title": "Saturday, May 9 - Boarding Panic and Snake Duty",
-      "displaySlug": "Saturday, May 9 - Boarding Panic and Snake Duty",
+      "title": "Saturday, May 9 - Gates, Boats, and One Unimpressed Snake",
+      "displaySlug": "Saturday, May 9 - Gates, Boats, and One Unimpressed Snake",
       "slug": "ch-dbedba897a1b",
-      "prettySlug": "saturday-may-9-boarding-panic-and-snake-duty",
-      "contentHash": "6a8c6e063fbe67cf4b300b717c83f940d740600ef767c595b6cea562caf1d8f8",
+      "prettySlug": "saturday-may-9-gates-boats-and-one-unimpressed-snake",
+      "contentHash": "d30f4293cd0af7c0cbafc909fb4a2de0cb21e370d52e99dac62541a0424477f8",
+      "hasPhotos": false
+    },
+    {
+      "id": "ch-5274a63313a6",
+      "date": "2026-05-10",
+      "file": "/travel/narrative/2026-05-10.md",
+      "title": "Sunday, May 10 - Snorkels, Sand, and Fridge Beer",
+      "displaySlug": "Sunday, May 10 - Snorkels, Sand, and Fridge Beer",
+      "slug": "ch-5274a63313a6",
+      "prettySlug": "sunday-may-10-snorkels-sand-and-fridge-beer",
+      "contentHash": "cb1d35b539e013c1cf41c25a8f893b0bf0596987ba8862ed852215627fba38c9",
       "hasPhotos": false
     }
   ]
