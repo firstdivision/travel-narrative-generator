@@ -241,6 +241,17 @@
       "prettySlug": "monday-may-11-elephants-caution-and-club-sandwiches",
       "contentHash": "70bf818de6d7265fb4e7b609ca5044bee644222dbebb9b462a54ff69424de750",
       "hasPhotos": true
+    },
+    {
+      "id": "ch-d279fe5d573b",
+      "date": "2026-05-12",
+      "file": "/travel/narrative/2026-05-12.md",
+      "title": "Tuesday, May 12, 2026 - Boats, Brake Rotors, and Bad Translation",
+      "displaySlug": "Tuesday, May 12, 2026 - Boats, Brake Rotors, and Bad Translation",
+      "slug": "ch-d279fe5d573b",
+      "prettySlug": "tuesday-may-12-2026-boats-brake-rotors-and-bad-translation",
+      "contentHash": "8ca164c3c9e8ef2f629cbf0574b032bb23e2a6fa8d02cd35cd9dc07c11806b4f",
+      "hasPhotos": false
     }
   ]
 }
