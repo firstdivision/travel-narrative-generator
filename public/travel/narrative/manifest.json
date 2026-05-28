@@ -318,6 +318,17 @@
       "prettySlug": "monday-may-18-maximum-tourism",
       "contentHash": "e2c56e046cd8949e8b245f12b8752426714c46619192dbb0fec73fb74a3b74d5",
       "hasPhotos": false
+    },
+    {
+      "id": "ch-e74d9d3316f2",
+      "date": "2026-05-19",
+      "file": "/travel/narrative/2026-05-19.md",
+      "title": "Tuesday, May 19 - Hanoi, Round Two",
+      "displaySlug": "Tuesday, May 19 - Hanoi, Round Two",
+      "slug": "ch-e74d9d3316f2",
+      "prettySlug": "tuesday-may-19-hanoi-round-two",
+      "contentHash": "f8d02dad31bef4721fe84cc270b028f6dd032bda933a708af018a3563f77e9a5",
+      "hasPhotos": false
     }
   ]
 }
