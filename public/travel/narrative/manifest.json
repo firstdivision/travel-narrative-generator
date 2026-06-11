@@ -210,6 +210,17 @@
       "hasPhotos": false
     },
     {
+      "id": "ch-a66f1061c79a",
+      "date": "2026-04-26",
+      "file": "/travel/narrative/2026-04-26.md",
+      "title": "April 26, 2026 - Rain Delays and Chicken Rice",
+      "displaySlug": "April 26, 2026 - Rain Delays and Chicken Rice",
+      "slug": "ch-a66f1061c79a",
+      "prettySlug": "april-26-2026-rain-delays-and-chicken-rice",
+      "contentHash": "2d009b79d8e1fa2b603e4424de78ea9a3b26a29e4d78c228b6252a6f783f1ef1",
+      "hasPhotos": true
+    },
+    {
       "id": "ch-dbedba897a1b",
       "date": "2026-05-09",
       "file": "/travel/narrative/2026-05-09.md",
