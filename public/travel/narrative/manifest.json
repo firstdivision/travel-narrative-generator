@@ -232,6 +232,94 @@
       "hasPhotos": true
     },
     {
+      "id": "ch-7cf2846c8174",
+      "date": "2026-04-28",
+      "file": "/travel/narrative/2026-04-28.md",
+      "title": "Tuesday, April 28 - Luggage Triage",
+      "displaySlug": "Tuesday, April 28 - Luggage Triage",
+      "slug": "ch-7cf2846c8174",
+      "prettySlug": "tuesday-april-28-luggage-triage",
+      "contentHash": "318ad92c2c438e949fbbf117f5c0a6bcd0ef727aadae7c9387bbcea3b0a37984",
+      "hasPhotos": true
+    },
+    {
+      "id": "ch-4d0cc92ab787",
+      "date": "2026-04-30",
+      "file": "/travel/narrative/2026-04-30.md",
+      "title": "Thursday, April 30 - Curry Nerves and Dinner Fries",
+      "displaySlug": "Thursday, April 30 - Curry Nerves and Dinner Fries",
+      "slug": "ch-4d0cc92ab787",
+      "prettySlug": "thursday-april-30-curry-nerves-and-dinner-fries",
+      "contentHash": "b0c97a9d71ac42ff4babf28407902ec09022aa3786a0b1284eb3d24cdf1bf9b2",
+      "hasPhotos": true
+    },
+    {
+      "id": "ch-6b81a0f3c0aa",
+      "date": "2026-05-01",
+      "file": "/travel/narrative/2026-05-01.md",
+      "title": "Friday, May 1 - Wet Socks and Velvet Ropes",
+      "displaySlug": "Friday, May 1 - Wet Socks and Velvet Ropes",
+      "slug": "ch-6b81a0f3c0aa",
+      "prettySlug": "friday-may-1-wet-socks-and-velvet-ropes",
+      "contentHash": "79383d9bd846a2dd2c489db8e5b9630e1529f49341cd091f8bb3045cd5cb36a6",
+      "hasPhotos": true
+    },
+    {
+      "id": "ch-eafdb6d44379",
+      "date": "2026-05-03",
+      "file": "/travel/narrative/2026-05-03.md",
+      "title": "Sunday, May 3 - Kopi, Temples, and Mall Miles",
+      "displaySlug": "Sunday, May 3 - Kopi, Temples, and Mall Miles",
+      "slug": "ch-eafdb6d44379",
+      "prettySlug": "sunday-may-3-kopi-temples-and-mall-miles",
+      "contentHash": "8335e24beda22a60d83de9fd3a9acd1de255161809cd77aef7efa3617d734d9a",
+      "hasPhotos": true
+    },
+    {
+      "id": "ch-3f9009e8161b",
+      "date": "2026-05-04",
+      "file": "/travel/narrative/2026-05-04.md",
+      "title": "Monday, May 4 - Dogs, Chicken, and Good Timing",
+      "displaySlug": "Monday, May 4 - Dogs, Chicken, and Good Timing",
+      "slug": "ch-3f9009e8161b",
+      "prettySlug": "monday-may-4-dogs-chicken-and-good-timing",
+      "contentHash": "7dc3734c9bf94275261deff7ee80c751d2c26a46d991871dcd46853ab73f162c",
+      "hasPhotos": true
+    },
+    {
+      "id": "ch-042cfd35e8d9",
+      "date": "2026-05-05",
+      "file": "/travel/narrative/2026-05-05.md",
+      "title": "Tuesday, May 5 - Shakshuka, Cats, and Accidental Whisky Bar",
+      "displaySlug": "Tuesday, May 5 - Shakshuka, Cats, and Accidental Whisky Bar",
+      "slug": "ch-042cfd35e8d9",
+      "prettySlug": "tuesday-may-5-shakshuka-cats-and-accidental-whisky-bar",
+      "contentHash": "3c3ab5ba7e31d45c71f1fc5cd02425d7fc138664155fc1867aa0dd3683b0151a",
+      "hasPhotos": true
+    },
+    {
+      "id": "ch-fdb725229d7e",
+      "date": "2026-05-06",
+      "file": "/travel/narrative/2026-05-06.md",
+      "title": "Wednesday, May 6 - Huskies, Heat, and Noodles",
+      "displaySlug": "Wednesday, May 6 - Huskies, Heat, and Noodles",
+      "slug": "ch-fdb725229d7e",
+      "prettySlug": "wednesday-may-6-huskies-heat-and-noodles",
+      "contentHash": "71b021c6577fcfda592ad5dc21b5c3667764968bc56c660d0d9c2901401e653f",
+      "hasPhotos": true
+    },
+    {
+      "id": "ch-6e64e76521e3",
+      "date": "2026-05-07",
+      "file": "/travel/narrative/2026-05-07.md",
+      "title": "Thursday, May 7 - Gearboxes and Late Arrivals",
+      "displaySlug": "Thursday, May 7 - Gearboxes and Late Arrivals",
+      "slug": "ch-6e64e76521e3",
+      "prettySlug": "thursday-may-7-gearboxes-and-late-arrivals",
+      "contentHash": "8ff2d223704d8ffc9d75f421e16faff86f331e093ca37f3ca20c3cd41ec11b46",
+      "hasPhotos": true
+    },
+    {
       "id": "ch-dbedba897a1b",
       "date": "2026-05-09",
       "file": "/travel/narrative/2026-05-09.md",
