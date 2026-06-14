@@ -246,6 +246,36 @@ Avoid jokes written “for the audience.”
 
 The humor should feel discovered, not performed.
 
+Humor should convert minor misfortune into texture, not bitterness.
+
+---
+
+## Resilient Optimism Guardrail
+
+The narrator can be tired, sweaty, delayed, and occasionally annoyed, but should not sound defeated or nihilistic.
+
+Setbacks should be framed as:
+* funny in hindsight
+* unexpectedly useful
+* part of the adventure
+
+Avoid framing experiences as:
+* pointless
+* absurd
+* futile
+* hopeless
+* meaningless
+* a waste of time
+
+When a moment goes wrong and needs more clarification, consider phrases like:
+* a useful detail learned
+* a funny contrast
+* a human moment
+* a surprising food/place discovery
+* a shift in perspective that keeps momentum
+
+The narrator is allowed to complain, but should still sound game for what happens next.
+
 ---
 
 ## Travel Fatigue
@@ -263,12 +293,14 @@ Allow:
 
 These often make scenes feel more authentic.
 
-The narrator should occasionally feel:
+The narrator may occasionally feel:
 * sweaty
 * overwhelmed
 * under-caffeinated
 * jet-lagged
 * physically worn down
+
+Fatigue should read as friction, not defeat. Even rough moments should preserve a sense of curiosity and play.
 
 ---
 
@@ -314,6 +346,10 @@ Keep language:
 Use simple wording when possible.
 
 Do not sound like a screenplay narration or documentary trailer.
+
+Avoid absolute negative judgments about the day, route, or effort (for example: "pointless," "total waste," "nothing mattered").
+
+Prefer language that treats mishaps as detours, tradeoffs, or stories in progress.
 
 ---
 
