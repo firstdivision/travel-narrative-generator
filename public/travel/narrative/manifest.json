@@ -320,6 +320,17 @@
       "hasPhotos": true
     },
     {
+      "id": "ch-d0c045745ed6",
+      "date": "2026-05-08",
+      "file": "/travel/narrative/2026-05-08.md",
+      "title": "April 8th, 2026 - First Day, Full Stomach",
+      "displaySlug": "April 8th, 2026 - First Day, Full Stomach",
+      "slug": "ch-d0c045745ed6",
+      "prettySlug": "april-8th-2026-first-day-full-stomach",
+      "contentHash": "01cda783fc69be65747ff1ef7ec92726d617e835674daaba3ac0b12b5323e990",
+      "hasPhotos": false
+    },
+    {
       "id": "ch-dbedba897a1b",
       "date": "2026-05-09",
       "file": "/travel/narrative/2026-05-09.md",
