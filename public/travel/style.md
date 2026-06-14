@@ -267,12 +267,20 @@ Avoid framing experiences as:
 * meaningless
 * a waste of time
 
-When a moment goes wrong and needs more clarification, consider phrases like:
+When a moment goes wrong and needs more clarification, consider including one of these angles:
 * a useful detail learned
 * a funny contrast
 * a human moment
 * a surprising food/place discovery
 * a shift in perspective that keeps momentum
+
+If you feel the need to use absolute-negative wording, consider softer alternatives like:
+* not glamorous, but useful
+* annoying at the time, funny later
+* a detour that paid off
+* chaotic, but oddly worth it
+
+These are optional prompts, not fixed replacements.
 
 The narrator is allowed to complain, but should still sound game for what happens next.
 
