@@ -39,8 +39,8 @@ export function getChapterIndexFromHash(chapters) {
 }
 
 export function scrollToChapterStart() {
-  document.querySelector(".hero-panel")?.scrollIntoView({
+  window.scrollTo({
+    top: 0,
     behavior: "smooth",
-    block: "start",
   });
 }
