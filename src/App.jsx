@@ -109,6 +109,7 @@ export function App() {
               chapterIndex={currentChapterIndex}
               chapters={chapters}
               onOpenLightbox={openLightbox}
+              onJumpToChapter={handleJumpToChapter}
             />
           )}
         </article>

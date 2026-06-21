@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { renderChapterHtml } from "../lib/markdown";
 import { PhotoGallery } from "./PhotoGallery";
 
-export function ChapterView({ chapter, chapterIndex, chapters, onOpenLightbox }) {
+export function ChapterView({ chapter, chapterIndex, chapters, onOpenLightbox, onJumpToChapter }) {
   const chapterHtml = useMemo(() => renderChapterHtml(chapter.tokens), [chapter.tokens]);
   const totalChapters = chapters.length;
   const previousChapter = chapters[chapterIndex - 1] ?? null;
@@ -25,7 +25,14 @@ export function ChapterView({ chapter, chapterIndex, chapters, onOpenLightbox })
 
       <nav className="chapter-nav" aria-label="Chapter navigation">
         {previousChapter ? (
-          <a className="chapter-link chapter-link-previous" href={`#${previousChapter.slug}`}>
+          <a
+            className="chapter-link chapter-link-previous"
+            href={`#${previousChapter.slug}`}
+            onClick={(event) => {
+              event.preventDefault();
+              onJumpToChapter(previousChapter.slug);
+            }}
+          >
             {`Previous: ${previousChapter.title}`}
           </a>
         ) : (
@@ -33,7 +40,14 @@ export function ChapterView({ chapter, chapterIndex, chapters, onOpenLightbox })
         )}
 
         {nextChapter ? (
-          <a className="chapter-link chapter-link-next" href={`#${nextChapter.slug}`}>
+          <a
+            className="chapter-link chapter-link-next"
+            href={`#${nextChapter.slug}`}
+            onClick={(event) => {
+              event.preventDefault();
+              onJumpToChapter(nextChapter.slug);
+            }}
+          >
             {`Continue: ${nextChapter.title}`}
           </a>
         ) : (

@@ -39,8 +39,15 @@ export function getChapterIndexFromHash(chapters) {
 }
 
 export function scrollToChapterStart() {
+  // iOS Safari can ignore smooth scroll on hash-driven rerenders; force top immediately.
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
   window.scrollTo({
     top: 0,
-    behavior: "smooth",
+    behavior: "auto",
+  });
+
+  window.requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
   });
 }
