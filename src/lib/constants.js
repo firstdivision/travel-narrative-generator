@@ -11,3 +11,6 @@ export const BOOKMARK_COOKIE_NAME = "travel_bookmark";
 
 // Polling interval for checking narrative manifest/chapter updates
 export const CHAPTER_REFRESH_INTERVAL = 60_000;
+
+// localStorage key for the reader's chosen content view mode (narrative vs. days)
+export const DAYS_VIEW_MODE_STORAGE_KEY = "travel_content_view_mode";

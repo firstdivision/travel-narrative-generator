@@ -6,6 +6,7 @@ import {
   getManifestSignature,
   loadAllPhotos,
   loadChapterContent,
+  loadDaysContent,
   loadNarrativeManifest,
   loadNarrativeManifestMetadata,
   loadPhotosForDate,
@@ -14,6 +15,7 @@ import { getBookmarkCookie, scrollToChapterStart, setBookmarkCookie } from "./li
 
 vi.mock("./lib/data", () => ({
   loadChapterContent: vi.fn(),
+  loadDaysContent: vi.fn(),
   loadNarrativeManifestMetadata: vi.fn(),
   loadNarrativeManifest: vi.fn(),
   getManifestSignature: vi.fn((manifest) => JSON.stringify(manifest)),
@@ -39,6 +41,8 @@ function createChapter(title, slug, options = {}) {
     displaySlug: options.displaySlug ?? title,
     date: options.date ?? null,
     file: options.file ?? `/travel/narrative/${slug}.md`,
+    daysFile: options.daysFile ?? null,
+    daysBody: options.daysBody ?? null,
     hasPhotos: options.hasPhotos,
     contentHash: options.contentHash ?? `${slug}-hash`,
     body: options.body ?? `${title} body copy.`,
@@ -54,6 +58,7 @@ function setupNarrative(chapters, documentTitle = "Travel Journal") {
       displaySlug: chapter.displaySlug,
       date: chapter.date,
       file: chapter.file,
+      daysFile: chapter.daysFile,
       contentHash: chapter.contentHash,
       hasPhotos: chapter.hasPhotos !== false,
       tokens: null,
@@ -61,6 +66,22 @@ function setupNarrative(chapters, documentTitle = "Travel Journal") {
   };
 
   loadNarrativeManifestMetadata.mockResolvedValue(metadata);
+  loadDaysContent.mockImplementation(async (filePath, fallbackTitle) => {
+    if (!filePath) {
+      return null;
+    }
+
+    const chapter = chapters.find((item) => item.daysFile === filePath);
+
+    if (!chapter) {
+      throw new Error(`Unexpected days file: ${filePath}`);
+    }
+
+    return {
+      chapterTitle: chapter.title || fallbackTitle,
+      contentTokens: marked.lexer(chapter.daysBody),
+    };
+  });
   loadChapterContent.mockImplementation(async (filePath, fallbackTitle) => {
     const chapter = chapters.find((item) => item.file === filePath);
 
@@ -547,5 +568,41 @@ describe("App", () => {
 
     expect(await screen.findByRole("heading", { level: 2, name: "All Photos" })).toBeInTheDocument();
     expect(window.location.hash).toBe("#gallery");
+  });
+
+  it("toggles between narrative and journal content when a days file exists", async () => {
+    setupNarrative([
+      createChapter("Introduction", "introduction", {
+        daysFile: "/travel/days/introduction.md",
+        daysBody: "Original journal notes for the introduction.",
+      }),
+      createChapter("Day Two", "day-two"),
+    ]);
+
+    render(<App />);
+
+    expect(await screen.findByRole("heading", { level: 2, name: "Introduction" })).toBeInTheDocument();
+    expect(screen.getByText("Introduction body copy.")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Journal" }));
+
+    expect(await screen.findByText("Original journal notes for the introduction.")).toBeInTheDocument();
+    expect(screen.queryByText("Introduction body copy.")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "AI-Assisted" }));
+
+    expect(await screen.findByText("Introduction body copy.")).toBeInTheDocument();
+  });
+
+  it("hides the content toggle when a chapter has no days file", async () => {
+    setupNarrative([
+      createChapter("Introduction", "introduction"),
+      createChapter("Day Two", "day-two"),
+    ]);
+
+    render(<App />);
+
+    expect(await screen.findByRole("heading", { level: 2, name: "Introduction" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Journal" })).not.toBeInTheDocument();
   });
 });

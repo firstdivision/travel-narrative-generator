@@ -4,6 +4,7 @@ import { CHAPTER_REFRESH_INTERVAL } from "../lib/constants";
 import {
   getManifestSignature,
   loadChapterContent,
+  loadDaysContent,
   loadNarrativeManifest,
   loadNarrativeManifestMetadata,
 } from "../lib/data";
@@ -67,11 +68,12 @@ function resolveChapterIndexOrThrow(chapters, targetSlug) {
   throw new Error(INVALID_CHAPTER_MESSAGE);
 }
 
-function buildChapterData(metadata, chapterIndex, chapterContent) {
+function buildChapterData(metadata, chapterIndex, chapterContent, daysContent) {
   const chapters = metadata.chapters.map((chapter, index) => ({
     ...chapter,
     title: index === chapterIndex ? chapterContent.chapterTitle : chapter.title,
     tokens: index === chapterIndex ? chapterContent.contentTokens : null,
+    daysTokens: index === chapterIndex ? daysContent?.contentTokens || null : null,
   }));
 
   return {
@@ -104,6 +106,7 @@ function applyMetadataToCurrentChapter(previousData, metadata) {
       ...chapter,
       title: previousChapter.title,
       tokens: previousChapter.tokens,
+      daysTokens: previousChapter.daysTokens,
     };
   });
 
@@ -221,13 +224,16 @@ export function useChapterData() {
       }
 
       try {
-        const chapterContent = await loadChapterContent(chapterEntry.file, chapterEntry.title);
+        const [chapterContent, daysContent] = await Promise.all([
+          loadChapterContent(chapterEntry.file, chapterEntry.title),
+          loadDaysContent(chapterEntry.daysFile, chapterEntry.title),
+        ]);
 
         if (!active || requestCounterRef.current !== requestId) {
           return;
         }
 
-        const nextData = buildChapterData(metadata, chapterIndex, chapterContent);
+        const nextData = buildChapterData(metadata, chapterIndex, chapterContent, daysContent);
         setChapterData(nextData);
         manifestSignatureRef.current = nextData.manifestSignature || metadata.manifestSignature || "";
         setError(null);

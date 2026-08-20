@@ -746,6 +746,46 @@ h1 {
   color: #1f2f5e;
 }
 
+.content-view-toggle {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin-top: 0.85rem;
+  padding: 0.2rem;
+  border: 1px solid rgba(20, 84, 71, 0.18);
+  border-radius: 999px;
+  background: rgba(20, 84, 71, 0.04);
+}
+
+.content-view-toggle-button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font: 600 0.72rem/1 "Noto Sans Thai", "Segoe UI", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #1f2f5e;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.content-view-toggle-button:hover,
+.content-view-toggle-button:focus-visible {
+  background: rgba(20, 84, 71, 0.12);
+}
+
+.content-view-toggle-button.is-active {
+  background: var(--accent);
+  color: #fbf3e2;
+}
+
+.content-view-toggle-button:focus-visible {
+  outline: 2px solid rgba(20, 84, 71, 0.34);
+  outline-offset: 2px;
+}
+
 .journal-card::before {
   content: "";
   position: absolute;

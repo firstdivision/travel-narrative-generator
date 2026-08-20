@@ -68,6 +68,7 @@ export async function loadNarrativeManifestMetadata() {
       prettySlug: chapterEntry?.prettySlug || slugifyHeading(title) || `chapter-${index + 1}`,
       date: chapterEntry?.date || null,
       file: chapterEntry?.file || "",
+      daysFile: chapterEntry?.daysFile || null,
       contentHash: chapterEntry?.contentHash || "",
       hasPhotos: chapterEntry?.hasPhotos !== false,
       tokens: null,
@@ -104,6 +105,27 @@ export async function loadChapterContent(chapterFile, fallbackTitle) {
     ...chapter,
     markdown,
   };
+}
+
+export async function loadDaysContent(daysFile, fallbackTitle) {
+  if (!daysFile) {
+    return null;
+  }
+
+  const daysResponse = await fetch(daysFile, { cache: "no-cache" });
+
+  if (!daysResponse.ok) {
+    throw new Error(`Failed to load days markdown (${daysResponse.status})`);
+  }
+
+  const markdown = await daysResponse.text();
+  const trimmedMarkdown = markdown.trimStart().toLowerCase();
+
+  if (trimmedMarkdown.startsWith("<!doctype html") || trimmedMarkdown.startsWith("<html")) {
+    throw new Error(`Days file \"${daysFile}\" returned HTML instead of markdown.`);
+  }
+
+  return extractChapterFromMarkdown(markdown, fallbackTitle);
 }
 
 export async function loadChapterData() {

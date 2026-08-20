@@ -4,12 +4,14 @@ import { useChapterData } from "../useChapterData";
 import {
   getManifestSignature,
   loadChapterContent,
+  loadDaysContent,
   loadNarrativeManifest,
   loadNarrativeManifestMetadata,
 } from "../../lib/data";
 
 vi.mock("../../lib/data", () => ({
   loadChapterContent: vi.fn(),
+  loadDaysContent: vi.fn(),
   loadNarrativeManifestMetadata: vi.fn(),
   loadNarrativeManifest: vi.fn(),
   getManifestSignature: vi.fn((manifest) => JSON.stringify(manifest)),
@@ -47,6 +49,7 @@ describe("useChapterData", () => {
     vi.useRealTimers();
     window.location.hash = "";
     loadNarrativeManifestMetadata.mockResolvedValue(manifestMetadata);
+    loadDaysContent.mockResolvedValue(null);
     loadChapterContent.mockResolvedValue({
       documentTitle: "Travel Journal",
       chapterTitle: "Day One",

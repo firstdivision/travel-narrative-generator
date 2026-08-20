@@ -3,8 +3,10 @@ import path from "path";
 import { createHash } from "crypto";
 
 const narrativeDir = "public/travel/narrative";
+const daysDir = "public/travel/days";
 const photosDir = "public/travel/photos";
 const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif", ".gif"]);
+const placeholderBodyPattern = /^\s*\[.*\]\s*$/s;
 
 const narrativeFiles = fs
   .readdirSync(narrativeDir)
@@ -62,6 +64,23 @@ function hasPhotosForDate(date) {
   }
 }
 
+function hasDaysForDate(date) {
+  const daysPath = path.join(daysDir, `${date}.md`);
+
+  let markdown;
+
+  try {
+    markdown = fs.readFileSync(daysPath, "utf8");
+  } catch {
+    return false;
+  }
+
+  // Ungenerated placeholder prompts (e.g. "[Generate an introduction...]") aren't real journal content.
+  const body = markdown.replace(/^##\s+.+$/m, "").trim();
+
+  return body.length > 0 && !placeholderBodyPattern.test(body);
+}
+
 const manifest = {
   chapters: [],
 };
@@ -85,6 +104,7 @@ for (const [index, fileName] of narrativeFiles.entries()) {
       prettySlug,
       contentHash: hashContent(markdown),
       hasPhotos: hasPhotosForDate(date),
+      daysFile: hasDaysForDate(date) ? `/travel/days/${date}.md` : null,
     });
 }
 
