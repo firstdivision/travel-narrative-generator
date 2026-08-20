@@ -57,6 +57,28 @@ describe("useChapterNavigation", () => {
     expect(result.current.currentSlug).toBe("gallery");
   });
 
+  it("treats #about as a dedicated non-chapter route", () => {
+    const chapters = [
+      { title: "Ch1", slug: "ch1" },
+      { title: "Ch2", slug: "ch2" },
+    ];
+
+    window.location.hash = "#about";
+
+    const { result } = renderHook(() =>
+      useChapterNavigation({
+        documentTitle: "Test",
+        chapters,
+      })
+    );
+
+    expect(result.current.isAboutRoute).toBe(true);
+    expect(result.current.isGalleryRoute).toBe(false);
+    expect(result.current.currentChapter).toBeNull();
+    expect(result.current.currentChapterIndex).toBe(-1);
+    expect(result.current.currentSlug).toBe("about");
+  });
+
   it("selects chapter by hash", () => {
     const chapters = [
       { title: "Ch1", slug: "ch1" },

@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { About } from "./components/About";
 import { BookmarkBanner } from "./components/BookmarkBanner";
 import { ChapterView } from "./components/ChapterView";
 import { ContentUpdateBanner } from "./components/ContentUpdateBanner";
@@ -18,7 +19,8 @@ export function App() {
 
   // Navigate chapters via hash
   const nav = useChapterNavigation(chapterData);
-  const { chapters, isGalleryRoute, currentChapterIndex, currentChapter, currentSlug, jumpToChapter } = nav;
+  const { chapters, isGalleryRoute, isAboutRoute, currentChapterIndex, currentChapter, currentSlug, jumpToChapter } =
+    nav;
 
   // Manage bookmark prompt and restoration
   const bookmark = useBookmarkBanner(chapterData, chapters, currentChapter);
@@ -67,6 +69,7 @@ export function App() {
         chapters={chapters}
         currentSlug={currentSlug}
         isGalleryRoute={isGalleryRoute}
+        isAboutRoute={isAboutRoute}
         loading={loading}
         onJumpToChapter={handleJumpToChapter}
       />
@@ -96,6 +99,8 @@ export function App() {
               <p className="status error">Unable to load the travel narrative.</p>
               <p className="error-detail">{error.message}</p>
             </>
+          ) : isAboutRoute ? (
+            <About />
           ) : isGalleryRoute ? (
             <Gallery
               chapters={chapters}

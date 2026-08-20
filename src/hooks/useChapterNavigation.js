@@ -27,15 +27,18 @@ export function useChapterNavigation(chapterData) {
 
   const chapters = chapterData?.chapters ?? [];
   const isGalleryRoute = hashSlug === "gallery";
-  const currentChapterIndex = isGalleryRoute ? -1 : (chapters.length ? getChapterIndexFromHash(chapters) : 0);
-  const currentChapter = isGalleryRoute ? null : chapters[currentChapterIndex] ?? null;
+  const isAboutRoute = hashSlug === "about";
+  const isSpecialRoute = isGalleryRoute || isAboutRoute;
+  const currentChapterIndex = isSpecialRoute ? -1 : (chapters.length ? getChapterIndexFromHash(chapters) : 0);
+  const currentChapter = isSpecialRoute ? null : chapters[currentChapterIndex] ?? null;
 
   return {
     chapters,
     isGalleryRoute,
+    isAboutRoute,
     currentChapterIndex,
     currentChapter,
-    currentSlug: isGalleryRoute ? "gallery" : currentChapter?.slug || "",
+    currentSlug: isGalleryRoute ? "gallery" : isAboutRoute ? "about" : currentChapter?.slug || "",
     shouldScroll: shouldScrollRef.current,
     clearShouldScroll() {
       shouldScrollRef.current = false;

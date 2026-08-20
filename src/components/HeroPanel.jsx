@@ -30,6 +30,7 @@ export function HeroPanel({
   chapters,
   currentSlug,
   isGalleryRoute,
+  isAboutRoute,
   loading,
   onJumpToChapter,
 }) {
@@ -71,6 +72,13 @@ export function HeroPanel({
             onClick={() => onJumpToChapter("gallery")}
           >
             All Photos
+          </button>
+          <button
+            className={`hero-menu-button${isAboutRoute ? " is-active" : ""}`}
+            type="button"
+            onClick={() => onJumpToChapter("about")}
+          >
+            How It Works
           </button>
         </div>
       </div>

@@ -605,4 +605,20 @@ describe("App", () => {
     expect(await screen.findByRole("heading", { level: 2, name: "Introduction" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Journal" })).not.toBeInTheDocument();
   });
+
+  it("navigates to the about page when the hero button is clicked", async () => {
+    setupNarrative([
+      createChapter("Introduction", "introduction"),
+      createChapter("Day Two", "day-two"),
+    ]);
+
+    render(<App />);
+
+    expect(await screen.findByText("Chapter 1 of 2")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "How It Works" }));
+
+    expect(await screen.findByRole("heading", { level: 2, name: "How It Works" })).toBeInTheDocument();
+    expect(window.location.hash).toBe("#about");
+  });
 });

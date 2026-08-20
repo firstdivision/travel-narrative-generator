@@ -398,7 +398,7 @@ h1 {
 
 .hero-menu {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.5fr);
+  grid-template-columns: minmax(0, 1fr) minmax(130px, 0.4fr) minmax(130px, 0.4fr);
   gap: 0.55rem;
   align-items: stretch;
 }
@@ -721,6 +721,44 @@ h1 {
   margin: 0 auto;
   padding-bottom: 1rem;
   border-bottom: 1px solid rgba(20, 84, 71, 0.18);
+}
+
+.about-shell {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.about-header {
+  width: min(100%, 740px);
+  margin: 0 auto;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(20, 84, 71, 0.18);
+}
+
+.about-content {
+  width: min(100%, 740px);
+  margin: 0 auto;
+  display: grid;
+  gap: 1.1rem;
+  color: #29314f;
+  font-size: clamp(1rem, 1.1vw, 1.08rem);
+  line-height: 1.7;
+}
+
+.about-lede {
+  font-family: "Noto Serif JP", "Times New Roman", serif;
+  font-size: clamp(1.1rem, 1.4vw, 1.28rem);
+  color: #1f2f5e;
+}
+
+.about-section-title {
+  margin: 0.6rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(20, 84, 71, 0.18);
+  font-family: "Noto Serif JP", "Times New Roman", serif;
+  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  line-height: 1.2;
+  color: #1f2f5e;
 }
 
 .chapter-header {
