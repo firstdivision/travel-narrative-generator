@@ -110,7 +110,7 @@ Its job is simple:
 ### How Files Are Organized
 
 **`src/lib/` - Helper Functions**
-
+ 
 These are utility functions that do basic jobs:
 
 - `data.js` - Loads the manifest file, chapter markdown files, and photo lists
